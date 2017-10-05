@@ -13,7 +13,7 @@ var phoneBook = [];
 
 function validData(phone, name) {
     const intPhone = Number(phone);
-    if (isNaN(intPhone) || phone.length !== 10 || name === undefined) {
+    if (isNaN(intPhone) || phone.length !== 10 || name === undefined || name === '') {
         return false;
     }
 
