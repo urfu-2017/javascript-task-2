@@ -226,3 +226,4 @@ function isString(query) {
 
     return true;
 }
+
