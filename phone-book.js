@@ -19,7 +19,7 @@ var phoneBook = {};
  * @returns {Boolean}
  */
 exports.add = function (phone, name = '', email = '') {
-    if (isValidNumber(phone.toString()) && name && !phoneBook[phone]) {
+    if (isValidNumber(phone) && validateName() && !phoneBook[phone]) {
         phoneBook[phone] = {
             phone: phone,
             name: name,
@@ -40,7 +40,7 @@ exports.add = function (phone, name = '', email = '') {
  * @returns {Boolean}
  */
 exports.update = function (phone, name = '', email = '') {
-    if (phoneBook[phone] && name) {
+    if (phoneBook[phone] && validateName(name)) {
         phoneBook[phone] = {
             phone: phone,
             name: name,
@@ -142,9 +142,9 @@ function getFindResultString(record) {
 }
 
 function isValidNumber(phone) {
-    let match = phone.match(/^(\d\d\d)(\d\d\d)(\d\d)(\d\d)$/);
+    let match = phone.toString().match(/^(\d\d\d)(\d\d\d)(\d\d)(\d\d)$/);
 
-    if (!match || match.length !== 5) {
+    if (!match || match.length !== 5 || typeof phone !== 'string') {
         return false;
     }
 
@@ -156,4 +156,8 @@ function isValidNumber(phone) {
     }, true);
 
     return validLength;
+}
+
+function validateName(name) {
+    return typeof name === 'string' && name.toString().length !== 0;
 }
