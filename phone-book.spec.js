@@ -49,7 +49,7 @@ describe('phone-book', function () {
     if (phoneBook.isStar) {
         it('должен экспортировать из cvs', function () {
             var csv = [
-                'Борис;5552220022;boris@example.com',
+                'Борис;5552220022;boris@example.com;',
                 'Григорий;5554440044;grisha@example.com',
                 'Алексей;5551110011;alex@example.com',
                 'Валерий;5553330033;valera@example.com',
