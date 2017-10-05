@@ -58,7 +58,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     const foundRecords = exports.find(query);
     phoneBook = phoneBook
-        .filter(record => Object.values(record)
+        .filter(record => !Object.values(record)
             .some(value => value && value.includes(query))
         );
 
