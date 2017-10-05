@@ -11,6 +11,19 @@ exports.isStar = true;
  */
 let phoneBook = [];
 
+if (!Object.entries) {
+    Object.entries = function (obj) {
+        let ownProps = Object.keys(obj);
+        let i = ownProps.length;
+        let resArray = new Array(i);
+        while (i--) {
+            resArray[i] = [ownProps[i], obj[ownProps[i]]];
+        }
+
+        return resArray;
+    };
+}
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -20,7 +33,7 @@ let phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     if (checkPhone(phone) && checkName(name) && !checkRecordExist(phone, name, email)) {
-        phoneBook[phone] = { name: name, email: email ? email : '' };
+        phoneBook[phone] = { name, email: email ? email : '' };
 
         return true;
     }
@@ -51,16 +64,16 @@ exports.update = function (phone, name, email) {
  * @returns {int} Remove records count
  */
 exports.findAndRemove = function (query) {
+    let recordsToRemove = [];
+
     if (query === '*') {
-        const records = findAll();
+        recordsToRemove = findAll();
         phoneBook = {};
-
-        return records.length;
-    }
-
-    const recordsToRemove = findByQuery(query);
-    for (const [phone] of recordsToRemove) {
-        delete phoneBook[phone];
+    } else {
+        recordsToRemove = findByQuery(query);
+        for (const [phone] of recordsToRemove) {
+            delete phoneBook[phone];
+        }
     }
 
     return recordsToRemove.length;
@@ -72,14 +85,9 @@ exports.findAndRemove = function (query) {
  * @returns {Array} formatted strings
  */
 exports.find = function (query) {
-    let data = [];
-    if (query === '*') {
-        data = findAll();
-    } else {
-        data = findByQuery(query);
-    }
-
-    return formatOutput(data);
+    return formatOutput(query === '*'
+        ? findAll()
+        : findByQuery(query));
 };
 
 /**
@@ -92,20 +100,18 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-    let successOperationCount = 0;
-    for (const line of csv.split('\n')) {
-        const [name, phone, email] = line.split(';');
-        if (checkRecordExist(phone) && exports.update(phone, name, email) ||
-            exports.add(phone, name, email)) {
-            successOperationCount++;
-        }
-    }
+    return csv
+        .split('\n')
+        .filter(function (line) {
+            const [name, phone, email] = line.split(';');
 
-    return successOperationCount;
+            return exports.add(phone, name, email) || exports.update(phone, name, email);
+        })
+        .length;
 };
 
 function checkName(name) {
-    return typeof name === 'string' && name !== '';
+    return name && name !== '';
 }
 
 function checkPhone(phone) {
