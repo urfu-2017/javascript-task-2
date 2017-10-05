@@ -1,12 +1,12 @@
 'use strict';
 
-const TEL_PATTERN = /^\d{10}$/;
+const TEL_PATTERN = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
 
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -110,7 +110,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function isValidInput(phone, name) {
-    return TEL_PATTERN.test(phone) && name;
+    return TEL_PATTERN.test(phone) && typeof name === 'string' && name;
 }
 
 function normalizeQuery(query) {
@@ -119,14 +119,12 @@ function normalizeQuery(query) {
     }
 
     if (query === '') {
-        return '\0';
+        return null;
     }
 
     return query;
 }
 
 function formatPhone(phone) {
-    const phoneRegex = /(\d{3})(\d{3})(\d{2})(\d{2})/;
-
-    return phone.replace(phoneRegex, '+7 ($1) $2-$3-$4');
+    return phone.replace(TEL_PATTERN, '+7 ($1) $2-$3-$4');
 }
