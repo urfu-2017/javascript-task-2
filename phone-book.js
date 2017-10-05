@@ -19,7 +19,7 @@ var phoneBook = {};
  * @returns {Boolean}
  */
 exports.add = function (phone, name = '', email = '') {
-    if (isValidNumber(phone) && validateName() && !phoneBook[phone]) {
+    if (isValidNumber(phone) && validateName(name) && !phoneBook[phone]) {
         phoneBook[phone] = {
             phone: phone,
             name: name,
