@@ -60,6 +60,8 @@ exports.update = function (phone, name, email) {
  * @returns {Number} number of removed records
  */
 exports.findAndRemove = function (query) {
+    query = normalizeQuery(query);
+
     const sourcePhonebookLength = phoneBook.length;
     phoneBook = phoneBook
         .filter(record => !Object.values(record)
