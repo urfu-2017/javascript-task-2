@@ -12,10 +12,9 @@ exports.isStar = true;
 var phoneBook = [];
 
 function validData(phone, name) {
-    const intPhone = Number(phone);
+    const regPhone = /^\d{10}$/;
     name = name || '';
-    if (String(intPhone).length !== 10 || name === '' ||
-        phone.indexOf('+') !== -1 || phone.indexOf('-') !== -1) {
+    if (!phone.match(regPhone) || name === '') {
         return false;
     }
 
