@@ -21,7 +21,7 @@ var phoneBook = [];
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (TEL_PATTERN.test(phone) && name && !phoneBook.some(record => record.phone === phone)) {
+    if (isValidInput(phone, name) && !phoneBook.some(record => record.phone === phone)) {
         phoneBook.push({ phone, name, email });
 
         return true;
@@ -38,6 +38,10 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    if (!name) {
+        return false;
+    }
+
     for (const record of phoneBook) {
         if (record.phone === phone) {
             record.name = name;
@@ -56,13 +60,13 @@ exports.update = function (phone, name, email) {
  * @returns {Number} number of removed records
  */
 exports.findAndRemove = function (query) {
-    const foundRecords = exports.find(query);
+    const sourcePhonebookLength = phoneBook.length;
     phoneBook = phoneBook
         .filter(record => !Object.values(record)
             .some(value => value && value.includes(query))
         );
 
-    return foundRecords.length;
+    return sourcePhonebookLength - phoneBook.length;
 };
 
 /**
@@ -104,6 +108,10 @@ exports.importFromCsv = function (csv) {
             return acc + (exports.add(phone, name, email) || exports.update(phone, name, email));
         }, 0);
 };
+
+function isValidInput(phone, name) {
+    return TEL_PATTERN.test(phone) && name;
+}
 
 function normalizeQuery(query) {
     if (query === '*') {
