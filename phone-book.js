@@ -21,6 +21,7 @@ var phoneBook = [];
  */
 
 exports.add = function (phone, name, email) {
+    let isAdd = false;
     if (isCorrectPhone(phone) && name) {
         let contains = phoneBook.some(function (currentRecord) {
             return currentRecord.phone === phone;
@@ -33,18 +34,15 @@ exports.add = function (phone, name, email) {
                     email
                 }
             );
-
-            return true;
+            isAdd = true;
         }
-
-        return false;
     }
 
-    return false;
+    return isAdd;
 };
 
 function isCorrectPhone(phone) {
-    return /^\d{10}/.test(phone);
+    return /^\d{10}$/.test(phone);
 }
 
 /**
@@ -119,9 +117,7 @@ function sortingRecords(telephoneBook) {
 }
 
 function formatPhoneBook(record) {
-    let phone = record.phone;
-    let name = record.name;
-    let email = record.email;
+    let { phone, name, email } = record;
     if (email) {
         return name + ', ' + getFormatPhone(phone) + ', ' + email;
     }
@@ -148,13 +144,10 @@ exports.importFromCsv = function (csv) {
     if (!csv) {
         return 0;
     }
-    var countRecords = 0;
-    var contactDetails = csv.split('\n');
+    let countRecords = 0;
+    let contactDetails = csv.split('\n');
     contactDetails.forEach(function (record) {
-        var splitRecord = record.split(';');
-        var name = splitRecord[0];
-        var phone = splitRecord[1];
-        var email = splitRecord[2];
+        let [name, phone, email] = record.split(';');
         if (exports.add(phone, name, email) ||
             exports.update(phone, name, email)) {
             countRecords++;
