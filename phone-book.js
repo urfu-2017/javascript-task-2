@@ -49,8 +49,8 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean} Is update operation successful
  */
 exports.update = function (phone, name, email) {
-    if (checkPhone(phone) && checkRecordExist(phone)) {
-        phoneBook[phone] = { name: name || phoneBook[phone].name, email: email || '' };
+    if (checkPhone(phone) && name && checkRecordExist(phone)) {
+        phoneBook[phone] = { name: name, email: email || '' };
 
         return true;
     }
