@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
@@ -32,7 +32,7 @@ if (!Object.entries) {
  * @returns {Boolean} Is add operation successful
  */
 exports.add = function (phone, name, email) {
-    if (checkPhone(phone) && checkName(name) && !checkRecordExist(phone, name, email)) {
+    if (checkPhone(phone) && name && !checkRecordExist(phone, name, email)) {
         phoneBook[phone] = { name, email: email ? email : '' };
 
         return true;
@@ -118,9 +118,6 @@ exports.importFromCsv = function (csv) {
         .length;
 };
 
-function checkName(name) {
-    return name && name !== '';
-}
 
 function checkPhone(phone) {
     const PHONE_REGEX = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/;
