@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
@@ -40,9 +40,9 @@ exports.add = function (phone, name = '', email = '') {
  * @returns {Boolean}
  */
 exports.update = function (phone, name = '', email = '') {
-    if (phoneBook[phone] && validateName(name)) {
+    if (phoneBook[phone.toString()] && validateName(name)) {
         phoneBook[phone] = {
-            phone: phone,
+            phone: phoneBook[phone].phone,
             name: name,
             email: email
         };
@@ -104,7 +104,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function simpleFind(query = '') {
-    if (query) {
+    if (typeof query === 'string' && query.length !== 0) {
         let phoneBookArray = Object.keys(phoneBook)
             .map(phone => phoneBook[phone])
             .sort((a, b) => a.name > b.name ? 1 : -1);
