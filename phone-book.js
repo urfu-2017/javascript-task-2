@@ -14,6 +14,7 @@ var phoneBook = [];
 function validData(phone, name) {
     const regPhone = /^\d{10}$/;
     name = name || '';
+    phone = phone || '';
     if (!phone.match(regPhone) || name === '') {
         return false;
     }
@@ -95,7 +96,7 @@ function beautifulPhone(phone) {
 }
 
 function existsSubstr(phone, name, email, query) {
-    if (phone.search(query) !== -1 || name.search(query) !== -1 || email.search(query) !== -1) {
+    if (phone.indexOf(query) !== -1 || name.indexOf(query) !== -1 || email.indexOf(query) !== -1) {
         return true;
     }
 
