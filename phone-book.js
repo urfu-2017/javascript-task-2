@@ -18,7 +18,7 @@ var phoneBook = {};
  * @param {String} email
  * @returns {Boolean}
  */
-exports.add = function (phone, name, email = '') {
+exports.add = function (phone, name = '', email = '') {
     if (isValidNumber(phone.toString()) && name && !phoneBook[phone]) {
         phoneBook[phone] = {
             phone: phone,
@@ -39,7 +39,7 @@ exports.add = function (phone, name, email = '') {
  * @param {String} email
  * @returns {Boolean}
  */
-exports.update = function (phone, name, email = '') {
+exports.update = function (phone, name = '', email = '') {
     if (phoneBook[phone] && name) {
         phoneBook[phone] = {
             phone: phone,
@@ -91,15 +91,19 @@ exports.importFromCsv = function (csv) {
             let a = string.split(';');
             let result = false;
 
-            result = this.add(a[1], a[0], a[2]);
-            result = this.update(a[1], a[0], a[2]);
+            if (phoneBook[a[1]]) {
+                result = this.update(a[1], a[0], a[2]);
+            } else {
+                result = this.add(a[1], a[0], a[2]);
+            }
+
 
             return result;
         })
         .filter(result => result).length;
 };
 
-function simpleFind(query) {
+function simpleFind(query = '') {
     if (query) {
         let phoneBookArray = Object.keys(phoneBook)
             .map(phone => phoneBook[phone])
