@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -21,7 +21,7 @@ var phoneBook = {};
 exports.add = function (phone, name = '', email = '') {
     if (isValidNumber(phone) && validateName(name) && !phoneBook[phone]) {
         phoneBook[phone] = {
-            phone: phone,
+            phone: phone.toString(),
             name: name,
             email: email
         };
@@ -142,20 +142,7 @@ function getFindResultString(record) {
 }
 
 function isValidNumber(phone) {
-    let match = phone.toString().match(/^(\d\d\d)(\d\d\d)(\d\d)(\d\d)$/);
-
-    if (!match || match.length !== 5 || typeof phone !== 'string') {
-        return false;
-    }
-
-    let validLength = match.slice(1).reduce((result, numberPart, index) => {
-        let needLength = index > 1 ? 2 : 3;
-        let numbers = numberPart.split('');
-
-        return result && numbers.filter(number => number === numbers[0]).length === needLength;
-    }, true);
-
-    return validLength;
+    return /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
 }
 
 function validateName(name) {
