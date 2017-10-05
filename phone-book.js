@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -13,7 +13,9 @@ var phoneBook = [];
 
 function validData(phone, name) {
     const intPhone = Number(phone);
-    if (isNaN(intPhone) || phone.length !== 10 || name === undefined || name === '') {
+    name = name || '';
+    if (String(intPhone).length !== 10 || name === '' ||
+        phone.indexOf('+') !== -1 || phone.indexOf('-') !== -1) {
         return false;
     }
 
