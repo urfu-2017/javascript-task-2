@@ -9,7 +9,7 @@ exports.isStar = false;
 /**
  * Телефонная книга
  */
-let phoneBook = [];
+let phoneBook = {};
 
 if (!Object.entries) {
     Object.entries = function (obj) {
@@ -32,8 +32,8 @@ if (!Object.entries) {
  * @returns {Boolean} Is add operation successful
  */
 exports.add = function (phone, name, email) {
-    if (checkPhone(phone) && name && !checkRecordExist(phone, name, email)) {
-        phoneBook[phone] = { name, email: email ? email : '' };
+    if (checkPhone(phone) && name && !checkRecordExist(phone)) {
+        phoneBook[phone] = { name, email: email || '' };
 
         return true;
     }
@@ -50,7 +50,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     if (checkPhone(phone) && checkRecordExist(phone)) {
-        phoneBook[phone] = { name: name ? name : phoneBook[phone].name, email: email ? email : '' };
+        phoneBook[phone] = { name: name || phoneBook[phone].name, email: email || '' };
 
         return true;
     }
