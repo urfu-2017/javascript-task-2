@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!name) {
+    if (!isValidInput(phone, name)) {
         return false;
     }
 
