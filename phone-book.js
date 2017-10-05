@@ -64,6 +64,10 @@ exports.update = function (phone, name, email) {
  * @returns {int} Remove records count
  */
 exports.findAndRemove = function (query) {
+    if (query === '') {
+        return 0;
+    }
+
     let recordsToRemove = [];
 
     if (query === '*') {
@@ -85,6 +89,10 @@ exports.findAndRemove = function (query) {
  * @returns {Array} formatted strings
  */
 exports.find = function (query) {
+    if (query === '') {
+        return [];
+    }
+
     return formatOutput(query === '*'
         ? findAll()
         : findByQuery(query));
