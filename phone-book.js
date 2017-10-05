@@ -21,9 +21,9 @@ var phoneBook = {};
 exports.add = function (phone, name = '', email = '') {
     if (isValidNumber(phone.toString()) && name && !phoneBook[phone]) {
         phoneBook[phone] = {
-            phone: phone.toString(),
-            name: name.toString(),
-            email: email.toString()
+            phone: phone,
+            name: name,
+            email: email
         };
 
         return true;
@@ -89,11 +89,6 @@ exports.importFromCsv = function (csv) {
     return csv.split('\n')
         .map(string => {
             let a = string.split(';');
-
-            if (a.length !== 3) {
-                return false;
-            }
-
             let result = false;
 
             if (phoneBook[a[1]]) {
