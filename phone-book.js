@@ -9,7 +9,7 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-const phoneBook = [];
+let phoneBook = [];
 
 //  Добавление записи в телефонную книгу
 
@@ -97,17 +97,19 @@ exports.findAndRemove = function (query) {
 
     if (query === '*') {
         removed = phoneBook.length;
+        phoneBook = [];
 
         return removed;
     }
 
     for (let i = 0; i < phoneBook.length; i++) {
-        if (isSubstr(phoneBook[i], query)) {
+        if (!isSubstr(phoneBook[i], query)) {
             newPhoneBook.push(phoneBook[i]);
         }
     }
 
-    removed = newPhoneBook.length;
+    removed = phoneBook.length - newPhoneBook.length;
+    phoneBook = newPhoneBook;
 
     return removed;
 };
