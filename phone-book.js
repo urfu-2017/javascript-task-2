@@ -91,7 +91,7 @@ exports.findAndRemove = function (query) {
     const newPhoneBook = [];
     let removed = 0;
 
-    if (query === 0 || typeof query !== 'string') {
+    if (query === '' || typeof query !== 'string') {
         return removed;
     }
 
