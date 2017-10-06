@@ -47,7 +47,7 @@ exports.update = function (phone, name, email) {
 };
 
 function tryUpdateRecord(phone, name, email) {
-    if (!phoneBook.hasOwnProperty(phone)) {
+    if (!phoneBook.hasOwnProperty(phone) || !isValidName(name)) {
         return false;
     }
     let updatedName = isValidName(name) ? name : phoneBook[phone].name;
