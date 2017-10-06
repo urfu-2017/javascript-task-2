@@ -20,13 +20,14 @@ let phoneBook = [];
  */
 exports.add = function (phone, name, email) {
 
-    let isValidPhone = new RegExp('^\\d{10}$');
-    let isValidName = name !== undefined;
+    // let isValidPhone = new RegExp('^\\d{10}$');
+    // let isValidName = typeof(name) === 'string';
     let isPhoneExists = phoneBook.some(function (element) {
         return element.phone.indexOf(phone) !== -1;
     });
+    // let isValidEmail = email === undefined || (typeof(email) === 'string');
 
-    if (isValidPhone.test(phone) && isValidName && !isPhoneExists) {
+    if (/^\d{10}$/.test(phone) && name && !isPhoneExists) {
 
         phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
@@ -69,11 +70,10 @@ function findFields(query, phone, name, email) {
 
         return true;
     }
-    if (email !== undefined && email.indexOf(query) !== -1) {
-        return true;
-    }
 
-    return false;
+    return email !== undefined && email.indexOf(query) !== -1;
+
+
 }
 
 /**
@@ -88,9 +88,9 @@ exports.findAndRemove = function (query) {
     if (typeof(query) !== 'string' || !query) {
         return 0;
     }
-    // if (query === '*') {
-    //     query = '';
-    // }
+    if (query === '*') {
+        query = '';
+    }
 
     for (let i = 0; i < phoneBook.length; i++) {
 
