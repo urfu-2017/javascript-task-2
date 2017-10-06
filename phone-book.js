@@ -145,24 +145,13 @@ function pusher(arr, query) {
     return arr;
 }
 
-/*
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
-exports.find = function (query) {
-    var foundResults = [];
-    switch (query) {
-        case '*':
-            foundResults = phoneBook;
-            break;
-        case '':
-            break;
-        default:
-            foundResults = pusher(foundResults, query);
-    }
+function queryzero(query) {
+    var boool = (typeof(query) === 'string');
 
-    var res = [];
-    //  console.log(foundResults.length);
+    return boool;
+}
+
+function joiner(foundResults, res) {
     for (let i = 0; i < foundResults.length; i += 1) {
         var a1 = foundResults[i].p.slice(0, 3);
         var a2 = foundResults[i].p.slice(3, 6);
@@ -176,6 +165,34 @@ exports.find = function (query) {
         res.push(join);
     }
     res.sort();
+
+    return res;
+}
+
+/*
+ * Поиск записей по запросу в телефонной книге
+ * @param {String} query
+ */
+exports.find = function (query) {
+    var foundResults = [];
+    var b1 = queryzero(query);
+    switch (query) {
+        case '*':
+            foundResults = phoneBook;
+            break;
+        case '':
+            break;
+        default:
+            foundResults = pusher(foundResults, query);
+    }
+
+    var res = [];
+    if (!b1) {
+
+        return res;
+    }
+    //  console.log(foundResults.length);
+    res = joiner(foundResults, res);
     //                                          console.log(phoneBook, 'find');
 
     return res;
