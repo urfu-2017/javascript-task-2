@@ -13,8 +13,26 @@ exports.isStar = true;
 var phoneBook = [];
 
 
+function equalsItems(array, ...indices) {
+    for (let i = 1; i < indices.length; i++) {
+        if (array[indices[i - 1]] !== array[indices[i]]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+function correctFormatPhone(numberInStr) {
+    return equalsItems(numberInStr, 0, 1, 2) && equalsItems(numberInStr, 3, 4, 5) &&
+            equalsItems(numberInStr, 6, 7) && equalsItems(numberInStr, 8, 9);
+}
+
+
 function verifyNumber(numberInStr) {
-    return numberInStr.length === 10 && !isNaN(Number(numberInStr));
+    return numberInStr.length === 10 && !isNaN(Number(numberInStr)) &&
+            correctFormatPhone(numberInStr);
 }
 
 
@@ -123,7 +141,7 @@ function seachQuery(query, sortFunction) {
     if (sortFunction !== undefined) {
         sortedBook = phoneBook.slice().sort(sortFunction);
     } else {
-        sortedBook = phoneBook;
+        sortedBook = phoneBook.slice();
     }
     if (query === '*') {
         return sortedBook;
