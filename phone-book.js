@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
@@ -164,7 +164,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function isValidName(name) {
-    return name !== undefined && /.+$/.test(name);
+    return !(name === undefined || name === null) && /.+$/.test(name);
 }
 
 function isValidPhone(phone) {
