@@ -20,7 +20,9 @@ let phoneBook = [];
  */
 
 function isValidPhone(phone) {
-    return /^\d{10}$/.test(phone);
+    // return /^\d{10}$/.test(phone);
+    return typeof phone === 'string' && phone.length === 10 &&
+        /\d{10}/.test(phone);
 }
 
 exports.add = function (phone, name, email) {
