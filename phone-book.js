@@ -50,9 +50,9 @@ function tryUpdateRecord(phone, name, email) {
     if (!phoneBook.hasOwnProperty(phone) || !isValidName(name)) {
         return false;
     }
-    let updatedName = isValidName(name) ? name : phoneBook[phone].name;
+    // let updatedName = isValidName(name) ? name : phoneBook[phone].name;
     let record = {
-        name: updatedName,
+        name,
         email
     };
     phoneBook[phone] = record;
@@ -66,6 +66,9 @@ function tryUpdateRecord(phone, name, email) {
  * @returns {Int}
  */
 exports.findAndRemove = function (query) {
+    if (query === '' || query === undefined) {
+        return 0;
+    }
     let removedCount = 0;
     for (let [phone, { name, email }] of Object.entries(phoneBook)) {
         let summary = [name, phone, email, '*'];
