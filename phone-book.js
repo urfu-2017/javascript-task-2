@@ -31,8 +31,8 @@ function correctFormatPhone(numberInStr) {
 
 
 function verifyNumber(numberInStr) {
-    return numberInStr.length === 10 && !isNaN(Number(numberInStr)) &&
-            correctFormatPhone(numberInStr);
+    return typeof numberInStr === 'string' && numberInStr.length === 10 &&
+            /\d{10}/.test(numberInStr) && correctFormatPhone(numberInStr);
 }
 
 
