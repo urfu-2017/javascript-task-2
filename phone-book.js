@@ -63,6 +63,19 @@ exports.update = function (phone, name, email) {
 
 };
 
+
+function findFields(query, phone, name, email) {
+    if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1) {
+
+        return true;
+    }
+    if (email !== undefined && email.indexOf(query) !== -1) {
+        return true;
+    }
+
+    return false;
+}
+
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
@@ -81,9 +94,7 @@ exports.findAndRemove = function (query) {
 
     for (let i = 0; i < phoneBook.length; i++) {
 
-        let cond = phoneBook[i].email ? (phoneBook[i].phone.indexOf(query) !== -1 ||
-            phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1)
-            : (phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].name.indexOf(query) !== -1);
+        let cond = findFields(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email);
 
         if (cond) {
             phoneBook.splice(i, 1);
