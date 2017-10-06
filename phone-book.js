@@ -19,8 +19,7 @@ let phoneBook = {};
  * @returns {Boolean} 
  */
 exports.add = function (phone, name, email) {
-    if (!isPhoneCorrect(phone) || phoneBook[phone] !== undefined ||
-    name === undefined || !isNameCorrect(name)) {
+    if (!isPhoneCorrect(phone) || isAlreadyAdded(phone) || !isNameCorrect(name)) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -135,4 +134,8 @@ function isStringCorrect(string) {
 function isMatched(pattern, phone) {
     return pattern.exec(phone) ||
         pattern.exec(phoneBook[phone].name) || pattern.exec(phoneBook[phone].email);
+}
+
+function isAlreadyAdded(phone) {
+    return Object.keys(phoneBook).indexOf(phone) !== -1;
 }
