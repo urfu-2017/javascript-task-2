@@ -78,7 +78,7 @@ exports.findAndRemove = function (query) {
     let count = [];
     count = findAndDelete(query);
 
-    remover(count);
+    return remover(count);
 };
 
 /**
