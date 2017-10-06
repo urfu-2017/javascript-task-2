@@ -56,7 +56,6 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
-
 //  Обновление записи в телефонной книге
 exports.update = function (phone, name, email) {
     if (!isCorrectPhone(phone) || !isCorrectNameAndEmail(name, email)) {
@@ -112,7 +111,6 @@ exports.findAndRemove = function (query) {
 
     return removed;
 };
-
 
 let formatPhoneBook = (itemPhoneBook) => {
     let formatedItem = '';
