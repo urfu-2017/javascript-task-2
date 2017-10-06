@@ -47,12 +47,12 @@ exports.update = function (phone, name, email) {
 };
 
 function tryUpdateRecord(phone, name, email) {
-    if (!isValidPhone(phone) || !phoneBook.hasOwnProperty(phone)) {
+    if (!phoneBook.hasOwnProperty(phone)) {
         return false;
     }
-    name = isValidName(name) ? name : phoneBook.phone.name;
+    let updatedName = isValidName(name) ? name : phoneBook[phone].name;
     let record = {
-        name,
+        name: updatedName,
         email
     };
     phoneBook[phone] = record;
@@ -84,6 +84,9 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
+    if (query === '' || query === undefined) {
+        return [];
+    }
     let searchResult = [];
     for (let [phone, { name, email }] of Object.entries(phoneBook)) {
         let summary = [name, phone, email, '*'];
