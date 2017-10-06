@@ -15,17 +15,16 @@ phoneBook.add('5551110011', 'Алексей');
 phoneBook.add('5555550055');
 
 console.info(phoneBook.phoneBook);
-console.info('__________________');
-console.info(phoneBook.phoneBook.toString());
+
 
 // Обновление
 phoneBook.update('5551110011', 'Алексей', 'alex@example.com');
 phoneBook.update('5553330033', 'Валерий');
-
+console.info(phoneBook.phoneBook);
 // В следующих примерах вернутся все записи
 
-//console.info(phoneBook.find('*'));
-//console.info(phoneBook.find('555'));
+// console.info(phoneBook.find('*'));
+// console.info(phoneBook.find('555'));
 
 // Вывод будет следующий
 // [
@@ -36,7 +35,7 @@ phoneBook.update('5553330033', 'Валерий');
 // ]
 
 // Удаление
-phoneBook.findAndRemove('@'); // returns 3
+console.info(phoneBook.findAndRemove('@')); // returns 3
 
 if (phoneBook.isStar) {
     // Импортируем из csv

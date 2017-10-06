@@ -1,7 +1,6 @@
 'use strict';
 
 
-
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
@@ -11,22 +10,9 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-exports.phoneBook = [];
-// = {} ... return Object.entries(phoneBook);
+let phoneBook = [];
 
-// this.phoneBook.toString()
-// var entry = {
-//     _name: 'def'
-// };
-// Object.defineProperty(entry, 'name', {
-//     get: function () {
-//         return this._name;
-//     },
-//     set: function (value) {
-//         this._name = value;
-//     }
-// });
-/**
+/*
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
@@ -34,56 +20,122 @@ exports.phoneBook = [];
  */
 exports.add = function (phone, name, email) {
 
-    var isValidPhone = new RegExp('^\\d{10}$');
-    var isValidName = name !== undefined;
-    var isPhoneExists = this.phoneBook.some(function (element, index, array) {
+    let isValidPhone = new RegExp('^\\d{10}$');
+    let isValidName = name !== undefined;
+    let isPhoneExists = phoneBook.some(function (element) {
         return element.phone.indexOf(phone) !== -1;
     });
 
-    if(isValidPhone.test(phone) && isValidName && !isPhoneExists) {
+    if (isValidPhone.test(phone) && isValidName && !isPhoneExists) {
 
-    this.phoneBook.push({'phone' : phone, 'name' : name, 'email' : email});
+        phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
-    return true;
+        return true;
     }
-    else return false;
+
+    return false;
 };
+
+
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
 
-    var entry = this.phoneBook.findIndex(function (element, index, array) {
+
+    let entry = phoneBook.findIndex(function (element) {
         return element.phone === phone;
     });
+
+    if (entry !== -1) {
+        phoneBook[entry].email = email;
+        phoneBook[entry].name = name;
+
+        return true;
+    }
+
+    return false;
+
 
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {Number} count
  */
 exports.findAndRemove = function (query) {
+
+    let count = 0;
+
+    if (typeof(query) !== 'string' || !query) {
+        return 0;
+    }
+    // if (query === '*') {
+    //     query = '';
+    // }
+
+    for (let i = 0; i < phoneBook.length; i++) {
+
+        let cond = phoneBook[i].email ? (phoneBook[i].phone.indexOf(query) !== -1 ||
+            phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1)
+            : (phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].name.indexOf(query) !== -1);
+
+        if (cond) {
+            phoneBook.splice(i, 1);
+            i--;
+            count++;
+        }
+    }
+
+    return count;
 
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array} filtered phonebook
  */
 exports.find = function (query) {
 
-    if (query === '') return [];
-    if (query === '*') return this.phoneBook;
+    if (typeof(query) !== 'string' || query === '') {
+        return [];
+    }
 
-    return this.phoneBook.filter(function (element, index, array) {
-        return element.phone.indexOf(query) !== -1 || element.name.indexOf(query) !== -1 || element.email.indexOf(query) !== -1;
-    })
+    if (query === '*') {
+        return formatOutput(phoneBook);
+    }
+
+
+    return formatOutput(phoneBook.filter(function (element) {
+
+        return element.email ? (element.phone.indexOf(query) !== -1 ||
+            element.name.indexOf(query) !== -1 || element.email.indexOf(query) !== -1)
+            : (element.phone.indexOf(query) !== -1 || element.name.indexOf(query) !== -1);
+    }));
 
 };
+
+function formatOutput(list) {
+
+    return list.map(function (entry) {
+        let result = [];
+        result.push(entry.name);
+        result.push(formatPhone(entry.phone));
+        if (entry.email) {
+            result.push(entry.email);
+        }
+
+        return result.join(', ');
+
+    }).sort();
+
+}
 
 /**
  * Импорт записей из csv-формата
@@ -92,9 +144,26 @@ exports.find = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
 
-    return csv.split('\n').length;
+    if (!csv) {
+        return 0;
+    }
+    let entries = csv.split('\n');
+    let entry;
+    let updateCount = 0;
+
+    entries.forEach((rec) => {
+        entry = rec.split(';');
+        if ((exports.add(entry[1], entry[0], entry[2])) ||
+        exports.update(entry[1], entry[0], entry[2])) {
+            updateCount++;
+        }
+    }
+    );
+
+    return updateCount;
 };
+
+function formatPhone(phone) {
+    return `+7 (${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 8)}-${phone.slice(8)}`;
+}
