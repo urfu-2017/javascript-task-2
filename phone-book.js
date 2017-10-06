@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -23,7 +23,7 @@ exports.add = function (phone, name, email) {
 };
 
 function tryAddRecord(phone, name, email) {
-    if (!(isValidPhone(phone)) || phoneBook.hasOwnProperty(phone)) {
+    if (!(isValidPhone(phone) && isValidName(name)) || phoneBook.hasOwnProperty(phone)) {
         return false;
     }
     let record = {
@@ -47,7 +47,7 @@ exports.update = function (phone, name, email) {
 };
 
 function tryUpdateRecord(phone, name, email) {
-    if (!(isValidPhone(phone)) || !phoneBook.hasOwnProperty(phone)) {
+    if (!(isValidPhone(phone) && isValidName(name)) || !phoneBook.hasOwnProperty(phone)) {
         return false;
     }
     let record = {
@@ -157,7 +157,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function isValidName(name) {
-    return /^[А-Яа-я]{1,20}$/.test(name);
+    return name !== undefined && /.+$/.test(name);
 }
 
 function isValidPhone(phone) {
