@@ -15,7 +15,7 @@ var phoneBook = [];
 
 function equalsItems(array, ...indices) {
     for (let i = 1; i < indices.length; i++) {
-        if (array[indices[i]] !== array[indices[i - 1]]) {
+        if (array[indices[i - 1]] !== array[indices[i]]) {
             return false;
         }
     }
@@ -95,7 +95,7 @@ exports.update = function (phone, name, email) {
         return true;
     }
 
-    return false;
+    return exports.add(phone, name, email);
 };
 
 
@@ -126,7 +126,7 @@ function remove(array, value) {
 
 function recordContainQuery(record, query) {
     for (let key in record) {
-        if (record[key] !== undefined && record[key].includes(query)) {
+        if (typeof record[key] === 'string' && record[key].includes(query)) {
             return true;
         }
     }
