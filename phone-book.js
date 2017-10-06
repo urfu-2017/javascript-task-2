@@ -13,26 +13,8 @@ exports.isStar = true;
 var phoneBook = [];
 
 
-function equalsItems(array, ...indices) {
-    for (let i = 1; i < indices.length; i++) {
-        if (array[indices[i - 1]] !== array[indices[i]]) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-function correctFormatPhone(numberInStr) {
-    return equalsItems(numberInStr, 0, 1, 2) && equalsItems(numberInStr, 3, 4, 5) &&
-            equalsItems(numberInStr, 6, 7) && equalsItems(numberInStr, 8, 9);
-}
-
-
 function verifyNumber(numberInStr) {
-    return numberInStr.length === 10 && !isNaN(Number(numberInStr)) &&
-            correctFormatPhone(numberInStr);
+    return numberInStr.length === 10 && !isNaN(Number(numberInStr));
 }
 
 
@@ -95,7 +77,7 @@ exports.update = function (phone, name, email) {
         return true;
     }
 
-    return exports.add(phone, name, email);
+    return false;
 };
 
 
