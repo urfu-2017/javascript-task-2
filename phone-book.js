@@ -19,7 +19,7 @@ let phoneBook = {};
  * @returns {Boolean} 
  */
 exports.add = function (phone, name, email) {
-    if (!isPhoneCorrect(phone) || isAlreadyAdded(phone) || !isNameCorrect(name)) {
+    if (!isPhoneCorrect(phone) || isAlreadyAdded(phone) || !isStringCorrect(name)) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -35,7 +35,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isPhoneCorrect(phone) || !isNameCorrect(name) || !isAlreadyAdded(phone)) {
+    if (!isPhoneCorrect(phone) || !isStringCorrect(name) || !isAlreadyAdded(phone)) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -102,10 +102,6 @@ function isPhoneCorrect(phoneNumber) {
     return phoneNumber.length === 10 && a !== null && a.index === 0;
 }
 
-function isNameCorrect(name) {
-    return typeof name === 'string' && name !== '';
-}
-
 function getBeautifulPhone(phone) {
     return `+7 (${phone.substring(0, 3)}) ` +
     `${phone.substring(3, 6)}-${phone.substring(6, 8)}-${phone.substring(8, 10)}`;
@@ -115,10 +111,9 @@ function findRecords(query) {
     if (!isStringCorrect(query)) {
         return [];
     }
-    let pattern = query === '*' ? new RegExp('.*') : new RegExp(query);
     let suitable = [];
     for (const phone of Object.keys(phoneBook)) {
-        if (isMatched(pattern, phone)) {
+        if (isQueryIncluded(query, phone)) {
             suitable.push({ phone: phone,
                 name: phoneBook[phone].name, email: phoneBook[phone].email });
         }
@@ -131,9 +126,14 @@ function isStringCorrect(string) {
     return typeof string === 'string' && string !== '';
 }
 
-function isMatched(pattern, phone) {
-    return pattern.exec(phone) ||
-        pattern.exec(phoneBook[phone].name) || pattern.exec(phoneBook[phone].email);
+function isQueryIncluded(query, phone) {
+    if (query === '*') {
+        return true;
+    }
+
+    return phone.indexOf(query) !== -1 ||
+        phoneBook[phone].name.indexOf(query) !== -1 ||
+        (phoneBook[phone].email !== undefined && phoneBook[phone].email.indexOf(query) !== -1);
 }
 
 function isAlreadyAdded(phone) {
