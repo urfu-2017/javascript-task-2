@@ -183,7 +183,9 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-
+    if (!csv) {
+        return 0;
+    }
     var records = csv.split('\n');
     var record;
     var countUpdate = 0;
