@@ -186,13 +186,14 @@ exports.importFromCsv = function (csv) {
     if (!csv) {
         return 0;
     }
-    var records = csv.split('\n');
-    var record;
-    var countUpdate = 0;
+    let records = csv.split('\n');
+    let record;
+    let countUpdate = 0;
     records.forEach((rec) => {
         record = rec.split(';');
-        if (exports.update(record[1], record[0], record[2]) ||
-        (exports.add(record[1], record[0], record[2]))) {
+        if ((exports.add(record[1], record[0], record[2])) ||
+         exports.update(record[1], record[0], record[2]))
+    {
             countUpdate++;
         }
     }
