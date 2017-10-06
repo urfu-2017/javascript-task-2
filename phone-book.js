@@ -22,7 +22,7 @@ var phoneBook = [];
 exports.add = function (phone, name, email) {
     phone = formatPhoneNumber(phone);
     isAlreadyAdded(name);
-    if (isInputCorrect(name, phone) && !isAlreadyAdded(name)) {
+    if (isInputCorrect(name, phone) && !isAlreadyAdded(name) && emailIsValid(email)) {
         let phoneBookEntry;
         if (email !== undefined) {
             phoneBookEntry = { name, phone, email };
@@ -38,10 +38,16 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
+function emailIsValid(email) {
+    const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
+    return regex.test(email) || email === undefined;
+}
+
 function isInputCorrect(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
 
-    return name !== undefined && regex.test(phone);
+    return name && regex.test(phone);
 }
 
 function sortPhoneBook() {
