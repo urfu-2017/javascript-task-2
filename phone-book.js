@@ -62,10 +62,8 @@ exports.update = function (phone, name, email) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
-    if (i !== phoneBook.length && phoneBook[i].p === phone) {
-        if (name) {
-            phoneBook[i].n = name;
-        }
+    if (i !== phoneBook.length && phoneBook[i].p === phone && typeof(name) === 'string') {
+        phoneBook[i].n = name;
         phoneBook[i].m = email;
         b1 = true;
     } else {
@@ -118,7 +116,7 @@ function checkInclude(i, query) {
     let b1 = false;
     var a = [];
     a[0] = phoneBook[i].n;
-    a[0] = a[0].toLowerCase();
+    //  a[0] = a[0].toLowerCase();
     a[1] = phoneBook[i].p;
     a[2] = phoneBook[i].m;
     //  console.log(i, query, phoneBook[i]);
