@@ -18,16 +18,21 @@ let phoneBook = [];
  * @param {String} name
  * @param {String} email
  */
+
+function isValidPhone(phone) {
+    return /^\d{10}$/.test(phone);
+}
+
 exports.add = function (phone, name, email) {
 
-    let isValidPhone = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
+    // let isValidPhone = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
     // let isValidName = typeof(name) === 'string';
     let isPhoneExists = phoneBook.some(function (element) {
         return element.phone.indexOf(phone) !== -1;
     });
     // let isValidEmail = email === undefined || (typeof(email) === 'string');
 
-    if (isValidPhone && name && !isPhoneExists) {
+    if (isValidPhone(phone) && name && !isPhoneExists) {
 
         phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
