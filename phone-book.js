@@ -215,12 +215,16 @@ exports.importFromCsv = function (csv) {
     for (let i = 0; i < sep.length; i += 1) {
         var note = [];
         note = sep[i].split(';');
-        var b1 = false;
+
+        /* var b1 = false;
         b1 = exports.add (note[1], note[0], note[2]);
         if (!b1) {
             b1 = exports.update (note[1], note[0], note[2]);
         }
         if (b1) {
+            total++;
+        }*/
+        if (exports.add (note[1], note[0], note[2]) || exports.update (note[1], note[0], note[2])) {
             total++;
         }
     }
