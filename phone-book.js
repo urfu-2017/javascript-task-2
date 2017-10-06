@@ -5,7 +5,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -28,7 +28,7 @@ exports.add = function (phone, name, email) {
     // let isValidPhone = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
     // let isValidName = typeof(name) === 'string';
     let isPhoneExists = phoneBook.some(function (element) {
-        return element.phone.indexOf(phone) !== -1;
+        return element.phone === phone;
     });
     // let isValidEmail = email === undefined || (typeof(email) === 'string');
 
