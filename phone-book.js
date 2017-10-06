@@ -20,14 +20,14 @@ let phoneBook = [];
  */
 exports.add = function (phone, name, email) {
 
-    // let isValidPhone = new RegExp('^\\d{10}$');
+    let isValidPhone = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
     // let isValidName = typeof(name) === 'string';
     let isPhoneExists = phoneBook.some(function (element) {
         return element.phone.indexOf(phone) !== -1;
     });
     // let isValidEmail = email === undefined || (typeof(email) === 'string');
 
-    if (/^\d{10}$/.test(phone) && name && !isPhoneExists) {
+    if (isValidPhone && name && !isPhoneExists) {
 
         phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
