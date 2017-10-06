@@ -103,6 +103,9 @@ exports.find = function (query) {
  * @returns {Array}
  */
 function filterByQuery(query) {
+    if (query === '') {
+        return [];
+    }
     if (query === '*') {
         return phoneBook.slice(0);
     }
