@@ -34,7 +34,7 @@ exports.add = function (phone, name, email) {
 
     if (isValidPhone(phone) && name && !isPhoneExists) {
 
-        phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
+        phoneBook.push({ 'phone': phone.toString(), 'name': name, 'email': email });
 
         return true;
     }
