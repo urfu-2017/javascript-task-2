@@ -8,18 +8,25 @@ phoneBook.add('5552220022', 'Борис', 'boris@example.com');
 phoneBook.add('5551110011', 'Алекс');
 phoneBook.add('5553330033', 'Валерий', 'valera@example.com');
 
+
 // Эти запись не добавятся
 phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com');
 phoneBook.add('5551110011', 'Алексей');
 phoneBook.add('5555550055');
+
+console.info(phoneBook.phoneBook);
+console.info('__________________');
+console.info(phoneBook.phoneBook.toString());
 
 // Обновление
 phoneBook.update('5551110011', 'Алексей', 'alex@example.com');
 phoneBook.update('5553330033', 'Валерий');
 
 // В следующих примерах вернутся все записи
-console.info(phoneBook.find('*'));
-console.info(phoneBook.find('555'));
+
+//console.info(phoneBook.find('*'));
+//console.info(phoneBook.find('555'));
+
 // Вывод будет следующий
 // [
 //   'Алексей, +7 (555) 111-00-11, alex@example.com',

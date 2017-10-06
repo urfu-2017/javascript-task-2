@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
@@ -9,8 +11,21 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+exports.phoneBook = [];
+// = {} ... return Object.entries(phoneBook);
 
+// this.phoneBook.toString()
+// var entry = {
+//     _name: 'def'
+// };
+// Object.defineProperty(entry, 'name', {
+//     get: function () {
+//         return this._name;
+//     },
+//     set: function (value) {
+//         this._name = value;
+//     }
+// });
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -19,8 +34,20 @@ var phoneBook;
  */
 exports.add = function (phone, name, email) {
 
-};
+    var isValidPhone = new RegExp('^\\d{10}$');
+    var isValidName = name !== undefined;
+    var isPhoneExists = this.phoneBook.some(function (element, index, array) {
+        return element.phone.indexOf(phone) !== -1;
+    });
 
+    if(isValidPhone.test(phone) && isValidName && !isPhoneExists) {
+
+    this.phoneBook.push({'phone' : phone, 'name' : name, 'email' : email});
+
+    return true;
+    }
+    else return false;
+};
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
@@ -28,6 +55,10 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
+
+    var entry = this.phoneBook.findIndex(function (element, index, array) {
+        return element.phone === phone;
+    });
 
 };
 
@@ -44,6 +75,13 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
+
+    if (query === '') return [];
+    if (query === '*') return this.phoneBook;
+
+    return this.phoneBook.filter(function (element, index, array) {
+        return element.phone.indexOf(query) !== -1 || element.name.indexOf(query) !== -1 || element.email.indexOf(query) !== -1;
+    })
 
 };
 
