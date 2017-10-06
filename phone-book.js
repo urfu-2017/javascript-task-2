@@ -35,7 +35,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isPhoneCorrect(phone) || !isNameCorrect(name) || isAlreadyAdded()) {
+    if (!isPhoneCorrect(phone) || !isNameCorrect(name) || !isAlreadyAdded(phone)) {
         return false;
     }
     phoneBook[phone] = { name, email };
