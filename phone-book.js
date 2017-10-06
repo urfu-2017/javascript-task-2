@@ -1,62 +1,79 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
 
-/**
- * Телефонная книга
- */
-var phoneBook;
+var phoneBook = {};
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
 exports.add = function (phone, name, email) {
+    if (!/^\d{10}$/.test(phone) || phone in phoneBook || !name) {
+        return false;
+    }
+    phoneBook[phone] = [name, email];
 
+    return true;
 };
 
-/**
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
 exports.update = function (phone, name, email) {
+    if (!(phone in phoneBook) || !name) {
+        return false;
+    }
+    phoneBook[phone] = [name, email];
 
+    return true;
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
+function findAll(query) {
+    var result = [];
+    if (!query) {
+        return result;
+    }
+    if (query === '*') {
+        query = '';
+    }
+    Object.keys(phoneBook).forEach(phone => {
+        var [name, email] = phoneBook[phone];
+        var item = [name, email, phone];
+        if (item.filter(x => String(x || '').indexOf(query) !== -1).length) {
+            result.push(item);
+        }
+    });
+
+    return result;
+}
+
 exports.findAndRemove = function (query) {
+    var found = findAll(query);
+    for (var [,, phone] of found) {
+        delete phoneBook[phone];
+    }
 
+    return found.length;
 };
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
 exports.find = function (query) {
+    var found = findAll(query);
+    var result = [];
+    for (var [name, email, phone] of found) {
+        var [, code, aaa, bb, cc] = /^(\d{3})(\d{3})(\d\d)(\d\d)$/.exec(phone);
+        result.push(`${name}, +7 (${code}) ${aaa}-${bb}-${cc}${email ? ', ' + email : ''}`);
+    }
+    result.sort();
 
+    return result;
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
+
 exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    var total = 0;
+    for (var line of csv.split('\n')) {
+        var [name, phone, email] = line.split(';');
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
+            total++;
+        }
+    }
 
-    return csv.split('\n').length;
+    return total;
 };
