@@ -66,6 +66,7 @@ exports.update = function (phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
+    query = String(query);
     if (query === '') {
         return 0;
     }
@@ -87,7 +88,8 @@ exports.findAndRemove = function (query) {
  */
 
 exports.find = function (query) {
-    if (!query || typeof(query) !== 'string') {
+    query = String(query);
+    if (!query) {
         return [];
     }
     let findArray = [];
