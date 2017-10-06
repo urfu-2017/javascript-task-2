@@ -118,6 +118,7 @@ function checkInclude(i, query) {
     let b1 = false;
     var a = [];
     a[0] = phoneBook[i].n;
+    a[0] = a[0].toLowerCase();
     a[1] = phoneBook[i].p;
     a[2] = phoneBook[i].m;
     //  console.log(i, query, phoneBook[i]);
