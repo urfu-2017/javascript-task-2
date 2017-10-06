@@ -37,7 +37,7 @@ function verifyNumber(numberInStr) {
 
 
 function verifyName(name) {
-    return typeof name === 'string';
+    return typeof name === 'string' && name !== '';
 }
 
 
@@ -86,7 +86,7 @@ exports.update = function (phone, name, email) {
         if (phone !== otherRecord.phone) {
             continue;
         }
-        if (name === undefined) {
+        if (!verifyName(name)) {
             return false;
         }
         otherRecord.name = name;
