@@ -192,8 +192,7 @@ exports.importFromCsv = function (csv) {
     records.forEach((rec) => {
         record = rec.split(';');
         if ((exports.add(record[1], record[0], record[2])) ||
-         exports.update(record[1], record[0], record[2]))
-    {
+         exports.update(record[1], record[0], record[2])) {
             countUpdate++;
         }
     }
