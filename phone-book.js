@@ -20,27 +20,27 @@ let phoneBook = [];
  */
 
 function isValidPhone(phone) {
-    // return /^\d{10}$/.test(phone);
-    return typeof phone === 'string' && phone.length === 10 &&
-        /\d{10}/.test(phone);
+
+    return /^\d{10}$/.test(phone);
 }
 
 exports.add = function (phone, name, email) {
 
-    // let isValidPhone = /^(\d)\1\1(\d)\2\2(\d)\3(\d)\4$/.test(phone);
-    // let isValidName = typeof(name) === 'string';
-    let isPhoneExists = phoneBook.some(function (element) {
-        return element.phone === phone;
-    });
-    // let isValidEmail = email === undefined || (typeof(email) === 'string');
 
-    if (isValidPhone(phone) && name && !isPhoneExists) {
 
-        phoneBook.push({ 'phone': phone.toString(), 'name': name, 'email': email });
+    if (isValidPhone(phone) && name) {
 
-        return true;
+        let isPhoneExists = phoneBook.some(function (element) {
+            return element.phone === phone;
+        });
+
+        if (!isPhoneExists) {
+
+            phoneBook.push( { phone, name, email } );
+
+            return true;
+        }
     }
-
     return false;
 };
 
