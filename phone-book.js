@@ -72,7 +72,7 @@ exports.findAndRemove = function (query) {
     for (let [phone, { name, email }] of Object.entries(phoneBook)) {
         let summary = [name, phone, email, '*'];
         if (paramsOccurencyFound(summary, query)) {
-            delete phoneBook.phone;
+            delete phoneBook[phone];
             removedCount++;
         }
     }
@@ -123,11 +123,8 @@ function formatOutput(name, phone, email) {
  * @returns {Boolean}
  */
 function paramsOccurencyFound(summary, query) {
-    if (query === '') {
-        return false;
-    }
     for (let param of summary) {
-        if (param !== undefined && param.indexOf(query) >= 0) {
+        if (param && param.indexOf(query) >= 0) {
             return true;
         }
     }
