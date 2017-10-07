@@ -54,22 +54,23 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
 
+    let success = false;
+
     if (isValidPhone(phone)) {
-        let entry = phoneBook.findIndex(function (element) {
-            return element.phone === phone;
+
+        phoneBook.forEach(function (element) {
+
+            if (element.phone === phone && name) {
+
+                element.name = name;
+                element.email = email;
+
+                success = true;
+            }
         });
-
-        if (entry !== -1) {
-            phoneBook[entry].email = email;
-            phoneBook[entry].name = name;
-
-            return true;
-        }
-
-        return false;
     }
 
-
+    return success;
 };
 
 
