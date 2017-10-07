@@ -21,9 +21,9 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     phone = formatPhoneNumber(phone);
-    if (isInputValid(name, phone, email) && !isAlreadyAdded(name)) {
+    if (isInputValid(name, phone) && !isAlreadyAdded(name)) {
         let phoneBookEntry;
-        if (email !== undefined) {
+        if (email) {
             phoneBookEntry = { name, phone, email };
         } else {
             phoneBookEntry = { name, phone };
@@ -37,21 +37,12 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
-function isInputValid(name, phone, email) {
-    return isInputCorrect(name, phone) && emailIsValid(email);
-}
 
-function emailIsValid(email) {
-    const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-
-    return regex.test(email) || email === undefined;
-}
-
-function isInputCorrect(name, phone) {
+function isInputValid(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
-    const nameIsValid = name && typeof name === 'string';
+    const nameIsValid = name !== '' && typeof name === 'string';
 
-    return nameIsValid && regex.test(phone);
+    return nameIsValid && regex.test(phone) && typeof phone === 'string';
 }
 
 function sortPhoneBook() {
@@ -114,14 +105,14 @@ function spliceAndJoin(inputArray, from, to) {
 exports.update = function (phone, name, email) {
     for (const entry of phoneBook) {
         if (entry.name === name && email !== undefined &&
-             isInputValid(name, formatPhoneNumber(phone), email)) {
+             isInputValid(name, formatPhoneNumber(phone))) {
             entry.phone = formatPhoneNumber(phone);
             entry.email = email;
             sortPhoneBook();
 
             return true;
         } else if (entry.name === name &&
-            isInputValid(name, formatPhoneNumber(phone), email)) {
+            isInputValid(name, formatPhoneNumber(phone))) {
             entry.phone = formatPhoneNumber(phone);
             delete entry.email;
             sortPhoneBook();
@@ -222,11 +213,11 @@ exports.importFromCsv = function (csv) {
         const name = entryString.split(';')[0];
         const phone = entryString.split(';')[1];
         const email = entryString.split(';')[2];
-        if (isInputValid(name, formatPhoneNumber(phone), email) &&
+        if (isInputValid(name, formatPhoneNumber(phone)) &&
         !isAlreadyAdded(name)) {
             phonesAdded++;
             exports.add(phone, name, email);
-        } else if (isInputValid(name, formatPhoneNumber(phone), email)) {
+        } else if (isInputValid(name, formatPhoneNumber(phone))) {
             phonesAdded++;
             exports.update(phone, name, email);
         }
