@@ -9,7 +9,7 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook = [];
 
 /**
  * Добавление записи в телефонную книгу
@@ -107,7 +107,7 @@ function checkEmail(query) {
 
 function checkUser(person, query, result) {
     for (let value of Object.values(person)) {
-        if (value.indexOf(query) !== -1) {
+        if (value.indexOf(query) !== -1 || query === '*') {
             result.push(person.name + ', +7 (' + person.phone.slice(0, 3) + ') ' +
             person.phone.slice(3, 6) + '-' + person.phone.slice(6, 8) + '-' +
             person.phone.slice(8) + (person.email ? ', ' + person.email : ''));
