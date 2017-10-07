@@ -24,8 +24,9 @@ exports.add = function (phone, name, email) {
     if (isNoteInPhoneBook(contact)) {
         return false;
     }
-    if (contact.phone !== undefined && contact.phone.match(reg) === null || contact.name === null ||
-        contact.name === '' || contact.name === undefined) {
+    if (typeof contact.phone === 'string' && contact.phone.match(reg) === null ||
+        typeof contact.phone !== 'string' ||
+        typeof contact.name !== 'string' || contact.name === '') {
         return false;
 
     }
@@ -157,23 +158,33 @@ function format(notes) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    let phoneBoook = require('./phone-book');
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+    if (typeof csv !== 'string' || csv === '') {
+
+        return 0;
+    }
     let countOfAddOrUpdate = 0;
     let csvToArr = csv.split('\n');
+    countOfAddOrUpdate = getCountOfAddOrUpdate(csvToArr);
+
+    return countOfAddOrUpdate;
+};
+
+function getCountOfAddOrUpdate(csvToArr) {
+    let countOfAddOrUpdate = 0;
     for (let i = 0; i < csvToArr.length; i++) {
         let arr = csvToArr[i].split(';');
+        if (arr.length > 3) {
+            break;
+        }
         let name = arr[0];
         let phone = arr[1];
         let email = arr[2];
-        if (phoneBoook.add(phone, name, email)) {
+        if (exports.add(phone, name, email)) {
             countOfAddOrUpdate++;
-        } else if (phoneBoook.update(phone, name, email)) {
+        } else if (exports.update(phone, name, email)) {
             countOfAddOrUpdate++;
         }
     }
 
     return countOfAddOrUpdate;
-};
+}
