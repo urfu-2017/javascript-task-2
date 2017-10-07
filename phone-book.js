@@ -42,7 +42,18 @@ function isInputValid(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
     const nameIsValid = name !== '' && typeof name === 'string';
 
-    return nameIsValid && regex.test(phone) && typeof phone === 'string';
+    return nameIsValid && regex.test(phone) && typeof phone === 'string' &&
+     !phoneIsAlreadyAdded(phone, name);
+}
+
+function phoneIsAlreadyAdded(phone, name) {
+    for (const entry of phoneBook) {
+        if (entry.phone === phone && entry.name !== name) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function sortPhoneBook() {
