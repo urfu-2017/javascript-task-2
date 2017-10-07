@@ -23,7 +23,7 @@ exports.add = function (phone, name, email) {
     phone = formatPhoneNumber(phone);
     if (isInputValid(name, phone) && !isAlreadyAdded(name)) {
         let phoneBookEntry;
-        if (email) {
+        if (email !== undefined && email !== '') {
             phoneBookEntry = { name, phone, email };
         } else {
             phoneBookEntry = { name, phone };
@@ -149,7 +149,8 @@ exports.findAndRemove = function (query) {
     counter = entriesToRemove.length;
     for (const entry of phoneBook) {
         if (namesToRemove.includes(entry.name)) {
-            phoneBookCopy.splice(phoneBookCopy.indexOf(entry), 1);
+            // phoneBookCopy.splice(phoneBookCopy.indexOf(entry), 1);
+            delete phoneBookCopy[entry];
         }
     }
     phoneBook = phoneBookCopy;
