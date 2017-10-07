@@ -41,7 +41,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let index = findIndex(phone);
     if (index === -1 || !name || (email && !checkEmail(email))) {
-        
+
         return false;
     }
     phoneBook[index].name = name;
