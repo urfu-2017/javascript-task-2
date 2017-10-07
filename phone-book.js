@@ -19,7 +19,7 @@ var phoneBook = [];
  * @returns {boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || (email && !checkEmail(email))) {
+    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || (email && !checkEmail(email)) || exports.find(phone)[0]) {
         return false;
     }
     phoneBook.push({ phone, name });
@@ -101,7 +101,7 @@ exports.importFromCsv = function (csv) {
     let arrUsers = csv.split('\n');
     for (let user of arrUsers) {
         let userSplit = user.split(';');
-        if (exports.find(userSplit[1])) {
+        if (exports.find(userSplit[1])[0]) {
             exports.update(userSplit[1], userSplit[0], userSplit[2]);
             countUpdates++;
         } else {
