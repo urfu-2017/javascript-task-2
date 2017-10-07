@@ -87,7 +87,7 @@ exports.find = function (query) {
     records.sort((a, b) => a.name.localeCompare(b.name));
     records.forEach(value => {
         const tempResult = [value.name, formatPhone(value.phone)];
-        if (value.email !== undefined) {
+        if (value.email !== undefined && value.email !== '') {
             tempResult.push(value.email);
         }
         value.result = tempResult.join(', ');
