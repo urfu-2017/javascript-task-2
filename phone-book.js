@@ -1,6 +1,6 @@
 'use strict';
 
-const PHONE_REGEXP = new RegExp(/^\d\d\d\d\d\d\d\d\d\d$/);
+const PHONE_REGEXP = new RegExp(/^\d{10}$/);
 
 /**
  * Сделано задание на звездочку
