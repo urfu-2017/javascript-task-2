@@ -27,7 +27,6 @@ function isValidPhone(phone) {
 exports.add = function (phone, name, email) {
 
 
-
     if (isValidPhone(phone) && name) {
 
         let isPhoneExists = phoneBook.some(function (element) {
@@ -36,11 +35,12 @@ exports.add = function (phone, name, email) {
 
         if (!isPhoneExists) {
 
-            phoneBook.push( { phone, name, email } );
+            phoneBook.push({ phone, name, email });
 
             return true;
         }
     }
+
     return false;
 };
 
