@@ -56,7 +56,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     let countDelete = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
-        countDelеte += deleteUser(query, phoneBook[i], i);
+        countDelete += deleteUser(query, phoneBook[i], i);
     }
 
     return countDelete;
@@ -106,6 +106,7 @@ function checkEmail(query) {
 }
 
 function checkUser(person, query) {
+    result = [];
     for (let value of Object.values(person)) {
         if (value.indexOf(query) !== -1) {
             result.push(person.name + ', +7 (' + person.phone.slice(0, 3) + ') ' +
