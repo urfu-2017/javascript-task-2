@@ -21,7 +21,7 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     phone = formatPhoneNumber(phone);
-    if (isInputCorrect(name, phone) && !isAlreadyAdded(name) && emailIsValid(email)) {
+    if (isInputValid(name, phone, email) && !isAlreadyAdded(name)) {
         let phoneBookEntry;
         if (email !== undefined) {
             phoneBookEntry = { name, phone, email };
@@ -36,6 +36,10 @@ exports.add = function (phone, name, email) {
 
     return false;
 };
+
+function isInputValid(name, phone, email) {
+    return isInputCorrect(name, phone) && emailIsValid(email);
+}
 
 function emailIsValid(email) {
     const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
@@ -108,13 +112,15 @@ function spliceAndJoin(inputArray, from, to) {
  */
 exports.update = function (phone, name, email) {
     for (const entry of phoneBook) {
-        if (entry.name === name && email !== undefined) {
+        if (entry.name === name && email !== undefined &&
+             isInputValid(name, formatPhoneNumber(phone), email)) {
             entry.phone = formatPhoneNumber(phone);
             entry.email = email;
             sortPhoneBook();
 
             return true;
-        } else if (entry.name === name) {
+        } else if (entry.name === name &&
+            isInputValid(name, formatPhoneNumber(phone), email)) {
             entry.phone = formatPhoneNumber(phone);
             delete entry.email;
             sortPhoneBook();
@@ -157,7 +163,7 @@ exports.findAndRemove = function (query) {
 exports.find = function (query) {
     switch (query) {
         case '':
-            return null;
+            return [];
         case '*':
             return createArrayOfStrings();
         default:
@@ -200,14 +206,14 @@ exports.importFromCsv = function (csv) {
     let phonesAdded = 0;
     var entryStrings = csv.split('\n');
     for (const entryString of entryStrings) {
-        const arrayOfElements = entryString.split(';');
-        const name = arrayOfElements[0];
-        const phone = arrayOfElements[1];
-        const email = arrayOfElements[2];
-        if (!isAlreadyAdded(name)) {
+        const name = entryString.split(';')[0];
+        const phone = entryString.split(';')[1];
+        const email = entryString.split(';')[2];
+        if (isInputValid(name, formatPhoneNumber(phone), email) &&
+        !isAlreadyAdded(name)) {
             phonesAdded++;
             exports.add(phone, name, email);
-        } else if (isInputCorrect(name, phone)) {
+        } else if (isInputValid(name, formatPhoneNumber(phone), email)) {
             phonesAdded++;
             exports.update(phone, name, email);
         }
