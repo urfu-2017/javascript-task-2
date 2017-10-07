@@ -49,8 +49,9 @@ function emailIsValid(email) {
 
 function isInputCorrect(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
+    const nameIsValid = name !== undefined && name !== '' && typeof name === 'string';
 
-    return name && regex.test(phone);
+    return nameIsValid && regex.test(phone);
 }
 
 function sortPhoneBook() {
@@ -161,6 +162,9 @@ exports.findAndRemove = function (query) {
  * @returns {[]}
  */
 exports.find = function (query) {
+    if (typeof query !== 'string') {
+        return [];
+    }
     switch (query) {
         case '':
             return [];
