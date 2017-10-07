@@ -23,7 +23,7 @@ exports.add = function (phone, name, email) {
 };
 
 function tryAddRecord(phone, name, email) {
-    if (!(isValidPhone(phone) && isValidName(name)) || phoneBook.hasOwnProperty(phone)) {
+    if (!name || !isValidPhone(phone) || phoneBook.hasOwnProperty(phone)) {
         return false;
     }
     let record = {
@@ -47,10 +47,9 @@ exports.update = function (phone, name, email) {
 };
 
 function tryUpdateRecord(phone, name, email) {
-    if (!phoneBook.hasOwnProperty(phone) || !isValidName(name)) {
+    if (!phoneBook.hasOwnProperty(phone) || !name) {
         return false;
     }
-    // let updatedName = isValidName(name) ? name : phoneBook[phone].name;
     let record = {
         name,
         email
@@ -66,7 +65,7 @@ function tryUpdateRecord(phone, name, email) {
  * @returns {Int}
  */
 exports.findAndRemove = function (query) {
-    if (query === '' || query === undefined) {
+    if (!query) {
         return 0;
     }
     let removedCount = 0;
@@ -87,7 +86,7 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    if (query === '' || query === undefined) {
+    if (!query) {
         return [];
     }
     let searchResult = [];
@@ -104,7 +103,7 @@ exports.find = function (query) {
 };
 
 /**
- * Поиск записей по запросу в телефонной книге
+ * Форматирование вывода
  * @param {String} name
  * @param {String} phone
  * @param {String} email
@@ -162,10 +161,6 @@ exports.importFromCsv = function (csv) {
 
     return newRecordsCount + updatedRecordsCount;
 };
-
-function isValidName(name) {
-    return !(name === undefined || name === null) && /.+$/.test(name);
-}
 
 function isValidPhone(phone) {
     return /^([0-9]){10}$/.test(phone);
