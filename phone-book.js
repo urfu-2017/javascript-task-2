@@ -54,19 +54,20 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
 
+    if (isValidPhone(phone)) {
+        let entry = phoneBook.findIndex(function (element) {
+            return element.phone === phone;
+        });
 
-    let entry = phoneBook.findIndex(function (element) {
-        return element.phone === phone;
-    });
+        if (entry !== -1) {
+            phoneBook[entry].email = email;
+            phoneBook[entry].name = name;
 
-    if (entry !== -1) {
-        phoneBook[entry].email = email;
-        phoneBook[entry].name = name;
+            return true;
+        }
 
-        return true;
+        return false;
     }
-
-    return false;
 
 
 };
