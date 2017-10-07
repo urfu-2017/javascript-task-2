@@ -124,11 +124,8 @@ exports.importFromCsv = function (csv) {
     let data = csv.split('\n');
     for (let contact of data) {
         let info = contact.split(';');
-        if (!exports.add(info[1], info[0], info[2])) {
-            count += exports.update(info[1], info[0], info[2]);
-        } else {
-            count += 1;
-        }
+        count += exports.add(info[1], info[0], info[2]) ||
+        exports.update(info[1], info[0], info[2]);
     }
 
     return count;
