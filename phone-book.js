@@ -130,9 +130,9 @@ function filterByQuery(query) {
     }
 
     return copyPhoneBook.filter((item) => {
-        if (item.name.search(query) >= 0 ||
-            item.phone.search(query) >= 0 ||
-            item.email !== undefined && item.email.search(query) >= 0) {
+        if (item.name.indexOf(query) >= 0 ||
+            item.phone.indexOf(query) >= 0 ||
+            item.email !== undefined && item.email.indexOf(query) >= 0) {
 
             return true;
         }
@@ -163,11 +163,14 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    if (!csv) {
+        return 0;
+    }
     const records = csv.split('\n');
     let count = 0;
     for (const record of records) {
         const [name, phone, email] = record.split(';');
-        count += update(phone, name, email) || add(phone, name, email) ? 1 : 0;
+        count += add(phone, name, email) || update(phone, name, email) ? 1 : 0;
     }
 
     return count;
