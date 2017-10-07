@@ -20,7 +20,7 @@ console.info(phoneBook);
 // Обновление
 phoneBook.update('5551110011', 'Алексей', 'alex@example.com');
 phoneBook.update('5553330033', 'Валерий');
-//console.info(phoneBook.phoneBook);
+// console.info(phoneBook.phoneBook);
 // В следующих примерах вернутся все записи
 
 // console.info(phoneBook.find('*'));
