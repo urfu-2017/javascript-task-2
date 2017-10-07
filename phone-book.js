@@ -70,7 +70,7 @@ exports.findAndRemove = function (query) {
 exports.find = function (query) {
     let result = [];
     for (let person of phoneBook) {
-        checkUser(person, query);
+        checkUser(person, query, result);
     }
 
     return result;
@@ -105,8 +105,7 @@ function checkEmail(query) {
     return /[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]/i.test(query);
 }
 
-function checkUser(person, query) {
-    result = [];
+function checkUser(person, query, result) {
     for (let value of Object.values(person)) {
         if (value.indexOf(query) !== -1) {
             result.push(person.name + ', +7 (' + person.phone.slice(0, 3) + ') ' +
@@ -122,7 +121,7 @@ function deleteUser(query, person, index) {
     for (let value of person) {
         if (value.indexOf(query) !== -1) {
             phoneBook.splice(index, 1);
-            
+
             return 1;
         }
     }
