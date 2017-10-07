@@ -19,7 +19,8 @@ var phoneBook = [];
  * @returns {boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || (email && !checkEmail(email)) || exports.find(phone)[0]) {
+    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || (email &&
+        !checkEmail(email)) || exports.find(phone)[0]) {
         return false;
     }
     phoneBook.push({ phone, name });
@@ -38,13 +39,7 @@ exports.add = function (phone, name, email) {
  * @returns {boolean}
  */
 exports.update = function (phone, name, email) {
-    let index = -1;
-    for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
-            let index = i;
-            break;
-        }
-    }
+    let index = findIndex(phone);
     if (index === -1 || !name || (email && !checkEmail(email))) {
         
         return false;
@@ -138,4 +133,15 @@ function deleteUser(query, person, index) {
     }
 
     return 0;
+}
+
+function findIndex(phone) {
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+
+            return i;
+        }
+    }
+
+    return -1;
 }
