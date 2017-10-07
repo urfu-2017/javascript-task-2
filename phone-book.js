@@ -46,17 +46,14 @@ function update(phone, name, email) {
     if (name === null || name === undefined || name.length === 0) {
         return false;
     }
-    if (phoneBook.some((record, index) => {
+    for (let index = 0; index < phoneBook.length; index++) {
+        let record = phoneBook[index];
         if (record.phone === phone) {
             phoneBook[index].name = name;
             phoneBook[index].email = email;
 
             return true;
         }
-
-        return false;
-    })) {
-        return true;
     }
 
     return false;
@@ -70,12 +67,28 @@ function update(phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let records = filterByQuery(query);
-    for (let key of records.keys()) {
-        phoneBook.splice(key, 1);
+    for (let { index } of records) {
+        delete phoneBook[index];
     }
+    clearArray(phoneBook);
 
     return records.length;
 };
+
+/**
+ * Удаляет элементы в массиве array со значением undefined 
+ * @param {Array} array 
+ */
+function clearArray(array) {
+    let index = 0;
+    while (index < array.length) {
+        if (!array[index]) {
+            array.splice(index, 1);
+            continue;
+        }
+        index++;
+    }
+}
 
 /**
  * Поиск записей по запросу в телефонной книге
@@ -92,13 +105,15 @@ exports.find = function (query) {
         }
         value.result = tempResult.join(', ');
     });
-    let results = records.map(record => record.result);
+    const results = records.map(record => record.result);
 
     return results;
 };
 
 /**
- * 
+ * Возвращает массив записей, отфильтрованных по строке query, 
+ * добавляя к элементам массива поле index, 
+ * принимающее значение равное индексу в phoneBook
  * @param {String} query 
  * @returns {Array}
  */
@@ -106,14 +121,19 @@ function filterByQuery(query) {
     if (query === '') {
         return [];
     }
+    let copyPhoneBook = phoneBook.slice(0);
+    copyPhoneBook.forEach((record, index) => {
+        record.index = index;
+    });
     if (query === '*') {
-        return phoneBook.slice(0);
+        return copyPhoneBook;
     }
 
-    return phoneBook.filter((item) => {
+    return copyPhoneBook.filter((item) => {
         if (item.name.search(query) >= 0 ||
             item.phone.search(query) >= 0 ||
             item.email !== undefined && item.email.search(query) >= 0) {
+
             return true;
         }
 
