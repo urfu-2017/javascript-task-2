@@ -111,7 +111,7 @@ exports.find = function (query) {
  */
 function formatOutput(name, phone, email) {
     let baseOutput = `${name}, ${formatNumber(phone)}`;
-    let formattedOutput = email ? baseOutput : baseOutput + `, ${email}`;
+    let formattedOutput = email ? baseOutput + `, ${email}` : baseOutput;
 
     return formattedOutput;
 }
