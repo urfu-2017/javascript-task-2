@@ -16,14 +16,15 @@ var phoneBook;
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || !checkEmail(email) ) {
+    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || !checkEmail(email)) {
         return false;
     }
-    phoneBook.push({phone,name});
+    phoneBook.push({ phone, name });
     if (email) {
-        phoneBook[length-1].email = email;
+        phoneBook[phoneBook.length - 1].email = email;
     }
 };
 
@@ -32,15 +33,16 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {boolean}
  */
 exports.update = function (phone, name, email) {
-    let index = find(Object.values(phoneBook), phone);
+    let index = Object.values(phoneBook).indexOf(phone);
     if (index === -1 || !name || (email && !checkEmail(email))) {
         return false;
     }
     phoneBook[index].name = name;
     if (email) {
-        phoneBook[inde].email = email;
+        phoneBook[index].email = email;
     } else {
         delete phoneBook[index].email;
     }
@@ -49,41 +51,28 @@ exports.update = function (phone, name, email) {
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {Number}
  */
 exports.findAndRemove = function (query) {
     let countDelete = 0;
-    for (var i = phoneBook.length - 1; i >= 0 ; i--) {
-        for (let value of phoneBook[i]) {
-            if (value.indexOf(query) !== -1) {
-                phoneBook.splice(i, 1);
-                countDelet++;
-                break;
-            }
-        }
+    for (var i = phoneBook.length - 1; i >= 0; i--) {
+        countDelte += deleteUser(query, phoneBook[i], i);
     }
+
     return countDelete;
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array}
  */
 exports.find = function (query) {
-    let resuslt = [];
+    let result = [];
     for (let person of phoneBook) {
-        result.push('');
-        for (let value of Object.values(person)) {
-            if (value.indexOf(query) !== -1) {
-                result.push(person.name + ', +7 (' + person.phone.slice(0, 3) + ') ' +
-                person.phone.slice(3, 6) + '-' + person.phone.slice(6, 8) + '-' +
-                person.phone.slice(8));
-                if (person.email) {
-                    result[result.length - 1] += ', ' + person.email;
-                }
-                break;
-            }
-        }
+        checkUser(person);
     }
+
     return result;
 };
 
@@ -98,19 +87,44 @@ exports.importFromCsv = function (csv) {
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
     let countUpdates = 0;
-    let arrUsers = csv. split('\n');
+    let arrUsers = csv.split('\n');
     for (let user of arrUsers) {
         let userSplit = user.split(';');
-        if(find(userSplit[1])) {
-            update(userSplit[1], userSplit[0], userSplit[2]);
+        if (exports.find(userSplit[1])) {
+            exports.update(userSplit[1], userSplit[0], userSplit[2]);
             countUpdates++;
         } else {
-            add(userSplit[1], userSplit[0], userSplit[2])
+            exports.add(userSplit[1], userSplit[0], userSplit[2]);
         }
     }
+
     return countUpdates;
 };
 
 function checkEmail(query) {
     return /[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]/i.test(query);
+}
+
+function checkUser(query) {
+    for (let value of Object.values(query)) {
+        if (value.indexOf(query) !== -1) {
+            result.push(person.name + ', +7 (' + person.phone.slice(0, 3) + ') ' +
+            person.phone.slice(3, 6) + '-' + person.phone.slice(6, 8) + '-' +
+            person.phone.slice(8) + (person.email ? ', ' + person.email : ''));
+
+            return;
+        }
+    }
+}
+
+function deleteUser(query, person, index) {
+    for (let value of person) {
+        if (value.indexOf(query) !== -1) {
+            phoneBook.splice(index, 1);
+            
+            return 1;
+        }
+    }
+    
+    return 0;
 }
