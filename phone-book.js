@@ -21,7 +21,6 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     phone = formatPhoneNumber(phone);
-    isAlreadyAdded(name);
     if (isInputCorrect(name, phone) && !isAlreadyAdded(name) && emailIsValid(email)) {
         let phoneBookEntry;
         if (email !== undefined) {
@@ -203,10 +202,11 @@ exports.importFromCsv = function (csv) {
     for (const entryString of entryStrings) {
         const arrayOfElements = entryString.split(';');
         const name = arrayOfElements[0];
-        const phone = formatPhoneNumber(arrayOfElements[1]);
+        const phone = arrayOfElements[1];
         const email = arrayOfElements[2];
-        if (exports.add(phone, name, email)) {
+        if (!isAlreadyAdded(name)) {
             phonesAdded++;
+            exports.add(phone, name, email);
         } else if (isInputCorrect(name, phone)) {
             phonesAdded++;
             exports.update(phone, name, email);
