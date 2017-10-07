@@ -49,7 +49,7 @@ function emailIsValid(email) {
 
 function isInputCorrect(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
-    const nameIsValid = name !== undefined && name !== '' && typeof name === 'string';
+    const nameIsValid = name && typeof name === 'string';
 
     return nameIsValid && regex.test(phone);
 }
@@ -142,12 +142,12 @@ exports.findAndRemove = function (query) {
     let counter = 0;
     sortPhoneBook();
     const phoneBookCopy = phoneBook.slice();
+    const entriesToRemove = exports.find(query);
+    const namesToRemove = getNames(entriesToRemove);
+    counter = entriesToRemove.length;
     for (const entry of phoneBook) {
-        if (entry.name.indexOf(query) !== -1 ||
-        entry.phone.indexOf(query) !== -1 ||
-        (entry.email !== undefined && entry.email.indexOf(query) !== -1)) {
+        if (namesToRemove.includes(entry.name)) {
             phoneBookCopy.splice(phoneBookCopy.indexOf(entry), 1);
-            counter++;
         }
     }
     phoneBook = phoneBookCopy;
@@ -155,6 +155,15 @@ exports.findAndRemove = function (query) {
 
     return counter;
 };
+
+function getNames(entries) {
+    const names = [];
+    for (const entry of entries) {
+        names.push(entry.split(', ')[0]);
+    }
+
+    return names;
+}
 
 /**
  * Поиск записей по запросу в телефонной книге
@@ -180,7 +189,7 @@ function makeArrayOfSuitableStrings(query) {
     for (const entry of phoneBook) {
         if (entry.name.indexOf(query) !== -1 ||
         entry.phone.indexOf(query) !== -1 ||
-        entry.email.indexOf(query) !== -1) {
+        (entry.email && entry.email.indexOf(query) !== -1)) {
             arrayToReturn.push(Object.values(entry).join(', '));
         }
     }
