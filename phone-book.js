@@ -1,6 +1,6 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 
 var phoneBook = {};
 
@@ -25,7 +25,7 @@ function checkPhone(phone) {
 }
 
 function checkName(name) {
-    if (name === '' || name === undefined) {
+    if (name === '' || name === undefined || typeof name !== 'string') {
         return false;
     }
 
@@ -43,6 +43,9 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
+    if (query === '') {
+        return 0;
+    }
     let arrayOfRecords = findRecords(query);
     for (let record of arrayOfRecords) {
         delete phoneBook[record[1]];
@@ -54,7 +57,7 @@ exports.findAndRemove = function (query) {
 exports.find = function (query) {
     let result = [];
     if (query === '') {
-        return result;
+        return null;
     } else if (query === '*') {
         result = findRecords('');
     } else {
