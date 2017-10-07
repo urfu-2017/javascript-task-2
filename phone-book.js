@@ -19,13 +19,15 @@ var phoneBook = [];
  * @returns {boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || !checkEmail(email)) {
+    if (!/[0-9]{10}/.test(phone) && phone.length !== 10 || !name || (email && !checkEmail(email))) {
         return false;
     }
     phoneBook.push({ phone, name });
     if (email) {
         phoneBook[phoneBook.length - 1].email = email;
     }
+
+    return true;
 };
 
 /**
@@ -36,7 +38,12 @@ exports.add = function (phone, name, email) {
  * @returns {boolean}
  */
 exports.update = function (phone, name, email) {
-    let index = Object.values(phoneBook).indexOf(phone);
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+            let index = i;
+            break;
+        }
+    }
     if (index === -1 || !name || (email && !checkEmail(email))) {
         
         return false;
