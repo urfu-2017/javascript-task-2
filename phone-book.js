@@ -45,6 +45,8 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     if (query === '') {
         return 0;
+    } else if (query === '*') {
+        query = '';
     }
     let arrayOfRecords = findRecords(query);
     for (let record of arrayOfRecords) {
