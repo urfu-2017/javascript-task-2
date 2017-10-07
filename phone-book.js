@@ -38,6 +38,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let index = Object.values(phoneBook).indexOf(phone);
     if (index === -1 || !name || (email && !checkEmail(email))) {
+        
         return false;
     }
     phoneBook[index].name = name;
@@ -46,6 +47,8 @@ exports.update = function (phone, name, email) {
     } else {
         delete phoneBook[index].email;
     }
+
+    return true;
 };
 
 /**
@@ -118,7 +121,7 @@ function checkUser(person, query, result) {
 }
 
 function deleteUser(query, person, index) {
-    for (let value of person) {
+    for (let value of Object.values(person)) {
         if (value.indexOf(query) !== -1) {
             phoneBook.splice(index, 1);
 
