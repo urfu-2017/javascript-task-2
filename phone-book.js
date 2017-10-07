@@ -131,7 +131,7 @@ function findContacts(query) {
     for (const { name, phone, email } of phoneBook) {
         let n = name.indexOf(String(query));
         let p = phone.indexOf(String(query));
-        let e;
+        let e = -1;
         if (email) {
             e = email.indexOf(String(query));
         }
