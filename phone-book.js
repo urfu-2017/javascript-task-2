@@ -21,7 +21,7 @@ var phoneRegex = /^\d{10}$/;
  */
 exports.add = function (phone, name, email) {
     if (phoneRegex.test(phone) && name && !phoneBook.hasOwnProperty(phone)) {
-        phoneBook[phone] = { name, email };
+        phoneBook[phone] = [name, email];
 
         return true;
     }
@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     if (phoneRegex.test(phone) && name && phoneBook.hasOwnProperty(phone)) {
-        phoneBook[phone] = { name, email };
+        phoneBook[phone] = [name, email];
 
         return true;
     }
@@ -53,25 +53,32 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let removeCounter = 0;
+    // if (query) {
+    //     if (query === '*') {
+    //         Object.keys(phoneBook).forEach(property => {
+    //             delete phoneBook[property];
+    //             removeCounter++;
+    //         });
+    //     }
+    //     Object.keys(phoneBook).forEach(phone => {
+    //         const entry = phoneBook[phone];
+    //         if (phone.includes(query)) {
+    //             delete phoneBook[phone];
+    //             removeCounter++;
+    //         }
+    //         Object.keys(entry).forEach(property => {
+    //             if (entry[property] && entry[property].includes(query)) {
+    //                 delete phoneBook[phone];
+    //                 removeCounter++;
+    //             }
+    //         });
+    //     });
+    // }
     if (query) {
-        if (query === '*') {
-            Object.keys(phoneBook).forEach(property => {
-                delete phoneBook[property];
-                removeCounter++;
-            });
-        }
-        Object.keys(phoneBook).forEach(phone => {
-            const entry = phoneBook[phone];
-            if (phone.includes(query)) {
-                delete phoneBook[phone];
-                removeCounter++;
-            }
-            Object.keys(entry).forEach(property => {
-                if (entry[property] && entry[property].includes(query)) {
-                    delete phoneBook[phone];
-                    removeCounter++;
-                }
-            });
+        findEntries(query).forEach(entry => {
+            let [, phone] = entry;
+            delete phoneBook[phone];
+            removeCounter++;
         });
     }
 
@@ -85,51 +92,61 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     if (query) {
-        let unsortedResultList = [];
-        if (query === '*') {
-            unsortedResultList = listWholeBook();
-        } else {
-            Object.keys(phoneBook).forEach(phone => {
-                const entry = phoneBook[phone];
-                if (phone.includes(query)) {
-                    unsortedResultList.push([entry.name, phoneFormat(phone), entry.email]
-                        .filter(val => val)
-                        .join(', '));
-                }
-                Object.keys(entry).forEach(property => {
-                    if (entry[property] && entry[property].includes(query)) {
-                        unsortedResultList.push([entry.name, phoneFormat(phone), entry.email]
-                            .filter(val => val)
-                            .join(', '));
-                    }
-                });
+        // let unsortedResultList = [];
+        // if (query === '*') {
+        //     unsortedResultList = listWholeBook();
+        // } else {
+        //     Object.keys(phoneBook).forEach(phone => {
+        //         const entry = phoneBook[phone];
+        //         if (phone.includes(query)) {
+        //             unsortedResultList.push([entry.name, phoneFormat(phone), entry.email]
+        //                 .filter(val => val)
+        //                 .join(', '));
+        //         }
+        //         Object.keys(entry).forEach(property => {
+        //             if (entry[property] && entry[property].includes(query)) {
+        //                 unsortedResultList.push([entry.name, phoneFormat(phone), entry.email]
+        //                     .filter(val => val)
+        //                     .join(', '));
+        //             }
+        //         });
+        //     });
+        // }
+
+        // return unsortedResultList.sort((a, b) => {
+        //     if (a < b) {
+        //         return -1;
+        //     }
+        //     if (a > b) {
+        //         return 1;
+        //     }
+        //
+        //     return 0;
+        // });
+        //
+        return findEntries(query).sort()
+            .map(entry => {
+                entry[1] = phoneFormat(entry[1]);
+
+                return entry.join(', ');
             });
-        }
-
-        return unsortedResultList.sort((a, b) => {
-            if (a < b) {
-                return -1;
-            }
-            if (a > b) {
-                return 1;
-            }
-
-            return 0;
-        });
     }
 };
 
-function listWholeBook() {
-    let unsortedResult = [];
-    Object.keys(phoneBook).forEach((phone) => {
-        const entry = phoneBook[phone];
-        unsortedResult.push([entry.name, phoneFormat(phone), entry.email]
-            .filter(val => val)
-            .join(', '));
+function findEntries(query) {
+    let entries = [];
+    Object.keys(phoneBook).forEach(function (phone) {
+        const [name, email] = phoneBook[phone];
+        const entry = [name, phone, email];
+        if (entry.join(';').includes(query) || query === '*') {
+            entries.push(entry.filter(property => property));
+        }
+
     });
 
-    return unsortedResult;
+    return entries;
 }
+
 
 function phoneFormat(phone) {
 
