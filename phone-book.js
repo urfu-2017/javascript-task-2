@@ -44,32 +44,19 @@ function firstCheck(phone, name, email, flag) {
 
 function addOrUpdate(phone, name, email, flag) {
     var number = findAccount(phone);
-    switch(flag) {
-        case 'add':
-            if (number !== -1) {
-                return false;
-            }
-            addAccount(phone, name, email);
-            return true;
-        break;
-        case 'update':
-            if (number === -1) {
-                return false;
-            }
-            updateAccount(phone, name, email, number);
-            return true;
-        break;
-        case 'csv':
-            if (number === -1) {
-                addAccount(phone, name, email);
-            } else {
-                updateAccount(phone, name, email, number);
-            }
-            return true;
-        break;
+    if (number === -1) {
+        if (flag === 'update') {
+            return false;
+        }
+        addAccount(phone, name, email);
+        return true;
     }
+    if (flag === 'add') {
+        return false;
+    }
+    updateAccount(phone, name, email, number);
 
-    return false;
+    return true;
 }
 
 function addAccount(phone, name, email) {
@@ -260,7 +247,7 @@ exports.importFromCsv = function (csv) {
     var count = 0;
     for (var i = 0; i < csvData.length; i++) {
         var splitStr = csvData[i].split(';');
-        if (firstCheck(splitStr[1], splitStr[0], splitStr[2], 'csv')){
+        if (firstCheck(splitStr[1], splitStr[0], splitStr[2], 'csv')) {
             count++;
         }
     }
