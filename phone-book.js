@@ -28,8 +28,9 @@ function compare(first, second) {
 
 function isValidInput(name, phone, email) {
     const regex = /^\d{10}$/;
+    const nameIsCorrect = typeof name === 'string' && name !== '';
 
-    return name && regex.test(phone) && email !== '';
+    return nameIsCorrect && regex.test(phone) && email !== '' && typeof phone === 'string';
 }
 
 function isAlreadyAdded(phone) {
