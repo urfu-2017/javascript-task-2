@@ -49,6 +49,7 @@ function addOrUpdate(phone, name, email, flag) {
             return false;
         }
         addAccount(phone, name, email);
+
         return true;
     }
     if (flag === 'add') {
