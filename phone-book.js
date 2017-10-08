@@ -218,7 +218,10 @@ exports.importFromCsv = function (csv) {
         if (b1) {
             total++;
         }*/
-        if (exports.add (note[1], note[0], note[2]) || exports.update (note[1], note[0], note[2])) {
+        // console.log(note[1], note[0], note[2]);
+        if (phoneExist(note[1]) && exports.update (note[1], note[0], note[2])) {
+            total++;
+        } else if (exports.add (note[1], note[0], note[2])) {
             total++;
         }
     }
