@@ -37,7 +37,7 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} result of update
  */
 exports.update = function (phone, name, email) {
-    if (phoneRegex.test(phone) && name) {
+    if (phoneRegex.test(phone) && name && phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -154,8 +154,8 @@ exports.importFromCsv = function (csv) {
     let entryCounter = 0;
     if (csv) {
         csv.split('\n').forEach(entry => {
-            let args = entry.split(';');
-            if (this.add(args[1], args[0], args[2]) || this.update(args[1], args[0], args[2])) {
+            let [name, phone, email] = entry.split(';');
+            if (this.add(phone, name, email) || this.update(phone, name, email)) {
                 entryCounter++;
             }
         });
