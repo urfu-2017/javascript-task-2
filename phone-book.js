@@ -188,7 +188,8 @@ exports.find = function (query) {
             foundResults = phoneBook;
             break;
         case '':
-            break;
+
+            return foundResults;
         default:
             foundResults = pusher(foundResults, query);
     }
