@@ -13,9 +13,6 @@ var phoneBook = [];
 
 exports.add = function (phone, name, email) {
 
-    if (email === undefined) {
-        email = ' ';
-    }
     if (checkPhone(phone) || checkName(name) || checkEm(email)) {
         return false;
     }
@@ -50,7 +47,9 @@ function checkPhone(phone) {
 }
 
 function checkEm(email) {
-
+    if (email === undefined) {
+        return false;
+    }
     if (email === null || email === '' || typeof(email) !== 'string') {
         return true;
     }
@@ -64,7 +63,7 @@ function checkData(phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
         var nameInBook = phoneBook[i].name;
         var phoneInBook = String(phoneBook[i].phone);
-        var emailInBook = phoneBook[i].email;
+        var emailInBook = String(phoneBook[i].email);
         if (nameInBook.indexOf(name) >= 0 || phoneInBook.indexOf(String(phone)) >= 0 ||
         emailInBook.indexOf(email) >= 0) {
             check = false;
@@ -84,7 +83,6 @@ function checkData(phone, name, email) {
 */
 exports.update = function (phone, name, email) {
 
-    email = cE(email);
     if (checkPhone(phone) || checkName(name) || checkEm(email)) {
         return false;
     }
@@ -103,14 +101,6 @@ exports.update = function (phone, name, email) {
 
 };
 
-function cE(email) {
-    if (email === undefined) {
-        email = ' ';
-    }
-
-    return email;
-}
-
 exports.findAndRemove = function (query) {
     var count = 0;
     if (checkQ(query)) {
@@ -122,7 +112,7 @@ exports.findAndRemove = function (query) {
     for (var i = 0; i < phoneBook.length; i++) {
         var nameInBook = phoneBook[i].name;
         var phoneInBook = String(phoneBook[i].phone);
-        var emailInBook = phoneBook[i].email;
+        var emailInBook = String(phoneBook[i].email);
         if (ckeckOnExistance(nameInBook, phoneInBook, emailInBook, query)) {
             phoneBook.splice(i, 1);
             i--;
@@ -166,7 +156,7 @@ function ckeckOnExistance(name, phone, email, query) {
 }
 
 function checkEmail(email) {
-    if (email === ' ') {
+    if (email === undefined) {
         email = '';
     } else {
         email = ', ' + email;
