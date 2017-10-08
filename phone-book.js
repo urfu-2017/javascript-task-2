@@ -65,13 +65,23 @@ exports.findAndRemove = function (query) {
     const phonesToRemove = getPhones(exports.find(query));
     for (const entry of phoneBook) {
         if (phonesToRemove.includes(entry.phone)) {
-            delete phoneBookCopy[entry];
+            phoneBookCopy.splice(getIndex(entry), 1);
         }
     }
     phoneBook = phoneBookCopy;
 
     return phonesToRemove.length;
 };
+
+function getIndex(entry) {
+    for (let i; i < phoneBook.length; i++) {
+        if (phoneBook[i] === entry) {
+            return i;
+        }
+    }
+
+    return null;
+}
 
 function getPhones(entries) {
     const phones = [];
