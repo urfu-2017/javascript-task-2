@@ -35,8 +35,8 @@ function isNoteCorrect(phone, name, email) {
     let reg = /^(\d){10}$/;
 
     return typeof phone === 'string' && phone.match(reg) !== null &&
-    typeof name === 'string' && name !== '' &&
-    ((typeof email === 'string' && email !== '') || email === undefined);
+        typeof name === 'string' && name !== '' &&
+        ((typeof email === 'string' && email !== '') || email === undefined);
 }
 
 function isNoteInPhoneBook(phone) {
@@ -58,11 +58,10 @@ function isNoteInPhoneBook(phone) {
  * @returns {Bool}
  */
 exports.update = function (phone, name, email) {
-    let contact = { phone: phone, name: name, email: email };
     for (let note of phoneBook) {
-        if (contact.phone === note.phone && isNoteCorrect(phone, name, email)) {
-            note.name = contact.name;
-            note.email = contact.email;
+        if (phone === note.phone && isNoteCorrect(phone, name, email)) {
+            note.name = name;
+            note.email = email;
 
             return true;
         }
@@ -78,7 +77,24 @@ exports.update = function (phone, name, email) {
 */
 exports.findAndRemove = function (query) {
     let countOfDeleted = 0;
+    if (typeof (query) !== 'string' || query === '') {
+
+        return 0;
+    }
+    if (query === '*') {
+        countOfDeleted = phoneBook.length;
+        phoneBook = [];
+
+        return countOfDeleted;
+    }
+    countOfDeleted = del(query);
+
+    return countOfDeleted;
+};
+
+function del(query) {
     let phoneBookClone = phoneBook.slice();
+    let countOfDeleted = 0;
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone !== undefined && phoneBook[i].phone.indexOf(query) !== -1 ||
             phoneBook[i].name !== undefined && phoneBook[i].name.indexOf(query) !== -1 ||
@@ -87,23 +103,7 @@ exports.findAndRemove = function (query) {
             ++countOfDeleted;
         }
     }
-    countOfDeleted = lalala(query, countOfDeleted);
     phoneBook = phoneBookClone;
-
-    return countOfDeleted;
-};
-
-function lalala(query, countOfDeleted) {
-    if (typeof (query) !== 'string' || query === '') {
-
-        return 0;
-    }
-    if (query === '*') {
-        countOfDeleted = phoneBook.length;
-        phoneBook.splice(0, phoneBook.length);
-
-        return countOfDeleted;
-    }
 
     return countOfDeleted;
 }
@@ -115,14 +115,15 @@ function lalala(query, countOfDeleted) {
  */
 exports.find = function (query) {
     let notes = [];
-    for (let note of phoneBook) {
-        if (note.phone !== undefined && note.phone.indexOf(query) !== -1 ||
-            note.name !== undefined && note.name.indexOf(query) !== -1 ||
-            note.email !== undefined && note.email.indexOf(query) !== -1) {
-            notes.push(note);
-        }
+    if (typeof (query) !== 'string' || query === '') {
+
+        return [];
     }
-    notes = lala(query, notes);
+    if (query === '*') {
+        notes = phoneBook;
+    } else {
+        notes = getNotes(query);
+    }
     if (notes !== [] && notes !== undefined) {
         sorting(notes);
     }
@@ -131,13 +132,14 @@ exports.find = function (query) {
     return arrayNotes;
 };
 
-function lala(query, notes) {
-    if (typeof (query) !== 'string' || query === '') {
-
-        return [];
-    }
-    if (query === '*') {
-        return phoneBook;
+function getNotes(query) {
+    let notes = [];
+    for (let note of phoneBook) {
+        if (note.phone !== undefined && note.phone.indexOf(query) !== -1 ||
+            note.name !== undefined && note.name.indexOf(query) !== -1 ||
+            note.email !== undefined && note.email.indexOf(query) !== -1) {
+            notes.push(note);
+        }
     }
 
     return notes;
