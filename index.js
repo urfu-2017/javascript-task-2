@@ -6,7 +6,7 @@ var phoneBook = require('./phone-book');
 phoneBook.add('5554440044', 'Григорий', 'grisha@example.com');
 phoneBook.add('5552220022', 'Борис', 'boris@example.com');
 phoneBook.add('5551110011', 'Алексей');
-phoneBook.add('5553330033', 'Валерий', 'valera@example.com');
+phoneBook.add('5552220022', 'Валерий', 'valera@example.com');
 
 // Эти запись не добавятся
 phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com');
