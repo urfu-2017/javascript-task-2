@@ -18,6 +18,7 @@ function phoneExist(phone) {
         b1 = (phoneBook[i].p === phone);
         ++i;
     }
+    //  console.log('PHONEEXIST', phone, b1);
 
     return b1;
 }
@@ -58,16 +59,11 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let i = 0;
     var b1 = false;
-    if (phoneExist(phone)) {
-        while (i < phoneBook.length && phoneBook[i].p !== phone) {
-            //                                      console.log('update', phoneBook[i].p, phone, i);
-            ++i;
-        }
-    } else {
-        b1 = false;
+    while (i < phoneBook.length && phoneBook[i].p !== phone) {
+        //                                      console.log('update', phoneBook[i].p, phone, i);
+        ++i;
     }
-
-    if (i !== phoneBook.length && name) {
+    if (i !== phoneBook.length && name && phoneExist(phone)) {
         phoneBook[i].n = name;
         if (email) {
             phoneBook[i].m = email;
@@ -115,8 +111,8 @@ exports.findAndRemove = function (query) {
     } else {
         count = deleter(query);
     }
-    //  console.log(phoneBook, 'f&r');
-    //        console.log(count);
+    //          console.log(phoneBook, 'f&r');
+    //          console.log(count);
 
     return count;
 };
