@@ -83,20 +83,19 @@ function checkData(phone, name, email) {
  * @param {String} email
 */
 exports.update = function (phone, name, email) {
-    if (email === undefined) {
-        email = ' ';
+
+    email = cE(email);
+    if (checkPhone(phone) || checkName(name) || checkEm(email)) {
+        return false;
     }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0 && name !== undefined) {
+        if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0) {
 
             phoneBook[i].name = name;
             phoneBook[i].phone = phone;
             phoneBook[i].email = email;
 
             return true;
-        } else if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0 && name === undefined) {
-            phoneBook[i].phone = phone;
-            phoneBook[i].email = email;
         }
     }
 
@@ -104,6 +103,13 @@ exports.update = function (phone, name, email) {
 
 };
 
+function cE(email) {
+    if (email === undefined) {
+        email = ' ';
+    }
+
+    return email;
+}
 
 exports.findAndRemove = function (query) {
     var count = 0;
@@ -170,7 +176,7 @@ function checkEmail(email) {
 }
 
 function checkQ(query) {
-    if (query === '' || query === undefined || query === null) {
+    if (query === '' || query === undefined || query === null || typeof(query) !== 'string') {
         return true;
     }
 
