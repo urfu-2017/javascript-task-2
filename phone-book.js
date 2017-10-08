@@ -1,5 +1,5 @@
 'use strict';
-exports.isStar = false;
+exports.isStar = true;
 var phoneBook = [];
 
 function isDataValid(phone, name) {
@@ -108,5 +108,14 @@ function getCorrectEmail(email) {
 }
 
 exports.importFromCsv = function (csv) {
-    return csv.split('\n').length;
+    let strings = csv.split('\n');
+    let count = 0;
+    for (var i = 0; i < strings.length; i++) {
+        const [name, phone, email] = strings[i].split(';');
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
+            count++;
+        }
+    }
+
+    return count;
 };
