@@ -31,7 +31,7 @@ function phoneExist(phone) {
  */
 exports.add = function (phone, name, email) {
     var b1 = false;
-    if (phone.length !== 10 || !name || phoneExist(phone) || name.length === '0') {
+    if (phone.length !== 10 || !name || phoneExist(phone) || name.length === 0) {
         b1 = false;
     } else {
         var newRecord = {
@@ -106,10 +106,7 @@ function deleter(query) {
  */
 exports.findAndRemove = function (query) {
     var count = 0;
-    if (typeof(query) !== 'string') {
-        String(query);
-    }
-    if (query === '') {
+    if (typeof(query) !== 'string' || query === '') {
         count = 0;
     } else if (query === '*') {
         count = phoneBook.length;
