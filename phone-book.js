@@ -66,7 +66,7 @@ exports.update = function (phone, name, email) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
-    if (i !== phoneBook.length && name) {
+    if (i !== phoneBook.length) {
         phoneBook[i].n = name;
         if (email) {
             phoneBook[i].m = email;
@@ -180,7 +180,15 @@ function joiner(foundResults, res) {
  */
 exports.find = function (query) {
     var foundResults = [];
-    if (typeof(query) !== 'string') {
+    if (typeof(query) !== 'string' || query === '') {
+        return foundResults;
+    } else if (query === '*') {
+        foundResults = phoneBook;
+    } else {
+        foundResults = pusher(foundResults, query);
+    }
+
+    /* if (typeof(query) !== 'string') {
         return foundResults;
     }
     switch (query) {
@@ -192,7 +200,7 @@ exports.find = function (query) {
             return foundResults;
         default:
             foundResults = pusher(foundResults, query);
-    }
+    }*/
 
     var res = [];
     //  console.log(foundResults.length);
