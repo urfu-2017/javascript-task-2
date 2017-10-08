@@ -106,7 +106,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function checkEmail(query) {
-    return /^[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]$/i.test(query);
+    return /^[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]+$/i.test(query);
 }
 
 function checkUser(person, query, result) {
