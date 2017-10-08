@@ -8,7 +8,9 @@ const format = phone => '+7 (' + phone.substring(0, 3) + ') ' +
 const BOOK = {
     data: new Map(),
     validate: (entry, accept) => {
-        return accept(entry.phone.match(/\d/g).length === 10 && entry.name !== undefined);
+        return accept(
+            /^\d{10}$/.test(entry.phone) && typeof(entry.name) === 'string' && Boolean(entry.name)
+        );
     },
     put: (entry, update) => BOOK.validate(entry, (isValid) => {
         let hasPhone = BOOK.data.has(entry.phone);
