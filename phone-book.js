@@ -20,9 +20,8 @@ var phoneBook = {};
  */
 exports.add = function (phone, name, email) {
     phone = String(phone);
-    name = String(name);
     if (phone.length !== 10 || !phone.match(/(\d)\1\1(\d)\2\2(\d)\3(\d)\4/) ||
-        name.match(/[^а-яА-Я]/) || !name || phoneBook[phone]) {
+        !name || typeof name !== 'string' || phoneBook[phone]) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -39,8 +38,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
-    name = String(name);
-    if (phoneBook[phone] && typeof name === 'string' && name && !name.match(/[^а-яА-Я]/)) {
+    if (phoneBook[phone] && name && typeof name === 'string') {
         phoneBook[phone] = { name, email };
 
         return true;
