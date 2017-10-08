@@ -150,11 +150,11 @@ function pusher(arr, query) {
     return arr;
 }
 
-function querystr(query) {
+/*  function querystr(query) {
     var boool = (typeof(query) === 'string');
 
     return boool;
-}
+}*/
 
 function joiner(foundResults, res) {
     for (let i = 0; i < foundResults.length; i += 1) {
@@ -180,7 +180,7 @@ function joiner(foundResults, res) {
  */
 exports.find = function (query) {
     var foundResults = [];
-    var b1 = querystr(query);
+    //  var b1 = querystr(query);
     switch (query) {
         case '*':
             foundResults = phoneBook;
@@ -192,10 +192,11 @@ exports.find = function (query) {
     }
 
     var res = [];
-    if (!b1) {
+
+    /* if (!b1) {
 
         return res;
-    }
+    }*/
     //  console.log(foundResults.length);
     res = joiner(foundResults, res);
     //                                          console.log(phoneBook, 'find');
