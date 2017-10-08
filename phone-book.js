@@ -24,17 +24,27 @@ exports.add = function (phone, name, email) {
     if (isNoteInPhoneBook(contact)) {
         return false;
     }
-    if (typeof contact.phone === 'string' && contact.phone.match(reg) === null ||
-        typeof contact.phone !== 'string' ||
-        typeof contact.name !== 'string' || contact.name === '') {
-        return false;
+    if (isDataCorrect(contact.phone) && isDataCorrect(contact.name) &&
+        contact.email !== '' && contact.phone.match(reg) !== null) {
+        phoneBook.push(contact);
+
+        return true;
 
     }
-    phoneBook.push(contact);
+
+    return false;
+
+};
+
+function isDataCorrect(str) {
+    if (typeof(str) !== 'string' || str === '') {
+
+        return false;
+    }
 
     return true;
 
-};
+}
 
 function isNoteInPhoneBook(contact) {
     for (let note of phoneBook) {
@@ -55,9 +65,13 @@ function isNoteInPhoneBook(contact) {
  * @returns {Bool}
  */
 exports.update = function (phone, name, email) {
+    if (!isDataCorrect(name) || !isDataCorrect(phone)) {
+
+        return false;
+    }
     let contact = { phone: phone, name: name, email: email };
     for (let note of phoneBook) {
-        if (contact.phone === note.phone && contact.name !== null) {
+        if (contact.phone === note.phone) {
             note.name = contact.name;
             note.email = contact.email;
 
@@ -188,3 +202,4 @@ function getCountOfAddOrUpdate(csvToArr) {
 
     return countOfAddOrUpdate;
 }
+
