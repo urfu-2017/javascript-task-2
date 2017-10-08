@@ -87,17 +87,18 @@ function spliceAndJoin(inputArray, from, to) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    phone = formatPhoneNumber(phone);
     for (const entry of phoneBook) {
-        if (entry.name === name && email !== undefined &&
-             isInputValid(name, formatPhoneNumber(phone))) {
-            entry.phone = formatPhoneNumber(phone);
+        if (entry.phone === phone && email !== undefined &&
+             isInputValid(name, phone)) {
+            entry.name = name;
             entry.email = email;
             phoneBook.sort(compare);
 
             return true;
-        } else if (entry.name === name &&
-            isInputValid(name, formatPhoneNumber(phone))) {
-            entry.phone = formatPhoneNumber(phone);
+        } else if (entry.phone === phone &&
+            isInputValid(name, phone)) {
+            entry.name = name;
             delete entry.email;
             phoneBook.sort(compare);
 
@@ -122,7 +123,6 @@ exports.findAndRemove = function (query) {
     counter = entriesToRemove.length;
     for (const entry of phoneBook) {
         if (namesToRemove.includes(entry.name)) {
-            // phoneBookCopy.splice(phoneBookCopy.indexOf(entry), 1);
             delete phoneBookCopy[entry];
         }
     }
