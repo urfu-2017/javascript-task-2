@@ -79,7 +79,7 @@ exports.find = function (query) {
         checkUser(person, query, result);
     }
 
-    return result;
+    return result.sort();
 };
 
 /**
