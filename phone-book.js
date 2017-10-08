@@ -63,7 +63,7 @@ exports.findAndRemove = function (query) {
     let phoneBookCopy = phoneBook.slice();
     const phonesToRemove = getPhones(exports.find(query));
     for (const entry of phoneBook) {
-        if (phonesToRemove.includes(entry.phone)) {
+        if (phonesToRemove.includes(formatPhoneNumber(entry.phone))) {
             phoneBookCopy.splice(getIndex(entry, phoneBookCopy), 1);
         }
     }
