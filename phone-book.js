@@ -17,7 +17,7 @@ function checkInputCorrect(phone, name, email) {
 }
 
 function checkName(name) {
-    return name !== 'Неизвестный' && name !== undefined && /^[A-Za-zА-Яа-я]+$/.test(name);
+    return name !== '' && name !== undefined && typeof name === 'string';
 }
 
 function checkEmail(email) {
@@ -116,18 +116,18 @@ function formatPhone(phone) {
     return `+7 (${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 8)}-${phone.slice(8)}`;
 }
 
-function formFoundedData(foundEntries) {
-    let foundedStrings = [];
+function formFoundData(foundEntries) {
+    let foundStrings = [];
     foundEntries.forEach(item => {
         let entries = item.split(', ');
         if (entries[2] !== undefined) {
-            foundedStrings.push(`${entries[1]}, ${formatPhone(entries[0])}, ${entries[2]}`);
+            foundStrings.push(`${entries[1]}, ${formatPhone(entries[0])}, ${entries[2]}`);
         } else {
-            foundedStrings.push(`${entries[1]}, ${formatPhone(entries[0])}`);
+            foundStrings.push(`${entries[1]}, ${formatPhone(entries[0])}`);
         }
     });
 
-    return foundedStrings;
+    return foundStrings;
 }
 
 // На вход принимает запрос в виде строки
@@ -149,7 +149,7 @@ exports.find = function (query) {
     let entries = Object.values(phoneBook);
     let foundEntries = searchSubstring(query, entries);
 
-    return formFoundedData(foundEntries).sort();
+    return formFoundData(foundEntries).sort();
 };
 
 /**
