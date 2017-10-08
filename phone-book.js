@@ -42,7 +42,7 @@ function checkName(name) {
 function checkPhone(phone) {
 
     if (phone === undefined || phone === null || phone === '' ||
-     typeof(phone) !== 'string' || phone.length !== 10) {
+     typeof(phone) !== 'string' || /\^d{10}$/.test(phone)) {
         return true;
     }
 
