@@ -12,24 +12,24 @@ exports.isStar = true;
 let phoneBook = {};
 exports.phoneBook = phoneBook;
 
-function checkInputCorrect(phone, name) {
-    return checkName(name) && checkPhone(phone) && !(phone in phoneBook);
+function checkInputCorrect(phone, name, email) {
+    return checkName(name) && checkPhone(phone) && checkEmail(email);
 }
 
 function checkName(name) {
-    return name !== '' && name !== undefined && typeof name === 'string';
+    return name !== '' && name !== undefined && typeof(name) === 'string';
 }
 
-// function checkEmail(email) {
-//     if (email !== undefined) {
-//         return /^[a-zA-Z0-9.^$*!-=`|~#%'+/?_{}]+@[a-zA-Z0-9.]+\.[a-zA-Z]+$/.test(email);
-//     }
+function checkEmail(email) {
+    if (email !== undefined && typeof(email) === 'string') {
+        return true;
+    }
 
-//     return true;
-// }
+    return true;
+}
 
 function checkPhone(phone) {
-    return phone !== undefined && /[0-9]{10}/.test(phone);
+    return phone !== undefined && /[0-9]{10}/.test(phone) && typeof(phone) === 'string';
 }
 
 // На вход принимает «Телефон», «Имя» и «Электронную почту»
@@ -46,7 +46,7 @@ function checkPhone(phone) {
  * @returns {Dict}
  */
 exports.add = function (phone, name, email) {
-    if (checkInputCorrect(phone, name, email)) {
+    if (checkInputCorrect(phone, name, email) && !(phone in phoneBook)) {
         if (email === undefined) {
             phoneBook[phone] = `${phone}, ${name}`;
         } else {
@@ -70,7 +70,7 @@ exports.add = function (phone, name, email) {
 // Возвращает true или false в зависимости от успеха опереации
 // «Электронную почту» можно стереть (не передав последний параметр), а «Имя» – нет
 exports.update = function (phone, name, email) {
-    if (checkName(name) && checkPhone(phone) && phone in phoneBook) {
+    if (checkInputCorrect(phone, name, email) && phone in phoneBook) {
         if (email !== undefined) {
             phoneBook[phone] = `${phone}, ${name}, ${email}`;
         } else {
@@ -91,12 +91,14 @@ exports.update = function (phone, name, email) {
 // Находит (смотри __find__) и удаляет все найденные записи
 // Возвращает число удаленных записей
 exports.findAndRemove = function (query) {
-    let foundEntries = exports.find(query);
     let countDeleted = 0;
-    foundEntries.forEach(entry => {
-        delete phoneBook[entry.split(', ')[1]];
-        countDeleted += 1;
-    });
+    if (typeof(query) === 'string') {
+        let foundEntries = exports.find(query);
+        foundEntries.forEach(entry => {
+            delete phoneBook[entry.split(', ')[1]];
+            countDeleted += 1;
+        });
+    }
 
     return countDeleted;
 };
@@ -143,13 +145,17 @@ function formFoundData(foundEntries) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    if (query === '') {
-        return [];
-    }
-    let entries = Object.values(phoneBook);
-    let foundEntries = searchSubstring(query, entries);
+    if (typeof(query) === 'string') {
+        if (query === '') {
+            return [];
+        }
+        let entries = Object.values(phoneBook);
+        let foundEntries = searchSubstring(query, entries);
 
-    return formFoundData(foundEntries).sort();
+        return formFoundData(foundEntries).sort();
+    }
+
+    return [];
 };
 
 /**
@@ -162,18 +168,22 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-    let data = csv.split('\n');
-    let countBefore = Object.keys(phoneBook).length;
-    let countUpdate = 0;
-    data.forEach(item => {
-        let entriesArray = item.split(';');
-        if (!exports.add(entriesArray[1], entriesArray[0], entriesArray[2])) {
-            if (exports.update(entriesArray[1], entriesArray[0], entriesArray[2])) {
-                countUpdate += 1;
+    if (typeof(csv) === 'string' && csv.split() !== '') {
+        let data = csv.split('\n');
+        let countBefore = Object.keys(phoneBook).length;
+        let countUpdate = 0;
+        data.forEach(item => {
+            let entriesArray = item.split(';');
+            if (!exports.add(entriesArray[1], entriesArray[0], entriesArray[2])) {
+                if (exports.update(entriesArray[1], entriesArray[0], entriesArray[2])) {
+                    countUpdate += 1;
+                }
             }
-        }
-    });
-    let countAfter = Object.keys(phoneBook).length;
+        });
+        let countAfter = Object.keys(phoneBook).length;
 
-    return countAfter - countBefore + countUpdate;
+        return countAfter - countBefore + countUpdate;
+    }
+
+    return 0;
 };
