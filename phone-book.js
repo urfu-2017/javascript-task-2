@@ -24,8 +24,8 @@ exports.add = function (phone, name, email) {
     if (isNoteInPhoneBook(contact)) {
         return false;
     }
-    if (isDataCorrect(phone) && isDataCorrect(name) &&
-        email !== '' && phone.match(reg) !== null) {
+    if (isDataCorrect(phone) && isDataCorrect(name) && (typeof email === 'string' &&
+        email !== '' || email === undefined) && phone.match(reg) !== null) {
         phoneBook.push(contact);
 
         return true;
@@ -222,4 +222,3 @@ function getCountOfAddOrUpdate(csvToArr) {
 
     return countOfAddOrUpdate;
 }
-
