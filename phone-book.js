@@ -11,6 +11,14 @@ exports.isStar = true;
  */
 var phoneBook = {};
 
+function isNameCorrect(name) {
+    if (name && typeof name === 'string' && !name.match(/[^а-яА-Я]/)) {
+        return true;
+    }
+
+    return false;
+}
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -21,7 +29,7 @@ var phoneBook = {};
 exports.add = function (phone, name, email) {
     phone = String(phone);
     if (phone.length !== 10 || !phone.match(/(\d)\1\1(\d)\2\2(\d)\3(\d)\4/) ||
-        !name || typeof name !== 'string' || phoneBook[phone]) {
+        !isNameCorrect(name) || phoneBook[phone]) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -38,7 +46,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
-    if (phoneBook[phone] && name && typeof name === 'string') {
+    if (phoneBook[phone] && isNameCorrect(name)) {
         phoneBook[phone] = { name, email };
 
         return true;
