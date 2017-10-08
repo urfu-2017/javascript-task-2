@@ -161,7 +161,7 @@ function joiner(foundResults, res) {
         if (foundResults[i].m) {
             join += ', ' + foundResults[i].m;
         }
-        res.push(join.toLowerCase());
+        res.push(join);
     }
     res.sort();
 
