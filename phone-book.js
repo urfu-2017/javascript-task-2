@@ -20,8 +20,9 @@ var phoneBook = {};
  */
 exports.add = function (phone, name, email) {
     phone = String(phone);
+    name = String(name);
     if (phone.length !== 10 || !phone.match(/(\d)\1\1(\d)\2\2(\d)\3(\d)\4/) ||
-        typeof name !== 'string' || !name || phoneBook[phone]) {
+        name.match(/[^а-яА-Я]/) || !name || phoneBook[phone]) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -38,7 +39,8 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
-    if (phoneBook[phone] && typeof name === 'string' && name) {
+    name = String(name);
+    if (phoneBook[phone] && typeof name === 'string' && name && !name.match(/[^а-яА-Я]/)) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -46,6 +48,11 @@ exports.update = function (phone, name, email) {
 
     return false;
 };
+
+function fitsRecord(phone, query) {
+    return phone.indexOf(query) > -1 || phoneBook[phone].name.indexOf(query) > -1 ||
+        (phoneBook[phone].email && phoneBook[phone].email.indexOf(query) > -1);
+}
 
 /**
  * Удаление записей по запросу из телефонной книги
@@ -55,9 +62,17 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     query = String(query);
     let countDeleted = 0;
+    if (!query) {
+        return 0;
+    }
+    if (query === '*') {
+        let result = Object.keys(phoneBook);
+        phoneBook = {};
+
+        return result;
+    }
     for (let phone in phoneBook) {
-        if (phone.indexOf(query) > -1 || phoneBook[phone].name.indexOf(query) > -1 ||
-            (phoneBook[phone].email && phoneBook[phone].email.indexOf(query) > -1)) {
+        if (fitsRecord(phone, query)) {
             delete phoneBook[phone];
             countDeleted++;
         }
@@ -91,11 +106,6 @@ function bookRecordToString(book) {
  * @returns {Array} - Массиф подходящих персон в виде надлежащих строк
  */
 exports.find = function (query) {
-    function checkFits(phone) {
-        return phone.indexOf(query) > -1 || phoneBook[phone].name.indexOf(query) > -1 ||
-            (phoneBook[phone].email && phoneBook[phone].email.indexOf(query) > -1);
-    }
-
     query = String(query);
     if (query === '*') {
         return bookRecordToString(phoneBook);
@@ -107,7 +117,7 @@ exports.find = function (query) {
 
     let result = {};
     for (let phone in phoneBook) {
-        if (checkFits(phone)) {
+        if (fitsRecord(phone, query)) {
             result[phone] = phoneBook[phone];
         }
     }
