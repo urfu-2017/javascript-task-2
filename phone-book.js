@@ -7,41 +7,52 @@ var phoneBook = [];
 
 
 exports.add = function (phone, name, email) {
-    if (name === undefined) {
-        return false;
-    }
-    if (!/^\d{10}$/.test(String(phone))) {
-        return false;
-    }
-    if (!isUnique(phone)) {
-        return false;
-    }
-    phoneBook.push({ phone: phone, name: name, email: email });
+    if (isDataCorrect(phone, name)) {
+        email = getEmail(email);
+        phoneBook.push({ phone: phone, name: name, email: email });
 
-    return true;
+        return true;
+    }
+
+    return false;
 };
 
-function isUnique(phone) {
-    for (let i = 0; i < phoneBook.length; i++) {
-        let currentPhone = phoneBook[i].phone;
-        if (currentPhone === phone || currentPhone === undefined || currentPhone === null) {
-            return false;
-        }
+function getEmail(email) {
+    email = (email === undefined || email === null) ? '' : email;
+
+    return email;
+}
+
+function isDataCorrect(phone, name) {
+    if (phone === undefined || name === undefined) {
+        return false;
+    }
+    if (!/^\d{10}$/.test(String(phone)) || !phoneBook.every(isUniqueEntry(phone))) {
+        return false;
     }
 
     return true;
 }
 
+function isUniqueEntry(phone) {
+    return function (entry) {
+        if (entry.phone === phone) {
+            return false;
+        }
+
+        return true;
+    };
+}
 
 exports.update = function (phone, name, email) {
-    if (name === undefined) {
+    if (phone === undefined || name === undefined) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
         let currentEntryPhone = phoneBook[i].phone;
         if (currentEntryPhone === phone) {
             phoneBook[i].name = name;
-            phoneBook[i].email = (email === undefined) ? '' : email;
+            phoneBook[i].email = getEmail(email);
 
             return true;
         }
@@ -52,29 +63,29 @@ exports.update = function (phone, name, email) {
 
 
 exports.findAndRemove = function (query) {
-    let len = phoneBook.length;
+    if (query === '' || typeof (query) !== 'string') {
+        return 0;
+    }
+    let pbLengthBefore = phoneBook.length;
     if (query === '*') {
         phoneBook = [];
 
-        return len;
-    }
-    if (query === '') {
-        return phoneBook.length;
+        return pbLengthBefore;
     }
     phoneBook = phoneBook.filter(isEntryBad(query));
 
-    return len - phoneBook.length;
+    return pbLengthBefore - phoneBook.length;
 };
 
 
 exports.find = function (query) {
+    if (query === '' || typeof (query) !== 'string') {
+        return [];
+    }
     if (query === '*') {
         return phoneBook
             .sort(compareEntry)
             .map(getStringOfEntry);
-    }
-    if (query === '') {
-        return;
     }
 
     return phoneBook
