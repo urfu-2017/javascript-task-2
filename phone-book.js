@@ -62,9 +62,15 @@ exports.update = function (phone, name, email) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
-    if (i !== phoneBook.length && phoneBook[i].p === phone && typeof(name) === 'string') {
-        phoneBook[i].n = name;
-        phoneBook[i].m = email;
+    if (i !== phoneBook.length && phoneBook[i].p === phone /* && typeof(name) === 'string'*/) {
+        if (name) {
+            phoneBook[i].n = name;
+        }
+        if (email) {
+            phoneBook[i].m = email;
+        } else {
+            phoneBook[i].m = '';
+        }
         b1 = true;
     } else {
         b1 = false;
