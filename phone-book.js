@@ -20,7 +20,12 @@ var phoneBook = {};
  */
 
 exports.add = function (phone, name, email) {
-    let isCorrectNode = (p, n) => (/^\d{10}$/.test(p) && (typeof n) === 'string' && n.length > 0);
+    let isCorrectNode = (p, n) => {
+        let pIsString = (typeof p) === 'string';
+        let nIsString = (typeof n) === 'string';
+
+        return (pIsString && /^\d{10}$/.test(p) && nIsString && n.length > 0);
+    };
     if (isCorrectNode(phone, name) && !phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone] = { name, email };
 
@@ -57,7 +62,8 @@ function formatPhone(phone) {
 
 function suitableNotes(query) {
     let notes = [];
-    if (query === undefined) {
+    let emptyQuery = (q) => q === undefined || q === '';
+    if (emptyQuery(query)) {
         return notes;
     }
 
