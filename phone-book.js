@@ -37,7 +37,7 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} result of update
  */
 exports.update = function (phone, name, email) {
-    if (phoneRegex.test(phone) && name && phoneBook.hasOwnProperty(phone)) {
+    if (name && phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone] = [name, email];
 
         return true;
@@ -138,7 +138,8 @@ function findEntries(query) {
     Object.keys(phoneBook).forEach(function (phone) {
         const [name, email] = phoneBook[phone];
         const entry = [name, phone, email];
-        if (entry.join(';').includes(query) || query === '*') {
+        if (entry.filter(property => String(property).includes(query)).length > 0 ||
+            query === '*') {
             entries.push(entry.filter(property => property));
         }
 
