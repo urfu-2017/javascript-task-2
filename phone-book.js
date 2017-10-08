@@ -11,14 +11,6 @@ exports.isStar = true;
  */
 var phoneBook = {};
 
-function isNameCorrect(name) {
-    if (name && typeof name === 'string' && !name.match(/[^а-яА-Я]/)) {
-        return true;
-    }
-
-    return false;
-}
-
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -29,7 +21,7 @@ function isNameCorrect(name) {
 exports.add = function (phone, name, email) {
     phone = String(phone);
     if (phone.length !== 10 || !phone.match(/(\d)\1\1(\d)\2\2(\d)\3(\d)\4/) ||
-        !isNameCorrect(name) || phoneBook[phone]) {
+        !name || typeof name !== 'string' || phoneBook[phone]) {
         return false;
     }
     phoneBook[phone] = { name, email };
@@ -46,7 +38,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
-    if (phoneBook[phone] && isNameCorrect(name)) {
+    if (phoneBook[phone] && name && typeof name === 'string') {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -75,7 +67,7 @@ exports.findAndRemove = function (query) {
         let result = Object.keys(phoneBook);
         phoneBook = {};
 
-        return result;
+        return result.length;
     }
     for (let phone in phoneBook) {
         if (fitsRecord(phone, query)) {
