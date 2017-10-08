@@ -12,14 +12,14 @@ exports.isStar = true;
 var phoneBook = [];
 
 function phoneExist(phone) {
-    let boolFound = false;
+    let b1 = false;
     let i = 0;
-    while (i < phoneBook.length && boolFound === false) {
-        boolFound = (phoneBook[i].p === phone);
+    while (i < phoneBook.length && b1 === false) {
+        b1 = (phoneBook[i].p === phone);
         ++i;
     }
 
-    return boolFound;
+    return b1;
 }
 
 /*
@@ -30,7 +30,7 @@ function phoneExist(phone) {
  */
 exports.add = function (phone, name, email) {
     var b1 = false;
-    if (phone.length !== 10 || !name || phoneExist(phone)) {
+    if (phone.length !== 10 || !name || phoneExist(phone) || typeof(name) !== 'string') {
         b1 = false;
     } else {
         var newRecord = {
