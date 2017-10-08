@@ -63,7 +63,7 @@ exports.update = function (phone, name, email) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
-    if (i !== phoneBook.length && name && phoneExist(phone)) {
+    if (i !== phoneBook.length && name) {
         phoneBook[i].n = name;
         if (email) {
             phoneBook[i].m = email;
@@ -130,7 +130,7 @@ function checkInclude(i, query) {
     console.log(value, '\n', String(value), '\n',
     String(value).indexOf(query), '\n', query);*/
     for (let x = 0; x <= 2; x += 1) {
-        if (String(a[x]).indexOf(query) !== -1) {
+        if (String(a[x]).indexOf(query) + 1) {
             b1 = true;
         }
     }
@@ -150,7 +150,7 @@ function pusher(arr, query) {
     return arr;
 }
 
-function queryzero(query) {
+function querystr(query) {
     var boool = (typeof(query) === 'string');
 
     return boool;
@@ -180,7 +180,7 @@ function joiner(foundResults, res) {
  */
 exports.find = function (query) {
     var foundResults = [];
-    var b1 = queryzero(query);
+    var b1 = querystr(query);
     switch (query) {
         case '*':
             foundResults = phoneBook;
