@@ -29,8 +29,7 @@ function add(phone, name, email) {
         return false;
     }
 
-    email = typeof(email) === 'string' ? email : '';
-    phoneBook.push({ phone, name, email });
+    phoneBook.push({ phone, name, email: email || '' });
 
     return true;
 }
@@ -47,11 +46,9 @@ function update(phone, name, email) {
         return false;
     }
 
-    email = typeof(email) === 'string' ? email : '';
-
     for (let i in phoneBook) {
         if (phoneBook[i].phone === phone) {
-            phoneBook[i] = { phone, name, email };
+            phoneBook[i] = { phone, name, email: email || '' };
 
             return true;
         }
@@ -67,7 +64,7 @@ function update(phone, name, email) {
  */
 function find(query) {
     if (typeof(query) !== 'string' || query === '') {
-        return undefined;
+        return [];
     }
     if (query === '*') {
         return formatPhoneBook(phoneBook);
