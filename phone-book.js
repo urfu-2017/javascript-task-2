@@ -37,7 +37,7 @@ exports.add = function (phone, name, email) {
 };
 
 function isDataCorrect(str) {
-    if (typeof(str) !== 'string' || str === '') {
+    if (typeof (str) !== 'string' || str === '') {
 
         return false;
     }
@@ -92,11 +92,22 @@ exports.findAndRemove = function (query) {
     let phoneBookClone = phoneBook.slice();
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone !== undefined && phoneBook[i].phone.indexOf(query) !== -1 ||
-            phoneBook[i].name.indexOf(query) !== -1 ||
+            phoneBook[i].name !== undefined && phoneBook[i].name.indexOf(query) !== -1 ||
             phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1) {
             phoneBookClone.splice(i - countOfDeleted, 1);
             ++countOfDeleted;
         }
+    }
+    countOfDeleted = lalala(query, countOfDeleted);
+    phoneBook = phoneBookClone;
+
+    return countOfDeleted;
+};
+
+function lalala(query, countOfDeleted) {
+    if (!isDataCorrect(query)) {
+
+        return 0;
     }
     if (query === '*') {
         countOfDeleted = phoneBook.length;
@@ -104,33 +115,44 @@ exports.findAndRemove = function (query) {
 
         return countOfDeleted;
     }
-    phoneBook = phoneBookClone;
 
     return countOfDeleted;
-};
+}
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
- * @returns {Bool}
+ * @returns {String[]}
  */
 exports.find = function (query) {
     let notes = [];
     for (let note of phoneBook) {
         if (note.phone !== undefined && note.phone.indexOf(query) !== -1 ||
-            note.name.indexOf(query) !== -1 ||
+            note.name !== undefined && note.name.indexOf(query) !== -1 ||
             note.email !== undefined && note.email.indexOf(query) !== -1) {
             notes.push(note);
         }
     }
-    if (query === '*') {
-        notes = phoneBook;
+    notes = lala(query, notes);
+    if (notes !== [] && notes !== undefined) {
+        sorting(notes);
     }
-    sorting(notes);
     let arrayNotes = format(notes);
 
     return arrayNotes;
 };
+
+function lala(query, notes) {
+    if (!isDataCorrect(query)) {
+
+        return [];
+    }
+    if (query === '*') {
+        return phoneBook;
+    }
+
+    return notes;
+}
 
 function sorting(notes) {
     notes.sort(function (a, b) {
@@ -202,4 +224,3 @@ function getCountOfAddOrUpdate(csvToArr) {
 
     return countOfAddOrUpdate;
 }
-
