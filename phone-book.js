@@ -122,21 +122,23 @@ exports.findAndRemove = function (query) {
 
 function checkInclude(i, query) {
     let b1 = false;
-    var a = [];
-    a[0] = phoneBook[i].n.toLowerCase();
-    a[3] = phoneBook[i].n;
+    //  var a = [];
+    //  a[0] = phoneBook[i].n.toLowerCase();
+    //  a[0] = phoneBook[i].n;
     //  a[0] = a[0].toLowerCase();
-    a[1] = phoneBook[i].p;
-    a[2] = phoneBook[i].m || '';
+    //  a[1] = phoneBook[i].p;
+    //  a[2] = phoneBook[i].m || '';
     //  console.log(i, query, phoneBook[i]);
-    /*  let values = Object.values(phoneBook[i]);
+    let values = Object.values(phoneBook[i]);
     for (let value of values) {
-    console.log(value, '\n', String(value), '\n',
+
+    /* console.log(value, '\n', String(value), '\n',
     String(value).indexOf(query), '\n', query);*/
-    for (let x = 0; x <= 3; x += 1) {
-        if (String(a[x]).indexOf(query) + 1) {
+    //    for (let x = 0; x <= 2; x += 1) {
+        if (String(value).indexOf(query) + 1) {
             b1 = true;
         }
+    //    }
     }
     //  console.log(query, value, b1, String(value).indexOf(query));
     //                                          console.log(b1);
