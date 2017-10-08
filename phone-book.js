@@ -1,14 +1,7 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = false;
 
-/**
- * Телефонная книга
- */
 var phoneBook = {};
 
 /**
@@ -19,14 +12,17 @@ var phoneBook = {};
  * @returns {Boolean}
  */
 
-exports.add = function (phone, name, email) {
-    let isCorrectNode = (p, n) => {
-        let pIsString = (typeof p) === 'string';
-        let nIsString = (typeof n) === 'string';
+function isCorrectNote(phone, name, email) {
+    let isPhoneCorrect = typeof phone === 'string' && /^(\d){10}$/.test(phone);
+    let isNameCorrect = typeof name === 'string' && name !== '';
+    let isEmailCorrect = (typeof email === 'string' && email !== '') || email === undefined;
 
-        return (pIsString && /^\d{10}$/.test(p) && nIsString && n.length > 0);
-    };
-    if (isCorrectNode(phone, name) && !phoneBook.hasOwnProperty(phone)) {
+
+    return isPhoneCorrect && isNameCorrect && isEmailCorrect;
+}
+
+exports.add = function (phone, name, email) {
+    if (isCorrectNote(phone, name, email) && !phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -45,7 +41,7 @@ exports.add = function (phone, name, email) {
 
 
 exports.update = function (phone, name, email) {
-    if (phoneBook.hasOwnProperty(phone) && ((typeof name) === 'string') && name.length > 0) {
+    if (phoneBook.hasOwnProperty(phone) && isCorrectNote(phone, name, email)) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -62,22 +58,22 @@ function formatPhone(phone) {
 
 function suitableNotes(query) {
     let notes = [];
-    let emptyQuery = (q) => q === undefined || q === '' || query === null;
+    let emptyQuery = (q) => typeof q !== 'string' || q === '';
     if (emptyQuery(query)) {
         return notes;
     }
 
     let addAllNotes = query === '*';
 
-    let isSuitableNote = (note) => {
+    let isSuitableNote = (note, q) => {
         let phone = note[0];
         let name = note[1].name;
         let email = note[1].email || '';
 
-        return phone.match(query) || name.match(query) || email.match(query);
+        return phone.indexOf(q) !== -1 || name.indexOf(q) !== -1 || email.indexOf(q) !== -1;
     };
     for (let note of Object.entries(phoneBook)) {
-        if (addAllNotes || isSuitableNote(note)) {
+        if (addAllNotes || isSuitableNote(note, query)) {
             notes.push([note[1].name, note[0], note[1].email || '']);
         }
     }
@@ -86,19 +82,11 @@ function suitableNotes(query) {
 }
 
 function formatNotes(notes) {
-    let sort = (note1, note2) => {
-        if (note1[0] > note2[0]) {
-            return 1;
-        }
-
-        return note1[0] === note2[0] ? 0 : -1;
-    };
-
     let map = (note) => {
         return note[0] + ', ' + formatPhone(note[1]) + ((note[2] === '') ? '' : (', ' + note[2]));
     };
 
-    return notes.sort(sort).map(map);
+    return notes.map(map).sort();
 }
 
 /**
