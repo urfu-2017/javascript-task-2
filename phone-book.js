@@ -29,7 +29,7 @@ exports.add = function (phone, name, email) {
             phoneBookEntry = { name, phone };
         }
         phoneBook.push(phoneBookEntry);
-        sortPhoneBook();
+        phoneBook.sort(compare);
 
         return true;
     }
@@ -37,38 +37,22 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
+function compare(first, second) {
+    if (first.name < second.name) {
+        return -1;
+    }
+    if (first.name > second.name) {
+        return 1;
+    }
+
+    return 0;
+}
 
 function isInputValid(name, phone) {
     const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
     const nameIsValid = name !== '' && typeof name === 'string';
 
     return nameIsValid && regex.test(phone) && typeof phone === 'string';
-}
-
-function sortPhoneBook() {
-    const phoneBookCopy = [];
-    const namesArray = [];
-    for (const entry of phoneBook) {
-        namesArray.push(entry.name);
-    }
-
-    phoneBook = sortNamesAndMakePB(namesArray, phoneBookCopy);
-}
-
-function sortNamesAndMakePB(namesArray, phoneBookCopy) {
-    for (const name of namesArray.sort()) {
-        phoneBookCopy.push(getEntryByName(name));
-    }
-
-    return phoneBookCopy;
-}
-
-function getEntryByName(name) {
-    for (const entry of phoneBook) {
-        if (name === entry.name) {
-            return entry;
-        }
-    }
 }
 
 function isAlreadyAdded(phone) {
@@ -108,14 +92,14 @@ exports.update = function (phone, name, email) {
              isInputValid(name, formatPhoneNumber(phone))) {
             entry.phone = formatPhoneNumber(phone);
             entry.email = email;
-            sortPhoneBook();
+            phoneBook.sort(compare);
 
             return true;
         } else if (entry.name === name &&
             isInputValid(name, formatPhoneNumber(phone))) {
             entry.phone = formatPhoneNumber(phone);
             delete entry.email;
-            sortPhoneBook();
+            phoneBook.sort(compare);
 
             return true;
         }
@@ -131,7 +115,7 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let counter = 0;
-    sortPhoneBook();
+    phoneBook.sort(compare);
     const phoneBookCopy = phoneBook.slice();
     const entriesToRemove = exports.find(query);
     const namesToRemove = getNames(entriesToRemove);
@@ -143,7 +127,7 @@ exports.findAndRemove = function (query) {
         }
     }
     phoneBook = phoneBookCopy;
-    sortPhoneBook();
+    phoneBook.sort(compare);
 
     return counter;
 };
