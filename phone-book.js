@@ -19,13 +19,8 @@ var phoneBook = [];
  * @returns {Bool}
  */
 exports.add = function (phone, name, email) {
-    let reg = /^(\d){10}$/;
     let contact = { phone: phone, name: name, email: email };
-    if (isNoteInPhoneBook(contact)) {
-        return false;
-    }
-    if (isDataCorrect(phone) && isDataCorrect(name) && (typeof email === 'string' &&
-        email !== '' || email === undefined) && phone.match(reg) !== null) {
+    if (isNoteCorrect(phone, name, email) && !isNoteInPhoneBook(phone)) {
         phoneBook.push(contact);
 
         return true;
@@ -36,19 +31,17 @@ exports.add = function (phone, name, email) {
 
 };
 
-function isDataCorrect(str) {
-    if (typeof (str) !== 'string' || str === '') {
+function isNoteCorrect(phone, name, email) {
+    let reg = /^(\d){10}$/;
 
-        return false;
-    }
-
-    return true;
-
+    return typeof phone === 'string' && phone.match(reg) !== null &&
+    typeof name === 'string' && name !== '' &&
+    ((typeof email === 'string' && email !== '') || email === undefined);
 }
 
-function isNoteInPhoneBook(contact) {
+function isNoteInPhoneBook(phone) {
     for (let note of phoneBook) {
-        if (contact.phone === note.phone) {
+        if (phone === note.phone) {
             return true;
 
         }
@@ -65,13 +58,9 @@ function isNoteInPhoneBook(contact) {
  * @returns {Bool}
  */
 exports.update = function (phone, name, email) {
-    if (!isDataCorrect(name) || !isDataCorrect(phone)) {
-
-        return false;
-    }
     let contact = { phone: phone, name: name, email: email };
     for (let note of phoneBook) {
-        if (contact.phone === note.phone) {
+        if (contact.phone === note.phone && isNoteCorrect(phone, name, email)) {
             note.name = contact.name;
             note.email = contact.email;
 
@@ -105,7 +94,7 @@ exports.findAndRemove = function (query) {
 };
 
 function lalala(query, countOfDeleted) {
-    if (!isDataCorrect(query)) {
+    if (typeof (query) !== 'string' || query === '') {
 
         return 0;
     }
@@ -143,7 +132,7 @@ exports.find = function (query) {
 };
 
 function lala(query, notes) {
-    if (!isDataCorrect(query)) {
+    if (typeof (query) !== 'string' || query === '') {
 
         return [];
     }
@@ -194,7 +183,7 @@ function format(notes) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    if (typeof csv !== 'string' || csv === '') {
+    if (typeof (csv) !== 'string' || csv === '') {
 
         return 0;
     }
