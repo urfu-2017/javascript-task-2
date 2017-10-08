@@ -16,7 +16,7 @@ exports.add = function (phone, name, email) {
     if (email === undefined) {
         email = ' ';
     }
-    if (name === undefined || phone.length !== 10) {
+    if (checkPhone(phone) || checkName(name) || checkEm(email)) {
         return false;
     }
 
@@ -29,6 +29,34 @@ exports.add = function (phone, name, email) {
     return false;
 
 };
+
+function checkName(name) {
+
+    if (name === undefined || name === null || name === '' || typeof(name) !== 'string') {
+        return true;
+    }
+
+    return false;
+}
+
+function checkPhone(phone) {
+
+    if (phone === undefined || phone === null || phone === '' ||
+     typeof(phone) !== 'string' || phone.length !== 10) {
+        return true;
+    }
+
+    return false;
+}
+
+function checkEm(email) {
+
+    if (email === null || email === '' || typeof(email) !== 'string') {
+        return true;
+    }
+
+    return false;
+}
 
 function checkData(phone, name, email) {
     var check = true;
