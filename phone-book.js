@@ -4,55 +4,165 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook = [];
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
 exports.add = function (phone, name, email) {
+
+    if (email === undefined) {
+        email = ' ';
+    }
+    if (name === undefined || phone.length !== 10) {
+        return false;
+    }
+
+    if (checkData(phone, name, email)) {
+        phoneBook.push({ name: name, phone: phone, email: email });
+
+        return true;
+    }
+
+    return false;
 
 };
 
-/**
+function checkData(phone, name, email) {
+    var check = true;
+
+    for (var i = 0; i < phoneBook.length; i++) {
+        var nameInBook = phoneBook[i].name;
+        var phoneInBook = String(phoneBook[i].phone);
+        var emailInBook = phoneBook[i].email;
+        if (nameInBook.indexOf(name) >= 0 || phoneInBook.indexOf(String(phone)) >= 0 ||
+        emailInBook.indexOf(email) >= 0) {
+            check = false;
+            break;
+        }
+    }
+
+    return check;
+
+}
+
+/*
  * Обновление записи в телефонной книге
  * @param {String} phone
  * @param {String} name
  * @param {String} email
- */
+*/
 exports.update = function (phone, name, email) {
+    if (email === undefined) {
+        email = ' ';
+    }
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0 && name !== undefined) {
+
+            phoneBook[i].name = name;
+            phoneBook[i].phone = phone;
+            phoneBook[i].email = email;
+
+            return true;
+        } else if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0 && name === undefined) {
+            phoneBook[i].phone = phone;
+            phoneBook[i].email = email;
+        }
+    }
+
+    return false;
 
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
+
 exports.findAndRemove = function (query) {
+    var count = 0;
+    if (checkQ(query)) {
+        return count;
+    }
+    if (query === '*') {
+        query = '';
+    }
+    for (var i = 0; i < phoneBook.length; i++) {
+        var nameInBook = phoneBook[i].name;
+        var phoneInBook = String(phoneBook[i].phone);
+        var emailInBook = phoneBook[i].email;
+        if (ckeckOnExistance(nameInBook, phoneInBook, emailInBook, query)) {
+            phoneBook.splice(i, 1);
+            i--;
+            count++;
+        }
+    }
+
+    return count;
 
 };
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
 exports.find = function (query) {
+    var result = [];
+    if (checkQ(query)) {
+        return result;
+    }
+    if (query === '*') {
+        query = '';
+    }
+    for (var i = 0; i < phoneBook.length; i++) {
+        var nameInBook = phoneBook[i].name;
+        var phoneInBook = String(phoneBook[i].phone);
+        var emailInBook = phoneBook[i].email;
+        if (ckeckOnExistance(nameInBook, phoneInBook, emailInBook, query)) {
+            result.push(nameInBook + ', ' + normalize(phoneInBook) +
+             checkEmail(emailInBook));
+        }
+    }
 
+    return result.sort();
 };
+
+function ckeckOnExistance(name, phone, email, query) {
+    if (name.indexOf(query) >= 0 || phone.indexOf(query) >= 0 ||
+    email.indexOf(query) >= 0) {
+
+        return true;
+    }
+
+    return false;
+}
+
+function checkEmail(email) {
+    if (email === ' ') {
+        email = '';
+    } else {
+        email = ', ' + email;
+    }
+
+    return email;
+}
+
+function checkQ(query) {
+    if (query === '' || query === undefined || query === null) {
+        return true;
+    }
+
+    return false;
+}
+
+function normalize(phone) {
+
+    phone = '+7 (555) ' + String(phone).slice(3, 6) + '-' +
+     String(phone).slice(6, 8) + '-' + String(phone).slice(8);
+
+    return phone;
+}
 
 /**
  * Импорт записей из csv-формата
  * @star
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
- */
+
 exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
@@ -60,3 +170,4 @@ exports.importFromCsv = function (csv) {
 
     return csv.split('\n').length;
 };
+*/
