@@ -96,11 +96,9 @@ exports.importFromCsv = function (csv) {
     let arrUsers = csv.split('\n');
     for (let user of arrUsers) {
         let userSplit = user.split(';');
-        if (exports.find(userSplit[1])[0]) {
-            exports.update(userSplit[1], userSplit[0], userSplit[2]);
+        if (exports.update(userSplit[1], userSplit[0], userSplit[2]) || 
+        exports.add(userSplit[1], userSplit[0], userSplit[2])) {
             countUpdates++;
-        } else {
-            exports.add(userSplit[1], userSplit[0], userSplit[2]);
         }
     }
 
