@@ -103,7 +103,9 @@ function deleter(query) {
  */
 exports.findAndRemove = function (query) {
     var count = 0;
-    if (query === '*') {
+    if (typeof(query) !== 'string') {
+        count = 0;
+    } else if (query === '*') {
         count = phoneBook.length;
         phoneBook.splice(0);
     } else if (query === '') {
