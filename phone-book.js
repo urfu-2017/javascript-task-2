@@ -20,8 +20,8 @@ var phoneBook = [];
  * @returns {Boolean} 
  */
 exports.add = function (phone, name, email) {
-    phone = formatPhoneNumber(phone);
-    if (isInputValid(name, phone) && !isAlreadyAdded(phone)) {
+    if (isInputValid(name, phone) && !isAlreadyAdded(formatPhoneNumber(phone))) {
+        phone = formatPhoneNumber(phone);
         let phoneBookEntry;
         if (email !== undefined && email !== '') {
             phoneBookEntry = { name, phone, email };
@@ -49,7 +49,7 @@ function compare(first, second) {
 }
 
 function isInputValid(name, phone) {
-    const regex = /^[+][7][\s]\(\d{3}\)[\s](\d{3})[-](\d{2})[-](\d{2})$/;
+    const regex = /^\d{10}$/;
     const nameIsValid = name !== '' && typeof name === 'string';
 
     return nameIsValid && regex.test(phone) && typeof phone === 'string';
@@ -87,16 +87,15 @@ function spliceAndJoin(inputArray, from, to) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    phone = formatPhoneNumber(phone);
     for (const entry of phoneBook) {
-        if (entry.phone === phone && email !== undefined &&
+        if (entry.phone === formatPhoneNumber(phone) && email !== undefined &&
              isInputValid(name, phone)) {
             entry.name = name;
             entry.email = email;
             phoneBook.sort(compare);
 
             return true;
-        } else if (entry.phone === phone &&
+        } else if (entry.phone === formatPhoneNumber(phone) &&
             isInputValid(name, phone)) {
             entry.name = name;
             delete entry.email;
@@ -198,11 +197,11 @@ exports.importFromCsv = function (csv) {
         const name = entryString.split(';')[0];
         const phone = entryString.split(';')[1];
         const email = entryString.split(';')[2];
-        if (isInputValid(name, formatPhoneNumber(phone)) &&
+        if (isInputValid(name, phone) &&
         !isAlreadyAdded(formatPhoneNumber(phone))) {
             phonesAdded++;
             exports.add(phone, name, email);
-        } else if (isInputValid(name, formatPhoneNumber(phone))) {
+        } else if (isInputValid(name, phone)) {
             phonesAdded++;
             exports.update(phone, name, email);
         }
@@ -210,4 +209,3 @@ exports.importFromCsv = function (csv) {
 
     return phonesAdded;
 };
-
