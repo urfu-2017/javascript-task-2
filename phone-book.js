@@ -94,6 +94,9 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     var answer = [];
+    if (query === '') {
+        return 0;
+    }
     if (query === '*') {
         for (var j = 0; j < phoneBook.length; j++) {
             answer.push(findmail(phoneBook[j]));
@@ -179,5 +182,4 @@ function toPhoneBook(str) {
     };
 
     return Exeleperson;
-
 }
