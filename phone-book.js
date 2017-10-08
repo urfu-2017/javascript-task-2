@@ -123,7 +123,7 @@ function checkInclude(i, query) {
     a[0] = phoneBook[i].n;
     //  a[0] = a[0].toLowerCase();
     a[1] = phoneBook[i].p;
-    a[2] = phoneBook[i].m;
+    a[2] = phoneBook[i].m || '';
     //  console.log(i, query, phoneBook[i]);
     /*  let values = Object.values(phoneBook[i]);
     for (let value of values) {
