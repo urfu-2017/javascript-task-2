@@ -17,7 +17,7 @@ exports.add = function (phone, name, email) {
         return false;
     }
 
-    if (checkData(phone, name, email)) {
+    if (checkData(phone)) {
         phoneBook.push({ name: name, phone: phone, email: email });
 
         return true;
@@ -57,15 +57,12 @@ function checkEm(email) {
     return false;
 }
 
-function checkData(phone, name, email) {
+function checkData(phone) {
     var check = true;
 
     for (var i = 0; i < phoneBook.length; i++) {
-        var nameInBook = phoneBook[i].name;
         var phoneInBook = String(phoneBook[i].phone);
-        var emailInBook = String(phoneBook[i].email);
-        if (nameInBook.indexOf(name) >= 0 || phoneInBook.indexOf(String(phone)) >= 0 ||
-        emailInBook.indexOf(email) >= 0) {
+        if (phoneInBook.indexOf(String(phone)) >= 0) {
             check = false;
             break;
         }
