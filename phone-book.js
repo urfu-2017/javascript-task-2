@@ -23,13 +23,12 @@ exports.add = function (phone, name, email) {
     if (isInputValid(name, phone) && !isAlreadyAdded(formatPhoneNumber(phone))) {
         phone = formatPhoneNumber(phone);
         let phoneBookEntry;
-        if (email !== undefined && email !== '') {
+        if (email) {
             phoneBookEntry = { name, phone, email };
         } else {
             phoneBookEntry = { name, phone };
         }
         phoneBook.push(phoneBookEntry);
-        phoneBook.sort(compare);
 
         return true;
     }
@@ -92,14 +91,12 @@ exports.update = function (phone, name, email) {
              isInputValid(name, phone)) {
             entry.name = name;
             entry.email = email;
-            phoneBook.sort(compare);
 
             return true;
         } else if (entry.phone === formatPhoneNumber(phone) &&
             isInputValid(name, phone)) {
             entry.name = name;
             delete entry.email;
-            phoneBook.sort(compare);
 
             return true;
         }
@@ -115,29 +112,27 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let counter = 0;
-    phoneBook.sort(compare);
     const phoneBookCopy = phoneBook.slice();
     const entriesToRemove = exports.find(query);
-    const namesToRemove = getNames(entriesToRemove);
+    const phonesToRemove = getPhones(entriesToRemove);
     counter = entriesToRemove.length;
     for (const entry of phoneBook) {
-        if (namesToRemove.includes(entry.name)) {
+        if (phonesToRemove.includes(entry.phone)) {
             delete phoneBookCopy[entry];
         }
     }
     phoneBook = phoneBookCopy;
-    phoneBook.sort(compare);
 
     return counter;
 };
 
-function getNames(entries) {
-    const names = [];
+function getPhones(entries) {
+    const phones = [];
     for (const entry of entries) {
-        names.push(entry.split(', ')[0]);
+        phones.push(entry.split(', ')[1]);
     }
 
-    return names;
+    return phones;
 }
 
 /**
@@ -161,7 +156,7 @@ exports.find = function (query) {
 
 function makeArrayOfSuitableStrings(query) {
     const arrayToReturn = [];
-    for (const entry of phoneBook) {
+    for (const entry of phoneBook.sort(compare)) {
         if (entry.name.indexOf(query) !== -1 ||
         entry.phone.indexOf(query) !== -1 ||
         (entry.email && entry.email.indexOf(query) !== -1)) {
@@ -174,7 +169,7 @@ function makeArrayOfSuitableStrings(query) {
 
 function createArrayOfStrings() {
     const arrayOfStrings = [];
-    for (const entry of phoneBook) {
+    for (const entry of phoneBook.sort(compare)) {
         arrayOfStrings.push(Object.values(entry).join(', '));
     }
 
