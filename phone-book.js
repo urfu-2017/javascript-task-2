@@ -106,7 +106,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function checkEmail(query) {
-    return /[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]/i.test(query);
+    return /^[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]$/i.test(query);
 }
 
 function checkUser(person, query, result) {
@@ -123,7 +123,7 @@ function checkUser(person, query, result) {
 
 function deleteUser(query, person, index) {
     for (let value of Object.values(person)) {
-        if (value.indexOf(query) !== -1) {
+        if (value.indexOf(query) !== -1 || query === '*') {
             phoneBook.splice(index, 1);
 
             return 1;
