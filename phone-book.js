@@ -99,6 +99,7 @@ exports.find = function (query) {
                 Object.keys(entry).forEach(property => {
                     if (entry[property] && entry[property].includes(query)) {
                         unsortedResultList.push([entry.name, phoneFormat(phone), entry.email]
+                            .filter(val => val)
                             .join(', '));
                     }
                 });
@@ -106,10 +107,10 @@ exports.find = function (query) {
         }
 
         return unsortedResultList.sort((a, b) => {
-            if (a.split(', ')[0] < b.split(', ')[0]) {
+            if (a < b) {
                 return -1;
             }
-            if (a.split(', ')[0] > b.split(', ')[0]) {
+            if (a > b) {
                 return 1;
             }
 
