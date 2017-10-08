@@ -9,19 +9,19 @@ describe('phone-book', function () {
     it('должен добавлять записи', function () {
         assert.ok(phoneBook.add('5554440044', 'Григорий', 'grisha@example.com'));
         assert.ok(phoneBook.add('5552220022', 'Борис', 'boris@example.com'));
-        assert.ok(phoneBook.add('5551110011', 'Алекс'));
+        assert.ok(phoneBook.add('5551110011', 'Алекс', ''));
         assert.ok(phoneBook.add('5553330033', 'Валерий', 'valera@example.com'));
     });
 
     it('не должен добавлять неправильные записи', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
-        assert.ok(!phoneBook.add('5555550055'));
+        assert.ok(!phoneBook.add('5555550055', ''));
     });
 
     it('должен обновлять существующие записи', function () {
         assert.ok(phoneBook.update('5551110011', 'Алексей', 'alex@example.com'));
-        assert.ok(phoneBook.update('5553330033', 'Валерий'));
+        assert.ok(phoneBook.update('5553330033', 'Валерий', null));
     });
 
     it('должен искать все записи по запросу "*"', function () {
@@ -43,7 +43,8 @@ describe('phone-book', function () {
     });
 
     it('должен удалять элементы из телефонной книги', function () {
-        assert.strictEqual(phoneBook.findAndRemove('@'), 3);
+        assert.strictEqual(phoneBook.findAndRemove('Алек'), 1);
+        assert.strictEqual(phoneBook.findAndRemove('@'), 2);
     });
 
     if (phoneBook.isStar) {
