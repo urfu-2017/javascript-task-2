@@ -138,7 +138,7 @@ function findEntries(query) {
     Object.keys(phoneBook).forEach(function (phone) {
         const [name, email] = phoneBook[phone];
         const entry = [name, phone, email];
-        if (entry.filter(property => String(property).includes(query)).length > 0 ||
+        if (entry.filter(property => String(property).indexOf(query) !== - 1).length ||
             query === '*') {
             entries.push(entry.filter(property => property));
         }
