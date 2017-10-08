@@ -179,7 +179,7 @@ function checkQ(query) {
 
 function normalize(phone) {
 
-    phone = '+7 (555) ' + String(phone).slice(3, 6) + '-' +
+    phone = '+7 (' + String(phone).slice(0, 3) + ') ' + String(phone).slice(3, 6) + '-' +
      String(phone).slice(6, 8) + '-' + String(phone).slice(8);
 
     return phone;
