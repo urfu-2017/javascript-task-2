@@ -13,7 +13,7 @@ let phoneBook = {};
 exports.phoneBook = phoneBook;
 
 function checkInputCorrect(phone, name) {
-    return checkName(name) && checkPhone(phone);
+    return checkName(name) && checkPhone(phone) && !(phone in phoneBook);
 }
 
 function checkName(name) {
@@ -70,7 +70,7 @@ exports.add = function (phone, name, email) {
 // Возвращает true или false в зависимости от успеха опереации
 // «Электронную почту» можно стереть (не передав последний параметр), а «Имя» – нет
 exports.update = function (phone, name, email) {
-    if (checkName(name) && phone in phoneBook) {
+    if (checkName(name) && checkPhone(phone) && phone in phoneBook) {
         if (email !== undefined) {
             phoneBook[phone] = `${phone}, ${name}, ${email}`;
         } else {
