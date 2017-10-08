@@ -19,7 +19,7 @@ var phoneBook = [];
  * @returns {boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/[0-9]{10}/.test(phone) || phone.length !== 10 || !name || (email &&
+    if (!/^[0-9]{10}$/.test(phone) || !name || (email &&
         !checkEmail(email)) || exports.find(phone)[0]) {
         return false;
     }
