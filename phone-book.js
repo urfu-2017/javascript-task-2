@@ -30,7 +30,7 @@ function phoneExist(phone) {
  */
 exports.add = function (phone, name, email) {
     var b1 = false;
-    if (phone.length !== 10 || phoneExist(phone) || typeof(name) !== 'string') {
+    if (phone.length !== 10 || !name || phoneExist(phone) || typeof(name) !== 'string') {
         b1 = false;
     } else {
         var newRecord = {
@@ -62,7 +62,7 @@ exports.update = function (phone, name, email) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
-    if (i !== phoneBook.length && phoneBook[i].p === phone && typeof(name) === 'string') {
+    if (i !== phoneBook.length && phoneBook[i].p === phone && typeof(name) === 'string' && name) {
         phoneBook[i].n = name;
         if (email) {
             phoneBook[i].m = email;
