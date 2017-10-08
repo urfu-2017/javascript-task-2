@@ -59,13 +59,16 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let i = 0;
     var b1 = false;
+    if (!name || phone.length !== 10) {
+        return false;
+    }
     while (i < phoneBook.length && phoneBook[i].p !== phone) {
         //                                      console.log('update', phoneBook[i].p, phone, i);
         ++i;
     }
     if (i !== phoneBook.length && name) {
         phoneBook[i].n = name;
-        if (email) {
+        if (email && typeof(email) === 'string') {
             phoneBook[i].m = email;
         } else {
             delete phoneBook[i].m;
