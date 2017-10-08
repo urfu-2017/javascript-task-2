@@ -29,7 +29,7 @@ exports.add = function (phone, name, email) {
 
 function checkName(name) {
 
-    if (name === undefined || name === null || name === '' || typeof(name) !== 'string') {
+    if (name === undefined || name === null || name.trim() === '' || typeof(name) !== 'string') {
         return true;
     }
 
@@ -38,7 +38,7 @@ function checkName(name) {
 
 function checkPhone(phone) {
 
-    if (phone === undefined || phone === null || phone === '' ||
+    if (phone === undefined || phone === null || phone.trim() === '' ||
      typeof(phone) !== 'string' || /\^d{10}$/.test(phone)) {
         return true;
     }
@@ -50,7 +50,7 @@ function checkEm(email) {
     if (email === undefined) {
         return false;
     }
-    if (email === null || typeof(email) !== 'string') {
+    if (email === null || typeof(email) !== 'string' || email.trim() === '') {
         return true;
     }
 
@@ -173,7 +173,7 @@ function checkQ(query) {
 function normalize(phone) {
 
     phone = '+7 (' + String(phone).slice(0, 3) + ') ' + String(phone).slice(3, 6) + '-' +
-     String(phone).slice(6, 8) + '-' + String(phone).slice(8);
+     String(phone).slice(6, 8) + '-' + String(phone).slice(8, 10);
 
     return phone;
 }
