@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -19,13 +19,13 @@ var phoneBook = [];
  * @returns {Bool}
  */
 exports.add = function (phone, name, email) {
-    let reg = /(\d)\1\1(\d)\2\2(\d)\3(\d)\4/;
+    let reg = /^(\d){10}$/;
     let contact = { phone: phone, name: name, email: email };
     if (isNoteInPhoneBook(contact)) {
         return false;
     }
-    if (isDataCorrect(contact.phone) && isDataCorrect(contact.name) &&
-        contact.email !== '' && contact.phone.match(reg) !== null) {
+    if (isDataCorrect(phone) && isDataCorrect(name) &&
+        email !== '' && phone.match(reg) !== null) {
         phoneBook.push(contact);
 
         return true;
@@ -215,12 +215,11 @@ function getCountOfAddOrUpdate(csvToArr) {
         let name = arr[0];
         let phone = arr[1];
         let email = arr[2];
-        if (exports.add(phone, name, email)) {
-            countOfAddOrUpdate++;
-        } else if (exports.update(phone, name, email)) {
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
             countOfAddOrUpdate++;
         }
     }
 
     return countOfAddOrUpdate;
 }
+
