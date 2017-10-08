@@ -68,7 +68,7 @@ exports.update = function (phone, name, email) {
     }
     if (i !== phoneBook.length && name) {
         phoneBook[i].n = name;
-        if (email && typeof(email) === 'string') {
+        if (email) {
             phoneBook[i].m = email;
         } else {
             delete phoneBook[i].m;
