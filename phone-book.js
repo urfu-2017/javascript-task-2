@@ -120,7 +120,7 @@ exports.find = function (query) {
         }
     }
 
-    return bookRecordToString(phoneBook);
+    return bookRecordToString(result);
 };
 
 /**
@@ -143,3 +143,15 @@ exports.importFromCsv = function (csv) {
 
     return result;
 };
+
+var csv = [
+    'Борис;5552220022;boris@example.com',
+    'Григорий;5554440044;grisha@example.com',
+    'Алексей;5551110011;alex@example.com',
+    'Валерий;5553330033',
+    'Неизвестный;3330033;unknown@example.com'
+].join('\n');
+
+exports.importFromCsv(csv);
+console.log(exports.find('222'));
+console.log(phoneBook);
