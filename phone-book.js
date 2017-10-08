@@ -61,11 +61,11 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
-    const phoneBookCopy = phoneBook.slice();
+    let phoneBookCopy = phoneBook.slice();
     const phonesToRemove = getPhones(exports.find(query));
     for (const entry of phoneBook) {
         if (phonesToRemove.includes(entry.phone)) {
-            phoneBookCopy.splice(getIndex(entry), 1);
+            phoneBookCopy.splice(getIndex(entry, phoneBookCopy), 1);
         }
     }
     phoneBook = phoneBookCopy;
@@ -73,9 +73,9 @@ exports.findAndRemove = function (query) {
     return phonesToRemove.length;
 };
 
-function getIndex(entry) {
-    for (let i; i < phoneBook.length; i++) {
-        if (phoneBook[i] === entry) {
+function getIndex(entry, phoneBookCopy) {
+    for (let i = 0; i < phoneBookCopy.length; i++) {
+        if (phoneBookCopy[i].phone === entry.phone) {
             return i;
         }
     }
