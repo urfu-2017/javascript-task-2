@@ -21,7 +21,7 @@ describe('phone-book', function () {
 
     it('должен обновлять существующие записи', function () {
         assert.ok(phoneBook.update('5551110011', 'Алексей', 'alex@example.com'));
-        assert.ok(phoneBook.update('5553330033', 'Валерий'));
+        assert.ok(phoneBook.update('5553330033', 'Валерий', null));
     });
 
     it('должен искать все записи по запросу "*"', function () {
