@@ -5,8 +5,7 @@ exports.isStar = true;
 var phoneBook = [];
 
 exports.add = function (phone, name, email) {
-    if (isValidInput(name, phone, email) && !isAlreadyAdded(formatPhoneNumber(phone))) {
-        phone = formatPhoneNumber(phone);
+    if (isValidInput(name, phone) && !isAlreadyAdded(phone)) {
         phoneBook.push({ name, phone, email });
 
         return true;
@@ -26,11 +25,10 @@ function compare(first, second) {
     return 0;
 }
 
-function isValidInput(name, phone, email) {
+function isValidInput(name, phone) {
     const regex = /^\d{10}$/;
-    const nameIsCorrect = typeof name === 'string' && name;
 
-    return nameIsCorrect && regex.test(phone) && email !== '' && typeof phone === 'string';
+    return name && regex.test(phone);
 }
 
 function isAlreadyAdded(phone) {
@@ -50,7 +48,7 @@ function formatPhoneNumber(phone) {
 
 exports.update = function (phone, name, email) {
     for (let entry of phoneBook) {
-        if (entry.phone === formatPhoneNumber(phone) && isValidInput(name, phone, email)) {
+        if (entry.phone === phone && isValidInput(name, phone)) {
             entry.name = name;
             entry.email = email;
 
@@ -110,7 +108,7 @@ function getMatchingEntries(query) {
     for (const entry of phoneBook.sort(compare)) {
         if (isInEntry(entry, query)) {
             const emailStr = (entry.email) ? ', ' + entry.email : '';
-            arrayToReturn.push(entry.name + ', ' + entry.phone + emailStr);
+            arrayToReturn.push(entry.name + ', ' + formatPhoneNumber(entry.phone) + emailStr);
         }
     }
 
@@ -132,7 +130,7 @@ function getAllEntries() {
     const arrayOfStrings = [];
     for (const entry of phoneBook.sort(compare)) {
         const emailStr = entry.email ? ', ' + entry.email : '';
-        arrayOfStrings.push(entry.name + ', ' + entry.phone + emailStr);
+        arrayOfStrings.push(entry.name + ', ' + formatPhoneNumber(entry.phone) + emailStr);
     }
 
     return arrayOfStrings;
