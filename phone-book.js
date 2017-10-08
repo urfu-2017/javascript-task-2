@@ -50,22 +50,8 @@ exports.add = function (phone, name, email) {
     return b1;
 };
 
-/*
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
-exports.update = function (phone, name, email) {
-    let i = 0;
+function upd(phone, name, email, i) {
     var b1 = false;
-    if (phone.length !== 10 || name === '') {
-        return false;
-    }
-    while (i < phoneBook.length && phoneBook[i].p !== phone) {
-        //                                      console.log('update', phoneBook[i].p, phone, i);
-        ++i;
-    }
     if (i !== phoneBook.length) {
         phoneBook[i].n = name;
         if (email) {
@@ -77,6 +63,27 @@ exports.update = function (phone, name, email) {
     } else {
         b1 = false;
     }
+
+    return b1;
+}
+
+/*
+ * Обновление записи в телефонной книге
+ * @param {String} phone
+ * @param {String} name
+ * @param {String} email
+ */
+exports.update = function (phone, name, email) {
+    let i = 0;
+    var b1 = false;
+    if (!name || phone.length !== 10 || name.length === 0) {
+        return false;
+    }
+    while (i < phoneBook.length && phoneBook[i].p !== phone) {
+        //                                      console.log('update', phoneBook[i].p, phone, i);
+        i += 1;
+    }
+    b1 = upd(phone, name, email, i);
     //                                          console.log(phoneBook, 'update');
     //                                          console.log(b1);
 
