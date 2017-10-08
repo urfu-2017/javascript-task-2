@@ -133,6 +133,9 @@ exports.find = function (query) {
 
 function findEntries(query) {
     let entries = [];
+    if (!query) {
+        return entries;
+    }
     Object.keys(phoneBook).forEach(function (phone) {
         const [name, email] = phoneBook[phone];
         const entry = [name, phone, email];
