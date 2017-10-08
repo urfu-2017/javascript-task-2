@@ -75,7 +75,16 @@ function helpUpdate(person, phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
+    if (query === '') {
+        return 0;
+    }
+    var n = phoneBook.length;
+    if (query === '*') {
+        phoneBook = [];
 
+        return n;
+
+    }
     var k = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
         if (helpFind(phoneBook[i], query)) {
@@ -95,7 +104,7 @@ exports.findAndRemove = function (query) {
 exports.find = function (query) {
     var answer = [];
     if (query === '') {
-        return 0;
+        return [];
     }
     if (query === '*') {
         for (var j = 0; j < phoneBook.length; j++) {
