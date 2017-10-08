@@ -28,9 +28,8 @@ function compare(first, second) {
 
 function isInputValid(name, phone, email) {
     const regex = /^\d{10}$/;
-    const nameIsValid = name !== '' && name !== undefined;
 
-    return nameIsValid && regex.test(phone) && email !== '';
+    return name && regex.test(phone) && email !== '';
 }
 
 function isAlreadyAdded(phone) {
@@ -50,7 +49,7 @@ function formatPhoneNumber(phone) {
 
 exports.update = function (phone, name, email) {
     for (let entry of phoneBook) {
-        if (entry.phone === formatPhoneNumber(phone) && name && typeof name === 'string') {
+        if (entry.phone === formatPhoneNumber(phone) && name) {
             entry.name = name;
             entry.email = email;
 
@@ -132,9 +131,7 @@ exports.importFromCsv = function (csv) {
     let phonesAdded = 0;
     const entryStrings = csv.split('\n');
     for (const entryString of entryStrings) {
-        const name = entryString.split(';')[0];
-        const phone = entryString.split(';')[1];
-        const email = entryString.split(';')[2];
+        const [name, phone, email] = entryString.split(';');
         if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
             phonesAdded++;
         }
