@@ -59,7 +59,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let i = 0;
     var b1 = false;
-    if (!name || phone.length !== 10) {
+    if (phone.length !== 10 || name === '') {
         return false;
     }
     while (i < phoneBook.length && phoneBook[i].p !== phone) {
