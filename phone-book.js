@@ -3,7 +3,7 @@ exports.isStar = true;
 var phoneBook = [];
 
 function isDataValid(phone, name) {
-    if (phone === undefined || name === undefined) {
+    if (phone === undefined || typeof(name) !== 'string' || name === '') {
         return false;
     }
     if (!/^\d{10}$/.test(String(phone)) || !isPhoneUnique(phone)) {
