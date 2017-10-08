@@ -52,8 +52,8 @@ exports.update = function (phone, name, email) {
 
 
 exports.findAndRemove = function (query) {
+    let len = phoneBook.length;
     if (query === '*') {
-        let len = phoneBook.length;
         phoneBook = [];
 
         return len;
@@ -61,6 +61,9 @@ exports.findAndRemove = function (query) {
     if (query === '') {
         return phoneBook.length;
     }
+    phoneBook = phoneBook.filter(isEntryBad(query));
+
+    return len - phoneBook.length;
 };
 
 
@@ -75,15 +78,25 @@ exports.find = function (query) {
     }
 
     return phoneBook
-        .filter(isEntrySuitable, query)
+        .filter(isEntrySuitable(query))
         .sort(compareEntry)
         .map(getStringOfEntry);
 };
 
-function isEntrySuitable(entry, query) {
-    return entry.phone.indexOf(query) !== -1 ||
-        entry.name.indexOf(query) !== -1 ||
-        entry.email.indexOf(query) !== 1;
+function isEntryBad(query) {
+    return function (entry) {
+        return entry.phone.indexOf(query) === -1 &&
+            entry.name.indexOf(query) === -1 &&
+            entry.email.indexOf(query) === -1;
+    };
+}
+
+function isEntrySuitable(query) {
+    return function (entry) {
+        return entry.phone.indexOf(query) !== -1 ||
+            entry.name.indexOf(query) !== -1 ||
+            entry.email.indexOf(query) !== -1;
+    };
 }
 
 function compareEntry(a, b) {
