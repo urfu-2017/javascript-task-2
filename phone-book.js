@@ -61,6 +61,10 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let countDelete = 0;
+    if (query === '' || typeof(query) !== 'string') {
+
+        return countDelete;
+    }
     for (var i = phoneBook.length - 1; i >= 0; i--) {
         countDelete += deleteUser(query, phoneBook[i], i);
     }
@@ -75,6 +79,10 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     let result = [];
+    if (query === '' || typeof(query) !== 'string') {
+
+        return result;
+    }
     for (let person of phoneBook) {
         checkUser(person, query, result);
     }
