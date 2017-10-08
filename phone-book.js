@@ -143,8 +143,8 @@ exports.find = function (query) {
 };
 
 function ckeckOnExistance(name, phone, email, query) {
-    if (name.indexOf(query) >= 0 || phone.indexOf(query) >= 0 ||
-    email.indexOf(query) >= 0) {
+    if (name.indexOf(String(query)) >= 0 || phone.indexOf(String(query)) >= 0 ||
+    email.indexOf(String(query)) >= 0) {
 
         return true;
     }
@@ -163,7 +163,7 @@ function checkEmail(email) {
 }
 
 function checkQ(query) {
-    if (query === '' || query === undefined || query === null || typeof(query) !== 'string') {
+    if (query === '' || query === null || typeof(query) !== 'string') {
         return true;
     }
 
