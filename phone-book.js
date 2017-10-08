@@ -45,7 +45,7 @@ exports.add = function (phone, name, email) {
 
 
 exports.update = function (phone, name, email) {
-    if (phoneBook.hasOwnProperty(phone) && ((typeof name) === 'string')) {
+    if (phoneBook.hasOwnProperty(phone) && ((typeof name) === 'string') && name.length > 0) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -62,7 +62,7 @@ function formatPhone(phone) {
 
 function suitableNotes(query) {
     let notes = [];
-    let emptyQuery = (q) => q === undefined || q === '';
+    let emptyQuery = (q) => q === undefined || q === '' || query === null;
     if (emptyQuery(query)) {
         return notes;
     }
