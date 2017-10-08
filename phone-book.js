@@ -59,17 +59,10 @@ function isAlreadyAdded(phone) {
 }
 
 function formatPhoneNumber(phone) {
-    const numbers = String(phone).split('');
-
-    return '+7 (' + spliceAndJoin(numbers, 0, 3) + ') ' +
-     spliceAndJoin(numbers, 0, 3) + '-' +
-     spliceAndJoin(numbers, 0, 2) + '-' +
-     spliceAndJoin(numbers, 0, 2);
+    return '+7 (' + phone.slice(0, 3) + ') ' + phone.slice(3, 6) + '-' +
+     phone.slice(6, 8) + '-' + phone.slice(8, 10);
 }
 
-function spliceAndJoin(inputArray, from, to) {
-    return inputArray.splice(from, to).join('');
-}
 
 /**
  * Обновление записи в телефонной книге
