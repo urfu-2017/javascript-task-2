@@ -30,7 +30,7 @@ function phoneExist(phone) {
  */
 exports.add = function (phone, name, email) {
     var b1 = false;
-    if (phone.length !== 10 || !name || phoneExist(phone) || typeof(name) !== 'string') {
+    if (phone.length !== 10 || phoneExist(phone) || typeof(name) !== 'string') {
         b1 = false;
     } else {
         var newRecord = {
