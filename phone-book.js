@@ -12,21 +12,21 @@ exports.isStar = true;
 let phoneBook = {};
 exports.phoneBook = phoneBook;
 
-function checkInputCorrect(phone, name, email) {
-    return checkName(name) && checkPhone(phone) && checkEmail(email) && !(phone in phoneBook);
+function checkInputCorrect(phone, name) {
+    return checkName(name) && checkPhone(phone);
 }
 
 function checkName(name) {
     return name !== '' && name !== undefined && typeof name === 'string';
 }
 
-function checkEmail(email) {
-    if (email !== undefined) {
-        return /^[a-zA-Z0-9.^$*!-=`|~#%'+/?_{}]+@[a-zA-Z0-9.]+\.[a-zA-Z]+$/.test(email);
-    }
+// function checkEmail(email) {
+//     if (email !== undefined) {
+//         return /^[a-zA-Z0-9.^$*!-=`|~#%'+/?_{}]+@[a-zA-Z0-9.]+\.[a-zA-Z]+$/.test(email);
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
 function checkPhone(phone) {
     return phone !== undefined && /[0-9]{10}/.test(phone);
@@ -70,7 +70,7 @@ exports.add = function (phone, name, email) {
 // Возвращает true или false в зависимости от успеха опереации
 // «Электронную почту» можно стереть (не передав последний параметр), а «Имя» – нет
 exports.update = function (phone, name, email) {
-    if (checkName(name) && phone in phoneBook && checkEmail(email)) {
+    if (checkName(name) && phone in phoneBook) {
         if (email !== undefined) {
             phoneBook[phone] = `${phone}, ${name}, ${email}`;
         } else {
