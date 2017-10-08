@@ -206,22 +206,9 @@ exports.importFromCsv = function (csv) {
     var sep = [];
     var total = 0;
     sep = csv.split('\n');
-    for (let i = 0; i < sep.length; i += 1) {
-        var note = [];
-        note = sep[i].split(';');
-
-        /* var b1 = false;
-        b1 = exports.add (note[1], note[0], note[2]);
-        if (!b1) {
-            b1 = exports.update (note[1], note[0], note[2]);
-        }
-        if (b1) {
-            total++;
-        }*/
-        // console.log(note[1], note[0], note[2]);
-        if (phoneExist(note[1]) && exports.update (note[1], note[0], note[2])) {
-            total++;
-        } else if (exports.add (note[1], note[0], note[2])) {
+    for (var notes of sep) {
+        var note = notes.split(';');
+        if (exports.update (note[1], note[0], note[2]) || exports.add (note[1], note[0], note[2])) {
             total++;
         }
     }
