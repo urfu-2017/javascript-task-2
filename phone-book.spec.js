@@ -9,14 +9,14 @@ describe('phone-book', function () {
     it('должен добавлять записи', function () {
         assert.ok(phoneBook.add('5554440044', 'Григорий', 'grisha@example.com'));
         assert.ok(phoneBook.add('5552220022', 'Борис', 'boris@example.com'));
-        assert.ok(phoneBook.add('5551110011', 'Алекс'));
+        assert.ok(phoneBook.add('5551110011', 'Алекс', ''));
         assert.ok(phoneBook.add('5553330033', 'Валерий', 'valera@example.com'));
     });
 
     it('не должен добавлять неправильные записи', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
-        assert.ok(!phoneBook.add('5555550055'));
+        assert.ok(!phoneBook.add('5555550055', ''));
     });
 
     it('должен обновлять существующие записи', function () {
