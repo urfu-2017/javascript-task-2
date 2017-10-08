@@ -58,10 +58,15 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     let i = 0;
     var b1 = false;
-    while (i < phoneBook.length && phoneBook[i].p !== phone) {
-        //                                      console.log('update', phoneBook[i].p, phone, i);
-        ++i;
+    if (phoneExist(phone)) {
+        while (i < phoneBook.length && phoneBook[i].p !== phone) {
+            //                                      console.log('update', phoneBook[i].p, phone, i);
+            ++i;
+        }
+    } else {
+        b1 = false;
     }
+
     if (i !== phoneBook.length && name) {
         phoneBook[i].n = name;
         if (email) {
