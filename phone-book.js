@@ -5,7 +5,7 @@ exports.isStar = true;
 var phoneBook = [];
 
 exports.add = function (phone, name, email) {
-    if (isInputValid(name, phone, email) && !isAlreadyAdded(formatPhoneNumber(phone))) {
+    if (isValidInput(name, phone, email) && !isAlreadyAdded(formatPhoneNumber(phone))) {
         phone = formatPhoneNumber(phone);
         phoneBook.push({ name, phone, email });
 
@@ -26,7 +26,7 @@ function compare(first, second) {
     return 0;
 }
 
-function isInputValid(name, phone, email) {
+function isValidInput(name, phone, email) {
     const regex = /^\d{10}$/;
 
     return name && regex.test(phone) && email !== '';
@@ -49,7 +49,7 @@ function formatPhoneNumber(phone) {
 
 exports.update = function (phone, name, email) {
     for (let entry of phoneBook) {
-        if (entry.phone === formatPhoneNumber(phone) && name) {
+        if (entry.phone === formatPhoneNumber(phone) && isValidInput(name, phone, email)) {
             entry.name = name;
             entry.email = email;
 
@@ -93,7 +93,7 @@ function getPhones(entries) {
 }
 
 exports.find = function (query) {
-    if (!query) {
+    if (!query || typeof query !== 'string') {
         return [];
     }
     switch (query) {
