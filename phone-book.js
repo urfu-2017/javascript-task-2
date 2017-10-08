@@ -1,24 +1,9 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
-
-/**
- * Телефонная книга
- */
 
 var phoneBook = [];
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- * @returns {Boolean} 
- */
 exports.add = function (phone, name, email) {
     if (isInputValid(name, phone, email) && !isAlreadyAdded(formatPhoneNumber(phone))) {
         phone = formatPhoneNumber(phone);
@@ -63,14 +48,6 @@ function formatPhoneNumber(phone) {
      phone.slice(6, 8) + '-' + phone.slice(8, 10);
 }
 
-
-/**
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- * @returns {Boolean}
- */
 exports.update = function (phone, name, email) {
     for (let entry of phoneBook) {
         if (entry.phone === formatPhoneNumber(phone) && name && typeof name === 'string') {
@@ -84,11 +61,6 @@ exports.update = function (phone, name, email) {
     return false;
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- * @returns {Number} counter
- */
 exports.findAndRemove = function (query) {
     const phoneBookCopy = phoneBook.slice();
     const phonesToRemove = getPhones(exports.find(query));
@@ -111,11 +83,6 @@ function getPhones(entries) {
     return phones;
 }
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- * @returns {ArrayOfStrings}
- */
 exports.find = function (query) {
     if (!query) {
         return [];
@@ -152,16 +119,7 @@ function createArrayOfAllStrings() {
     return arrayOfStrings;
 }
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
 exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
     let phonesAdded = 0;
     const entryStrings = csv.split('\n');
     for (const entryString of entryStrings) {
