@@ -89,18 +89,16 @@ exports.find = function (query) {
     }
     switch (query) {
         case '*':
-            return createArrayOfAllStrings();
+            return getAllEntries();
         default:
-            return makeArrayOfSuitableStrings(query);
+            return getMatchingEntries(query);
     }
 };
 
-function makeArrayOfSuitableStrings(query) {
+function getMatchingEntries(query) {
     const arrayToReturn = [];
     for (const entry of phoneBook.sort(compare)) {
-        if (entry.name.indexOf(query) !== -1 ||
-        entry.phone.indexOf(query) !== -1 ||
-        (entry.email && entry.email.indexOf(query) !== -1)) {
+        if (isInEntry(entry, query)) {
             const emailStr = (entry.email) ? ', ' + entry.email : '';
             arrayToReturn.push(entry.name + ', ' + entry.phone + emailStr);
         }
@@ -109,7 +107,18 @@ function makeArrayOfSuitableStrings(query) {
     return arrayToReturn;
 }
 
-function createArrayOfAllStrings() {
+function isInEntry(entry, query) {
+    for (let i = 0; i < Object.values(entry).length; i++) {
+        const property = Object.values(entry)[i];
+        if (property && property.indexOf(query) !== -1) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function getAllEntries() {
     const arrayOfStrings = [];
     for (const entry of phoneBook.sort(compare)) {
         const emailStr = entry.email ? ', ' + entry.email : '';
