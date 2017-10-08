@@ -174,6 +174,9 @@ function joiner(foundResults, res) {
  */
 exports.find = function (query) {
     var foundResults = [];
+    if (typeof(query) !== 'string') {
+        return foundResults;
+    }
     switch (query) {
         case '*':
             foundResults = phoneBook;
