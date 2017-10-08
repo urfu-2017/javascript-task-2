@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -106,10 +106,10 @@ exports.find = function (query) {
         }
 
         return unsortedResultList.sort((a, b) => {
-            if (a < b) {
+            if (a.split(', ')[0] < b.split(', ')[0]) {
                 return -1;
             }
-            if (a > b) {
+            if (a.split(', ')[0] > b.split(', ')[0]) {
                 return 1;
             }
 
