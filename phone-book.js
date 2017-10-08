@@ -50,7 +50,7 @@ function checkEm(email) {
     if (email === undefined) {
         return false;
     }
-    if (email === null || email === '' || typeof(email) !== 'string') {
+    if (email === null || typeof(email) !== 'string') {
         return true;
     }
 
@@ -183,12 +183,12 @@ function normalize(phone) {
  * @star
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
-
 exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-
     return csv.split('\n').length;
 };
 */
+
+
