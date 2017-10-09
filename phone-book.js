@@ -28,7 +28,7 @@ function deleteDuplicates(arr) {
  * @returns {Boolean}
  */
 function incorrectNameAndPhone(name, phone) {
-    if (typeof name === 'undefined' || name.length === 0 || !(/^[0-9]{10}$/.test(phone))) {
+    if (typeof name !== 'string' || name.length === 0 || !(/^\d{10}$/.test(phone))) {
         return true;
     }
 
