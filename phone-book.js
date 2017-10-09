@@ -27,8 +27,9 @@ function formatData(data) {
         }
         res.push(tempStr);
     }
-    res = res.sort(function(a, b) {
-        var nameA = a.toLowerCase(), nameB = b.toLowerCase();
+    res = res.sort(function (a, b) {
+        var nameA = a.toLowerCase();
+        var nameB = b.toLowerCase();
         if (nameA < nameB) {
             return -1;
         }
