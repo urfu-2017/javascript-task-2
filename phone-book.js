@@ -27,12 +27,8 @@ function deleteDuplicates(arr) {
  * @param {String} phone
  * @returns {Boolean}
  */
-function incorrectNameAndPhone(name, phone) {
-    if (typeof name !== 'string' || name.length === 0 || !(/^\d{10}$/.test(phone))) {
-        return true;
-    }
-
-    return false;
+function incorrectNameOrPhone(name, phone) {
+    return (typeof name !== 'string' || name === '' || !(/^\d{10}$/.test(phone)));
 }
 
 /**
@@ -42,10 +38,14 @@ function incorrectNameAndPhone(name, phone) {
  * @returns {String} - Найденная по шаблону запись в подходящем формате
  */
 function findQueryInEntry(query, entry) {
+    let email = '';
+    if (typeof entry.email !== 'undefined') {
+        email = `, ${entry.email}`;
+    }
     let resultString;
     for (let value of Object.values(entry)) {
-        if (query.test(value)) {
-            resultString = `${entry.name}, +7 (${entry.phone.slice(0, 3)}) ${entry.phone.slice(3, 6)}-${entry.phone.slice(6, 8)}-${entry.phone.slice(8)}, ${entry.email}`; // eslint-disable-line max-len
+        if (typeof value !== 'undefined' && value.indexOf(query) !== -1) {
+            resultString = `${entry.name}, +7 (${entry.phone.slice(0, 3)}) ${entry.phone.slice(3, 6)}-${entry.phone.slice(6, 8)}-${entry.phone.slice(8)}${email}`; // eslint-disable-line max-len
         }
     }
     if (typeof resultString !== 'undefined') {
@@ -68,7 +68,7 @@ var phoneBook = [];
  * @returns {Boolean} – успех операции
  */
 exports.add = function (phone, name, email) {
-    if (incorrectNameAndPhone(name, phone)) {
+    if (incorrectNameOrPhone(name, phone)) {
         return false;
     }
     for (let phoneEntry of phoneBook) {
@@ -89,7 +89,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean} – успех операции
  */
 exports.update = function (phone, name, email) {
-    if (incorrectNameAndPhone(name, phone)) {
+    if (incorrectNameOrPhone(name, phone)) {
         return false;
     }
     for (let phoneEntry of phoneBook) {
@@ -111,15 +111,11 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let deletionCounter = 0;
-    switch (query) {
-        case '':
-            return 0;
-        case '*':
-            query = /.*/g;
-            break;
-        default:
-            query = new RegExp(query);
-            break;
+    if (query === '') {
+        return 0;
+    }
+    if (query === '*') {
+        query = '';
     }
     for (let i = phoneBook.length - 1; i > -1; i--) {
         let str = findQueryInEntry(query, phoneBook[i]);
@@ -139,15 +135,11 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     let result = [];
-    switch (query) {
-        case '':
-            return [];
-        case '*':
-            query = /.*/g;
-            break;
-        default:
-            query = new RegExp(query);
-            break;
+    if (query === '') {
+        return [];
+    }
+    if (query === '*') {
+        query = '';
     }
     for (let phoneEntry of phoneBook) {
         let str = findQueryInEntry(query, phoneEntry);
@@ -172,9 +164,7 @@ exports.importFromCsv = function (csv) {
     csv = csv.split('\n');
     for (let csvEntity of csv) {
         let [name, phone, email] = csvEntity.split(';');
-        if (exports.add(phone, name, email)) {
-            csvNumber++;
-        } else if (exports.update(phone, name, email)) {
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
             csvNumber++;
         }
     }
