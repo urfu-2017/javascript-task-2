@@ -93,8 +93,8 @@ exports.importFromCsv = function (csv) {
     let rows = csv.split('\n');
     let counter = 0;
     for (let i = 0; i < rows.length; i++) {
-        let [phone, name, email] = rows[i].split(';');
-        if (exports.add(name, phone, email) || exports.update(name, phone, email)) {
+        let [name, phone, email] = rows[i].split(';');
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
             counter++;
         }
     }
@@ -103,6 +103,9 @@ exports.importFromCsv = function (csv) {
 };
 
 function findContactsByString(query) {
+    if (query === "") {
+        return [];
+    }
     let result = [];
     let regex = new RegExp(query.replace('*', '.*'));
     let numbers = Object.keys(phoneBook);
