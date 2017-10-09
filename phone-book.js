@@ -33,9 +33,16 @@ function formatData(data) {
 }
 function numberFormater(number) {
     return '+7 (' + number.substring(0, 3) + ') ' +
-        number.substring(3,6) + '-' + number.substring(6, 8) + '-' +
+        number.substring(3, 6) + '-' + number.substring(6, 8) + '-' +
         number.substring(8, 10);
 }
+function necessaryCheck(phone, name) {
+    var reg = new RegExp('^[0-9]{10}$');
+
+    return (reg.test(parseInt (phone)) && (typeof name !== 'undefined') &&
+    checkIfName(name));
+}
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -46,19 +53,21 @@ function numberFormater(number) {
 exports.add = function (phone, name, email) {
     var reg = new RegExp('^[0-9]{10}$');
     var entry = { phone: phone, name: name, email: email };
-    if (reg.test(parseInt (phone)) && (typeof name !== 'undefined') &&
-        checkIfName(name)){
-        for (var index = 0; index < phoneBook.length; ++index) {
-            if ((typeof phoneBook[index].phone !== 'undefined') &&
-                phoneBook[index].phone.localeCompare(phone) === 0) {
-                return false;
+    if (!reg.test(parseInt (phone)) || (typeof name == 'undefined') ||
+        !checkIfName(name)) {
+        return false;
+    }
+    for (var index = 0; index < phoneBook.length; ++index) {
+        if ((typeof phoneBook[index].phone !== 'undefined') &&
+            phoneBook[index].phone.localeCompare(phone) === 0) {
+            return false;
             }
         }
-        phoneBook.push(entry);
+    phoneBook.push(entry);
 
-        return true;
-    }
+    return true;
 };
+
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
@@ -69,19 +78,20 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     var entry = { phone: phone, name: name, email: email };
     var reg = new RegExp('^[0-9]{10}$');
-    if (reg.test(parseInt(phone)) && (typeof name !== 'undefined') &&
-        checkIfName(name)) {
-        for (var index = 0; index < phoneBook.length; ++index) {
-            if ((typeof phoneBook[index].phone !== 'undefined') &&
-                phoneBook[index].phone.localeCompare(phone) === 0) {
-                phoneBook[index] = entry;
-
-                return true;
-            }
-        }
-
+    if (!reg.test(parseInt (phone)) || (typeof name == 'undefined') ||
+        !checkIfName(name)) {
         return false;
     }
+    for (var index = 0; index < phoneBook.length; ++index) {
+        if ((typeof phoneBook[index].phone !== 'undefined') &&
+            phoneBook[index].phone.localeCompare(phone) === 0) {
+            phoneBook[index] = entry;
+
+            return true;
+        }
+    }
+
+    return false;
 };
 
 
@@ -103,11 +113,7 @@ exports.findAndRemove = function (query) {
     }
     for (var index = 0; index < phoneBook.length; ++index) {
         for (var k in phoneBook[index]) {
-            if (phoneBook[index].hasOwnProperty(k) &&
-                (typeof phoneBook[index][k] !== 'undefined') &&
-                phoneBook[index][k].indexOf(query) !== -1) {
-                out.push(phoneBook[index]);
-            }
+            advancedPush(helper(index, k, query),out);
         }
     }
     for (var i = 0; i < out.length; ++i) {
@@ -117,7 +123,20 @@ exports.findAndRemove = function (query) {
 
     return out.length;
 };
+function helper(index, k, query) {
+    if (phoneBook[index].hasOwnProperty(k) &&
+        (typeof phoneBook[index][k] !== 'undefined') &&
+        phoneBook[index][k].indexOf(query) !== -1) {
+        return phoneBook[index];
+    }
 
+    return '';
+}
+function advancedPush(data, arr){
+    if (data !== '') {
+        arr.push(data)
+    }
+}
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -133,11 +152,7 @@ exports.find = function (query) {
     }
     for (var index = 0; index < phoneBook.length; ++index) {
         for (var k in phoneBook[index]) {
-            if (phoneBook[index].hasOwnProperty(k) &&
-                (typeof phoneBook[index][k] !== 'undefined') &&
-                phoneBook[index][k].indexOf(query) !== -1) {
-                out.push(phoneBook[index]);
-            }
+            advancedPush(helper(index, k, query),out);
         }
     }
     if (out.length !== 0) {
@@ -146,6 +161,7 @@ exports.find = function (query) {
 
     return '';
 };
+
 /*
  * Импорт записей из csv-формата
  * @star
