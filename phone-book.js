@@ -124,7 +124,7 @@ exports.findAndRemove = function (query) {
     for (let i = phoneBook.length - 1; i > -1; i--) {
         let str = findQueryInEntry(query, phoneBook[i]);
         if (typeof str !== 'undefined') {
-            phoneBook.splice(phoneBook[i], 1);
+            phoneBook.splice(i, 1);
             deletionCounter++;
         }
     }
