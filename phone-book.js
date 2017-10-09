@@ -60,6 +60,20 @@ function checkInput(phone, name, email) {
 
     return entry;
 }
+function sanityCheck(phone, name, email){
+    var reg = new RegExp('^[0-9]{10}$');
+    var regEmail = new RegExp('@');
+    if (!reg.test(phone) || (typeof name === 'undefined') ||
+        !checkIfName(name)) {
+        return false;
+    }
+    if ((typeof name !== 'undefined') && (typeof email !== 'undefined') &&
+        !regEmail.test(email)) {
+        return false;
+    }
+
+    return true;
+}
 
 /**
  * Добавление записи в телефонную книгу
@@ -72,12 +86,7 @@ exports.add = function (phone, name, email) {
     var entry = {};
     var reg = new RegExp('^[0-9]{10}$');
     var regEmail = new RegExp('@');
-    if (!reg.test(phone) || (typeof name === 'undefined') ||
-        !checkIfName(name)) {
-        return false;
-    }
-    if ((typeof name !== 'undefined') && (typeof email !== 'undefined') &&
-        !regEmail.test(email)) {
+    if (!sanityCheck(phone, name, email)) {
         return false;
     }
     for (var index = 0; index < phoneBook.length; ++index) {
