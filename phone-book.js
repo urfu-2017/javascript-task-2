@@ -14,6 +14,9 @@ var phoneBook = [];
 function phoneExist(phone) {
     let b1 = false;
     let i = 0;
+    if (phone.length !== 10 || phone === undefined) {
+        b1 = true;
+    }
     while (i < phoneBook.length && b1 === false) {
         b1 = (phoneBook[i].p === phone);
         ++i;
@@ -31,7 +34,7 @@ function phoneExist(phone) {
  */
 exports.add = function (phone, name, email) {
     var b1 = false;
-    if (phone.length !== 10 || !name || phoneExist(phone) || name.length === 0) {
+    if (!name || phoneExist(phone) || name === '' || typeof(name) !== 'string') {
         b1 = false;
     } else {
         var newRecord = {
