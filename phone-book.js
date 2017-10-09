@@ -145,7 +145,7 @@ exports.find = function (query) {
 
 function ckeckOnExistance(name, phone, email, query) {
     if (name.indexOf(String(query)) >= 0 || phone.indexOf(String(query)) >= 0 ||
-    email.indexOf(String(query)) >= 0) {
+    String(email).indexOf(String(query)) >= 0) {
 
         return true;
     }
