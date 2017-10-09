@@ -45,10 +45,7 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
-    if (!correctName(name) || !correctEmail(email) || !correctNumber(phone)) {
-        return false;
-    }
-    if (!correctInfo(phone)) {
+    if (!correctName(name) || !correctNumber(phone)) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
@@ -63,10 +60,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     var result = [];
-    if (query === '') {
-        return 0;
-    }
-    if (typeof(query) !== 'string' || query === undefined) {
+    if (query === undefined || query === '') {
 
         return 0;
     }
