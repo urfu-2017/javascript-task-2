@@ -38,6 +38,9 @@ function numberFormater(number) {
 }
 function checkInput(phone, name, email) {
     var entry = {};
+    if (typeof(phone) !== 'string' || typeof(name) !== 'string') {
+        throw new TypeError('Incorrect input!');
+    }
     if (typeof email === 'undefined') {
         entry = { phone: phone, name: name };
     } else {
@@ -82,7 +85,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     var reg = new RegExp('^[0-9]{10}$');
-    if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
+    if (!reg.test(phone) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
     }
