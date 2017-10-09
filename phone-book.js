@@ -95,25 +95,28 @@ exports.findAndRemove = function (query) {
 
 exports.find = function (query) {
     var result = [];
-    if (typeof(query) !== 'string' || query === '') {
+    if (typeof query !== 'string' || query === '') {
         return result.sort();
     }
+    result = findTwo(query);
 
+    return result.sort();
+};
+
+function findTwo(query) {
+    var result = [];
     if (query === '*') {
-        for (var i = 0; i < phoneBook.length; i++) {
-            result.push(toFormat(phoneBook[i]));
-        }
-
-        return result;
+        query = '';
     }
+
     for (var i = 0; i < phoneBook.length; i++) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
             result.push(toFormat(phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email));
         }
     }
 
-    return result.sort();
-};
+    return result;
+}
 
 function findInfo(query, phone, name, email) {
     if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1) {
