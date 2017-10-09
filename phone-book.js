@@ -106,15 +106,22 @@ function findContactsByString(query) {
     if (!query) {
         return [];
     }
+    if (query === '*') {
+        return Object.keys(phoneBook);
+    }
     let result = [];
-    let regex = new RegExp(query.replace('*', '.*'));
+    let regex = new RegExp(query);
     let numbers = Object.keys(phoneBook);
     for (let phone of numbers) {
         let contact = phoneBook[phone];
-        if (regex.test(phone) || regex.test(contact.name) || regex.test(contact.email)) {
+        if (regex.test(phone) || checkContact(contact, regex)) {
             result.push(phone);
         }
     }
 
     return result;
+}
+
+function checkContact(contact, regex) {
+    return regex.test(contact.name) || regex.test(contact.email);
 }
