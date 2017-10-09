@@ -1,62 +1,133 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
 
-/**
- * Телефонная книга
- */
-var phoneBook;
+var phoneBook = {};
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
 exports.add = function (phone, name, email) {
+    if (!checkName(name) || !checkPhone(phone)) {
+        return false;
+    }
+    phoneBook[phone] = {};
+    phoneBook[phone].name = name;
+    phoneBook[phone].email = email;
 
+    return true;
 };
 
-/**
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
+function checkPhone(phone) {
+    var regExp = new RegExp('\\d{10}');
+    if (!regExp.test(phone) || phoneBook.hasOwnProperty(phone) || phone.length > 10) {
+        return false;
+    }
+
+    return true;
+}
+
+function checkName(name) {
+    if (name === '' || name === undefined || typeof name !== 'string') {
+        return false;
+    }
+
+    return true;
+}
+
 exports.update = function (phone, name, email) {
+    if (!checkName(name) || !phoneBook.hasOwnProperty(phone)) {
+        return false;
+    }
+    phoneBook[phone].name = name;
+    phoneBook[phone].email = email;
 
+    return true;
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
 exports.findAndRemove = function (query) {
+    let count = Object.keys(phoneBook).length;
+    if (query === '') {
+        return 0;
+    } else if (query === '*') {
+        query = '';
+    }
+    let arrayOfRecords = findRecords(query);
+    for (let record of arrayOfRecords) {
+        delete phoneBook[record[1]];
+    }
 
+    return count - Object.keys(phoneBook).length;
 };
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
 exports.find = function (query) {
+    let result = [];
+    if (query === '') {
+        return [];
+    } else if (query === '*') {
+        result = findRecords('');
+    } else {
+        result = findRecords(query);
+    }
+    sortByFirstItem(result);
+    for (let data of result) {
+        data[1] = formatPhone(data[1]);
+        result[result.indexOf(data)] = data.join(', ');
+    }
 
+    return result;
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
-exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+function findRecords(query) {
+    let array = [];
+    for (let phone in phoneBook) {
+        if (phoneBook.hasOwnProperty(phone)) {
+            checkOccurrences(query, phone, array);
+        }
+    }
 
-    return csv.split('\n').length;
+    return array;
+}
+
+function checkOccurrences(query, phone, array) {
+    if (phone.indexOf(query) !== -1 ||
+    phoneBook[phone].name.indexOf(query) !== -1 ||
+    (phoneBook[phone].email !== undefined && phoneBook[phone].email.indexOf(query) !== -1)) {
+        if (phoneBook[phone].email !== undefined) {
+            array.push([phoneBook[phone].name, phone, phoneBook[phone].email]);
+        } else {
+            array.push([phoneBook[phone].name, phone]);
+        }
+    }
+}
+
+function sortByFirstItem(array) {
+    array.sort(function (a, b) {
+        if (a[0] > b[0]) {
+            return 1;
+        } else if (a[0] < b[0]) {
+            return -1;
+        }
+
+        return 0;
+    });
+}
+
+function formatPhone(phone) {
+    phone = phone.split('');
+    phone.splice(0, 0, '+7 (');
+    phone.splice(4, 0, ') ');
+    phone.splice(8, 0, '-');
+    phone.splice(11, 0, '-');
+
+    return phone.join('');
+}
+
+exports.importFromCsv = function (csv) {
+    let count = 0;
+    let data = csv.split('\n');
+    for (let contact of data) {
+        let info = contact.split(';');
+        count += exports.add(info[1], info[0], info[2]) ||
+        exports.update(info[1], info[0], info[2]);
+    }
+
+    return count;
 };
