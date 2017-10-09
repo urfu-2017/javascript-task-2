@@ -10,44 +10,47 @@ exports.isStar = false;
  * Телефонная книга
  */
 var phoneBook = [];
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
 function checkIfName(name) {
     var reg = new RegExp('@');
+
     return !reg.test(name);
 }
 function formatData(data) {
     var res = [];
     for (var index = 0; index < data.length; ++index) {
         var tempStr = "";
-        if ((typeof data[index].email != 'undefined')) {
-            tempStr = data[index].name + ", " + numberFormater(data[index].phone)+ ", "
-                + data[index].email;
+        if ((typeof data[index].email !== 'undefined')) {
+            tempStr = data[index].name + ', ' + numberFormater(data[index].phone) +
+                ', ' + data[index].email;
         } else {
-            tempStr = data[index].name + ", " + numberFormater(data[index].phone)
+            tempStr = data[index].name + ', ' + numberFormater(data[index].phone);
         }
         res.push(tempStr);
     }
     res = res.sort();
+
     return res;
 }
 function numberFormater(number) {
-    return "+7 (" + number.substring(0,3)+") " +
-        number.substring(3,6) + "-" + number.substring(6,8) + "-" +
-        number.substring(8,10)
+    return '+7 (' + number.substring(0,3)+') ' +
+        number.substring(3,6) + '-' + number.substring(6,8) + '-' +
+        number.substring(8,10);
 }
+
+/**
+ * Добавление записи в телефонную книгу
+ * @param {String} phone
+ * @param {String} name
+ * @param {String} email
+ */
 exports.add = function(phone, name, email) {
     var reg = new RegExp('^[0-9]{10}$');
     var entry = {phone: phone, name: name, email: email};
-    if (reg.test(parseInt(phone)) && (typeof name != 'undefined')
-        && checkIfName(name)){
+    if (reg.test(parseInt(phone)) && (typeof name !== 'undefined') &&
+        checkIfName(name)){
         for (var index = 0; index < phoneBook.length; ++index) {
-            if ((typeof phoneBook[index].phone != 'undefined')
-                && phoneBook[index].phone.localeCompare(phone) == 0) {
+            if ((typeof phoneBook[index].phone !== 'undefined') &&
+                phoneBook[index].phone.localeCompare(phone) === 0) {
                return false;
             }
         }
@@ -66,11 +69,11 @@ exports.add = function(phone, name, email) {
 exports.update = function (phone, name, email) {
     var entry = {phone: phone, name: name, email: email};
     var reg = new RegExp('^[0-9]{10}$');
-    if (reg.test(parseInt(phone)) && (typeof name != 'undefined')
-        && checkIfName(name)){
+    if (reg.test(parseInt(phone)) && (typeof name != 'undefined') &&
+        checkIfName(name)){
         for (var index = 0; index < phoneBook.length; ++index) {
-            if ((typeof phoneBook[index].phone != 'undefined')
-                && phoneBook[index].phone.localeCompare(phone) == 0) {
+            if ((typeof phoneBook[index].phone != 'undefined') &&
+                phoneBook[index].phone.localeCompare(phone) === 0) {
                 phoneBook[index] = entry;
                 return true;
             }
@@ -88,10 +91,10 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     var out = [];
-    if (query == ''){
+    if (query === ''){
         return 0;
     }
-    if (query == '*'){
+    if (query === '*'){
         phoneBook = [];
         return phoneBook.length;
     }
@@ -117,10 +120,10 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     var out = [];
-    if (query == ''){
+    if (query === ''){
         return
     }
-    if (query == '*'){
+    if (query === '*'){
         return formatData(phoneBook);
     }
     for (var index = 0; index < phoneBook.length; ++index) {
