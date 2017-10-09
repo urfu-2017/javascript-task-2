@@ -96,6 +96,9 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     let countDeleted = 0;
     if (typeof(query) === 'string') {
+        if (query.split()[0] === '' || query.split()[0] === ',') {
+            return countDeleted;
+        }
         let foundEntries = exports.find(query);
         foundEntries.forEach(entry => {
             let number = entry.split(', ')[1].replace(/\s|-|\(|\)/g, '').slice(2);
@@ -110,7 +113,14 @@ exports.findAndRemove = function (query) {
 function searchSubstring(query, entries) {
     let foundEntries = [];
     if (query !== '*') {
-        foundEntries = entries.filter(entry => entry.match(query));
+        entries.forEach(function (entry) {
+            let splitEntry = entry.split(', ');
+            for (let i = 0; i < splitEntry.length; i += 1) {
+                if (splitEntry[i].match(query)) {
+                    foundEntries.push(entry);
+                }
+            }
+        });
     } else {
         foundEntries = entries;
     }
@@ -150,9 +160,6 @@ function formFoundData(foundEntries) {
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
-        if (query === '') {
-            return [];
-        }
         let entries = Object.values(phoneBook);
         let foundEntries = searchSubstring(query, entries);
 
