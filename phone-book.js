@@ -107,6 +107,9 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     var out = [];
+    if (typeof(query) !== 'string') {
+        throw new TypeError('Incorrect input!');
+    }
     if (query === '') {
 
         return 0;
