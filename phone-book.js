@@ -81,12 +81,12 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} success or failure
  */
 exports.update = function (phone, name, email) {
-    var entry = { phone: phone, name: name, email: email };
     var reg = new RegExp('^[0-9]{10}$');
     if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
     }
+    var entry = checkInput(phone, name, email);
     for (var index = 0; index < phoneBook.length; ++index) {
         if ((typeof phoneBook[index].phone !== 'undefined') &&
             phoneBook[index].phone.localeCompare(phone) === 0) {
