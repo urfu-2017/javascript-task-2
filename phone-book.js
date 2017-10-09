@@ -110,11 +110,10 @@ function findContactsByString(query) {
         return Object.keys(phoneBook);
     }
     let result = [];
-    let regex = new RegExp(query);
     let numbers = Object.keys(phoneBook);
     for (let phone of numbers) {
         let contact = phoneBook[phone];
-        if (regex.test(phone) || checkContact(contact, regex)) {
+        if (phone.indexOf(query) !== -1 || checkContact(contact, query)) {
             result.push(phone);
         }
     }
@@ -122,6 +121,7 @@ function findContactsByString(query) {
     return result;
 }
 
-function checkContact(contact, regex) {
-    return regex.test(contact.name) || regex.test(contact.email);
+function checkContact(contact, query) {
+    return contact.name.indexOf(query) !== -1 ||
+        (contact.email && contact.email.indexOf(query) !== -1);
 }
