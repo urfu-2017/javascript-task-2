@@ -29,32 +29,32 @@ exports.add = function (phone, name, email) {
 
 function checkName(name) {
 
-    if (name === undefined || name === null || name.trim() === '' || typeof(name) !== 'string') {
-        return true;
+    if (name !== undefined && name !== null && name.trim() !== '' && typeof(name) === 'string') {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function checkPhone(phone) {
 
-    if (phone === undefined || phone === null || phone.trim() === '' ||
-     typeof(phone) !== 'string' || !/^\d{10}$/.test(phone)) {
-        return true;
+    if (phone !== undefined && phone !== null && phone.trim() !== '' &&
+     typeof(phone) === 'string' && /^\d{10}$/.test(phone)) {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function checkEm(email) {
     if (email === undefined) {
         return false;
     }
-    if (email === null || typeof(email) !== 'string' || email.trim() === '') {
-        return true;
+    if (typeof(email) === 'string') {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function checkData(phone) {
@@ -63,6 +63,7 @@ function checkData(phone) {
     for (var i = 0; i < phoneBook.length; i++) {
         var phoneInBook = String(phoneBook[i].phone);
         if (phoneInBook.indexOf(String(phone)) >= 0) {
+
             check = false;
             break;
         }
@@ -71,6 +72,7 @@ function checkData(phone) {
     return check;
 
 }
+
 
 /*
  * Обновление записи в телефонной книге
@@ -87,7 +89,6 @@ exports.update = function (phone, name, email) {
         if (String(phoneBook[i].phone).indexOf(String(phone)) >= 0) {
 
             phoneBook[i].name = name;
-            phoneBook[i].phone = phone;
             phoneBook[i].email = email;
 
             return true;
@@ -190,5 +191,3 @@ exports.importFromCsv = function (csv) {
     return csv.split('\n').length;
 };
 */
-
-
