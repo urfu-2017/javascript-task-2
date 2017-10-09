@@ -57,7 +57,7 @@ function checkInput(phone, name, email) {
 exports.add = function (phone, name, email) {
     var entry = {};
     var reg = new RegExp('^[0-9]{10}$');
-    if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
+    if (!reg.test(phone) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
     }
