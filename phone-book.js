@@ -19,7 +19,7 @@ var phoneBook = {};
  * @returns {boolean} success of operation
  */
 exports.add = function (phone, name, email) {
-    if (!(phone in phoneBook) && /^\d{10}$/.test(phone) && name !== undefined) {
+    if (!(phone in phoneBook) && /^\d{10}$/.test(phone) && name) {
         phoneBook[phone] = { name, email };
 
         return true;
@@ -36,7 +36,7 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} success of operation
  */
 exports.update = function (phone, name, email) {
-    if (phone in phoneBook && name !== undefined) {
+    if (phone in phoneBook && name) {
         phoneBook[phone] = { name, email };
 
         return true;
