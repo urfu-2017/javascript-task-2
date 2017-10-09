@@ -4,8 +4,8 @@ var phoneBook = require('./phone-book');
 
 // Эти записи добавятся, вернется true
 console.info(phoneBook.add('5554440044', 'Григорий', 'grisha@example.com'));
-console.info(phoneBook.add('5512220022', 'Борис', 'bori$s@example.com'));
-console.info(phoneBook.add('534534555555005543534534', 'Cookie'));
+console.info(phoneBook.add('5552220022', 'Борис', 'bori$s@example.com'));
+console.info(phoneBook.add('555534555555005543534534', 'Cookie'));
 
 // console.info(phoneBook.add('5551110011', 'Алекс'));
 // console.info(phoneBook.add('5553333332', 'Михаил', 'Misha@example.com'));
@@ -52,9 +52,10 @@ console.info(phoneBook.add('534534555555005543534534', 'Cookie'));
 // // ]
 
 // // Удаление
-console.info(phoneBook.add('9193712923', 'Кристинка'));
+console.info(phoneBook.add('5554430044', 'Григорий, кек', 'grisha@example.com'));
+console.info(phoneBook.find('555'));
 // console.info(phoneBook.add('9193712924', 'christina', 'christina@example.com'));
-console.info(phoneBook.findAndRemove(''));
+// console.info(phoneBook.findAndRemove('@'));
 
 // if (phoneBook.isStar) {
 //     // Импортируем из csv

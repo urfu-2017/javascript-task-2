@@ -48,9 +48,9 @@ function checkPhone(phone) {
 exports.add = function (phone, name, email) {
     if (checkInputCorrect(phone, name, email) && !(phone in phoneBook)) {
         if (email === undefined) {
-            phoneBook[phone] = `${phone}, ${name}`;
+            phoneBook[phone] = [phone, name];
         } else {
-            phoneBook[phone] = `${phone}, ${name}, ${email}`;
+            phoneBook[phone] = [phone, name, email];
         }
 
         return true;
@@ -72,9 +72,9 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     if (checkInputCorrect(phone, name, email) && phone in phoneBook) {
         if (email !== undefined) {
-            phoneBook[phone] = `${phone}, ${name}, ${email}`;
+            phoneBook[phone] = [phone, name, email];
         } else {
-            phoneBook[phone] = `${phone}, ${name}`;
+            phoneBook[phone] = [phone, name];
         }
 
         return true;
@@ -83,34 +83,12 @@ exports.update = function (phone, name, email) {
     return false;
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
-// На вход принимает запрос в виде строки
-// Находит (смотри __find__) и удаляет все найденные записи
-// Возвращает число удаленных записей
-exports.findAndRemove = function (query) {
-    let countDeleted = 0;
-    if (typeof(query) === 'string') {
-        let foundEntries = exports.find(query);
-        foundEntries.forEach(entry => {
-            let number = entry.split(', ')[1].replace(/\s|-|\(|\)/g, '').slice(2);
-            delete phoneBook[number];
-            countDeleted += 1;
-        });
-    }
-
-    return countDeleted;
-};
-
 function searchSubstring(query, entries) {
     let foundEntries = [];
     if (query !== '*') {
         entries.forEach(function (entry) {
-            let splitEntry = entry.split(', ');
-            for (let i = 0; i < splitEntry.length; i += 1) {
-                if (splitEntry[i].match(query)) {
+            for (let i = 0; i < entry.length; i += 1) {
+                if (entry[i].includes(query)) {
                     foundEntries.push(entry);
                     break;
                 }
@@ -129,17 +107,43 @@ function formatPhone(phone) {
 
 function formFoundData(foundEntries) {
     let foundStrings = [];
-    foundEntries.forEach(item => {
-        let entries = item.split(', ');
-        if (entries[2] !== undefined) {
-            foundStrings.push(`${entries[1]}, ${formatPhone(entries[0])}, ${entries[2]}`);
+    foundEntries.forEach(entry => {
+        if (entry[2] !== undefined) {
+            foundStrings.push(`${entry[1]}, ${formatPhone(entry[0])}, ${entry[2]}`);
         } else {
-            foundStrings.push(`${entries[1]}, ${formatPhone(entries[0])}`);
+            foundStrings.push(`${entry[1]}, ${formatPhone(entry[0])}`);
         }
     });
 
     return foundStrings;
 }
+
+/**
+ * Удаление записей по запросу из телефонной книги
+ * @param {String} query
+ */
+// На вход принимает запрос в виде строки
+// Находит (смотри __find__) и удаляет все найденные записи
+// Возвращает число удаленных записей
+exports.findAndRemove = function (query) {
+    let countDeleted = 0;
+    if (typeof(query) === 'string') {
+        if (query.length === 0) {
+            return 0;
+        }
+        let entries = Object.values(phoneBook);
+        let foundEntries = searchSubstring(query, entries);
+
+        foundEntries = formFoundData(foundEntries).sort();
+        foundEntries.forEach(entry => {
+            let number = entry.split(', ')[1].replace(/\s|-|\(|\)/g, '').slice(2);
+            delete phoneBook[number];
+            countDeleted += 1;
+        });
+    }
+
+    return countDeleted;
+};
 
 // На вход принимает запрос в виде строки
 // Ищет вхождение этой строки хотя бы в одно из полей «Телефон», «Имя» и «Электронную почту»
@@ -155,7 +159,7 @@ function formFoundData(foundEntries) {
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
-        if (query.split()[0] === '') {
+        if (query.length === 0) {
             return [];
         }
         let entries = Object.values(phoneBook);
