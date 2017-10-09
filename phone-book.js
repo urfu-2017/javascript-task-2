@@ -28,7 +28,7 @@ function deleteDuplicates(arr) {
  * @returns {Boolean}
  */
 function incorrectNameAndPhone(name, phone) {
-    if (typeof name === 'undefined' || !(/^[0-9]{10}$/.test(phone))) {
+    if (typeof name === 'undefined' || name.length === 0 || !(/^[0-9]{10}$/.test(phone))) {
         return true;
     }
 
@@ -113,7 +113,7 @@ exports.findAndRemove = function (query) {
     let deletionCounter = 0;
     switch (query) {
         case '':
-            return [];
+            return 0;
         case '*':
             query = /.*/g;
             break;
@@ -124,7 +124,7 @@ exports.findAndRemove = function (query) {
     for (let i = phoneBook.length - 1; i > -1; i--) {
         let str = findQueryInEntry(query, phoneBook[i]);
         if (typeof str !== 'undefined') {
-            phoneBook.splice(phoneBook.indexOf(phoneBook[i]), 1);
+            phoneBook.splice(phoneBook[i], 1);
             deletionCounter++;
         }
     }
