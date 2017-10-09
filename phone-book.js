@@ -1,6 +1,6 @@
 'use strict';
 
-exports.isStar = true;
+exports.isStar = false;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
     if (!correctNumber(phone) || !correctName(name) ||
