@@ -17,7 +17,7 @@ exports.add = function (phone, name, email) {
 
 function checkPhone(phone) {
     var regExp = new RegExp('\\d{10}');
-    if (!regExp.test(phone) || phoneBook.hasOwnProperty(phone)) {
+    if (!regExp.test(phone) || phoneBook.hasOwnProperty(phone) || phone.length > 10) {
         return false;
     }
 
