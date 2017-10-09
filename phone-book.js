@@ -18,19 +18,9 @@ exports.add = function (phone, name, email) {
 };
 
 function correctNumber(phone) {
-    if (typeof phone !== 'string') {
-        return false;
-    }
-    if (phone.length !== 10) {
-        return false;
-    }
-    for (let i = 0; i < phone.length; i++) {
-        if (!(phone[i] >= '0' && phone[i] <= '9')) {
-            return false;
-        }
-    }
+    var pattern = /^\d{10}$/;
 
-    return true;
+    return pattern.test(phone);
 }
 
 function correctName(name) {
@@ -58,6 +48,9 @@ exports.update = function (phone, name, email) {
     if (!correctName(name) || !correctEmail(email) || !correctNumber(phone)) {
         return false;
     }
+    if (!correctInfo(phone)) {
+        return false;
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
@@ -73,7 +66,7 @@ exports.findAndRemove = function (query) {
     if (query === '') {
         return 0;
     }
-    if (typeof(query) !== 'string') {
+    if (typeof(query) !== 'string' || query === undefined) {
 
         return 0;
     }
@@ -95,8 +88,8 @@ exports.findAndRemove = function (query) {
 
 exports.find = function (query) {
     var result = [];
-    if (typeof query !== 'string' || query === '') {
-        return result.sort();
+    if (query === undefined || query === '') {
+        return result;
     }
     result = findTwo(query);
 
