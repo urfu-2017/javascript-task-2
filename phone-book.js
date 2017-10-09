@@ -79,7 +79,7 @@ exports.find = function (query) {
     for (var sub of phoneBook) {
         var subPushed = false;
         if (searchInSubForKeyword(sub, query)) {
-            newSubsArray.push(sub.name + ', +7(' + sub.phone.substring(0, 3) +
+            newSubsArray.push(sub.name + ', +7 (' + sub.phone.substring(0, 3) +
             ') ' + sub.phone.substring(3, 6) + '-' + sub.phone.substring(6, 8) +
             '-' + sub.phone.substring(8, 10));
             subPushed = true;
