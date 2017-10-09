@@ -115,9 +115,10 @@ exports.findAndRemove = function (query) {
         return 0;
     }
     if (query === '*') {
+        var output = phoneBook.length;
         phoneBook = [];
 
-        return phoneBook.length;
+        return output;
     }
     for (var index = 0; index < phoneBook.length; ++index) {
         advancedPush(helper(index, query), out);
