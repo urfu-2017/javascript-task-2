@@ -21,11 +21,14 @@ function checkName(name) {
 }
 
 function checkEmail(email) {
+    if (email === undefined) {
+        return true;
+    }
     if (email !== undefined && typeof(email) === 'string') {
         return true;
     }
 
-    return true;
+    return false;
 }
 
 function checkPhone(phone) {
@@ -95,7 +98,8 @@ exports.findAndRemove = function (query) {
     if (typeof(query) === 'string') {
         let foundEntries = exports.find(query);
         foundEntries.forEach(entry => {
-            delete phoneBook[entry.split(', ')[1]];
+            let number = entry.split(', ')[1].replace(/\s|-|\(|\)/g, '').slice(2);
+            delete phoneBook[number];
             countDeleted += 1;
         });
     }

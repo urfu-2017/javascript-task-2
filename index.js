@@ -39,7 +39,7 @@ console.info(phoneBook.add('5512220022', 'Борис', 'bori$s@example.com'));
 // console.info(phoneBook.find(''));
 // console.info(phoneBook.find('Неизвестный'));
 // console.info(phoneBook.find('*'));
-console.info(phoneBook.find('5554440044'));
+// console.info(phoneBook.find('5554440044'));
 // // Вывод будет следующий
 // // [
 // //   'Алексей, +7 (555) 111-00-11, alex@example.com',
@@ -49,7 +49,7 @@ console.info(phoneBook.find('5554440044'));
 // // ]
 
 // // Удаление
-phoneBook.findAndRemove('5554440044'); // returns 6
+phoneBook.findAndRemove(' '); // returns 6
 
 // if (phoneBook.isStar) {
 //     // Импортируем из csv
