@@ -150,6 +150,9 @@ function advancedPush(data, arr) {
  */
 exports.find = function (query) {
     var out = [];
+    if (typeof(query) !== 'string') {
+        throw new TypeError('Incorrect input!');
+    }
     if (query === '') {
         return;
     }
