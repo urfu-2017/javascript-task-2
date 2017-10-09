@@ -164,7 +164,7 @@ function checkEmail(email) {
 }
 
 function checkQ(query) {
-    if (query === '' || query === null || typeof(query) !== 'string') {
+    if (query === '') {
         return true;
     }
 
