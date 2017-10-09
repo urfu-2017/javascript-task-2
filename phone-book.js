@@ -118,6 +118,7 @@ function searchSubstring(query, entries) {
             for (let i = 0; i < splitEntry.length; i += 1) {
                 if (splitEntry[i].match(query)) {
                     foundEntries.push(entry);
+                    break;
                 }
             }
         });

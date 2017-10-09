@@ -51,8 +51,9 @@ console.info(phoneBook.add('5512220022', 'Борис', 'bori$s@example.com'));
 // // ]
 
 // // Удаление
-console.info(phoneBook.add('9193712923', 'Кристинка'));
-console.info(phoneBook.find(',')); // returns 6
+// console.info(phoneBook.add('9193712923', 'Кристинка'));
+console.info(phoneBook.add('9193712923', 'christina', 'christina@example.com'));
+console.info(phoneBook.find('chris'));
 
 // if (phoneBook.isStar) {
 //     // Импортируем из csv
