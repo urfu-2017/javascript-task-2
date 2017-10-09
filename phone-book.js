@@ -103,7 +103,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function findContactsByString(query) {
-    if (query === "") {
+    if (query === '') {
         return [];
     }
     let result = [];
