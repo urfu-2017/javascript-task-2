@@ -1,20 +1,20 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
-    if (!correctNumber(phone) || !correctName(name) ||
-    !correctInfo(phone) || !correctEmail(email)) {
+    if (correctNumber(phone) && correctName(name) &&
+    correctInfo(phone) && correctEmail(email)) {
+        phoneBook.push({
+            phone: phone,
+            name: name,
+            email: email
+        });
 
-        return false;
+        return true;
     }
-    phoneBook.push({
-        phone: phone,
-        name: name,
-        email: email
-    });
 
-    return true;
+    return false;
 };
 
 function correctNumber(phone) {
@@ -55,7 +55,7 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
-    if (!correctName(name) || !correctEmail(email)) {
+    if (!correctName(name) || !correctEmail(email) || !correctNumber(phone)) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
@@ -69,19 +69,42 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
-    var found = exports.find(query);
-    found.splice(found.length, 1);
+    var result = [];
+    if (query === '') {
+        return 0;
+    }
+    if (typeof(query) !== 'string') {
 
-    return found.length;
+        return 0;
+    }
+    if (query === '*') {
+        var allRemoved = phoneBook.length;
+        phoneBook = [];
+
+        return allRemoved;
+    }
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
+            result.push(toFormat(phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email));
+        }
+    }
+    result.splice(result.length, 1);
+
+    return result.length;
 };
 
 exports.find = function (query) {
     var result = [];
-    if (!query) {
-        return [];
+    if (typeof(query) !== 'string' || query === '') {
+        return result.sort();
     }
+
     if (query === '*') {
-        query = '';
+        for (var i = 0; i < phoneBook.length; i++) {
+            result.push(toFormat(phoneBook[i]));
+        }
+
+        return result;
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
