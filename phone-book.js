@@ -27,7 +27,17 @@ function formatData(data) {
         }
         res.push(tempStr);
     }
-    res = res.sort();
+    res = res.sort(function(a, b) {
+        var nameA = a.toLowerCase(), nameB = b.toLowerCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+
+        return 0;
+    });
 
     return res;
 }
