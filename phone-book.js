@@ -35,7 +35,7 @@ function isExist(phoneNumber) {
  */
 
 exports.add = function (phone, name, email) {
-    if (verifyPhone(phone) && isExist(phone) && name && typeof(name) === 'string') {
+    if (verifyPhone(phone) && isExist(phone) && name) {
         if (email && typeof(email) === 'string') {
             phoneBook[phone] = [name, email];
         } else {
@@ -80,7 +80,7 @@ function deleteData(data) {
 }
 
 exports.findAndRemove = function (query) {
-    if (!query || typeof(query) !== 'string') {
+    if (!query) {
         return false;
     }
 
@@ -156,7 +156,7 @@ function changeBook(data) {
 }
 
 exports.find = function (query) {
-    if (!query || typeof(query) !== 'string') {
+    if (!query) {
         return false;
     }
 
