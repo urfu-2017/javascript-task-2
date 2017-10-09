@@ -129,4 +129,4 @@ exports.importFromCsv = function (csv) {
     }
 
     return count;
-}
+};
