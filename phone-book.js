@@ -43,6 +43,7 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
+    let count = Object.keys(phoneBook).length;
     if (query === '') {
         return 0;
     } else if (query === '*') {
@@ -53,13 +54,13 @@ exports.findAndRemove = function (query) {
         delete phoneBook[record[1]];
     }
 
-    return arrayOfRecords.length;
+    return count - Object.keys(phoneBook).length;
 };
 
 exports.find = function (query) {
     let result = [];
     if (query === '') {
-        return null;
+        return [];
     } else if (query === '*') {
         result = findRecords('');
     } else {
