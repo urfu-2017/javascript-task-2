@@ -36,12 +36,6 @@ function numberFormater(number) {
         number.substring(3, 6) + '-' + number.substring(6, 8) + '-' +
         number.substring(8, 10);
 }
-function necessaryCheck(phone, name) {
-    var reg = new RegExp('^[0-9]{10}$');
-
-    return (reg.test(parseInt (phone)) && (typeof name !== 'undefined') &&
-    checkIfName(name));
-}
 
 /**
  * Добавление записи в телефонную книгу
@@ -53,7 +47,7 @@ function necessaryCheck(phone, name) {
 exports.add = function (phone, name, email) {
     var reg = new RegExp('^[0-9]{10}$');
     var entry = { phone: phone, name: name, email: email };
-    if (!reg.test(parseInt (phone)) || (typeof name == 'undefined') ||
+    if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
     }
@@ -61,8 +55,8 @@ exports.add = function (phone, name, email) {
         if ((typeof phoneBook[index].phone !== 'undefined') &&
             phoneBook[index].phone.localeCompare(phone) === 0) {
             return false;
-            }
         }
+    }
     phoneBook.push(entry);
 
     return true;
@@ -78,7 +72,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     var entry = { phone: phone, name: name, email: email };
     var reg = new RegExp('^[0-9]{10}$');
-    if (!reg.test(parseInt (phone)) || (typeof name == 'undefined') ||
+    if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
     }
@@ -112,9 +106,7 @@ exports.findAndRemove = function (query) {
         return phoneBook.length;
     }
     for (var index = 0; index < phoneBook.length; ++index) {
-        for (var k in phoneBook[index]) {
-            advancedPush(helper(index, k, query),out);
-        }
+        advancedPush(helper(index, query), out);
     }
     for (var i = 0; i < out.length; ++i) {
         var ind = phoneBook.indexOf(out[i]);
@@ -123,20 +115,22 @@ exports.findAndRemove = function (query) {
 
     return out.length;
 };
-function helper(index, k, query) {
-    if (phoneBook[index].hasOwnProperty(k) &&
-        (typeof phoneBook[index][k] !== 'undefined') &&
-        phoneBook[index][k].indexOf(query) !== -1) {
-        return phoneBook[index];
+function helper(index, query) {
+    for (var k in phoneBook[index]) {
+        if (phoneBook[index].hasOwnProperty(k) &&
+            (typeof phoneBook[index][k] !== 'undefined') &&
+            phoneBook[index][k].indexOf(query) !== -1) {
+            return phoneBook[index];
+        }
     }
-
     return '';
 }
-function advancedPush(data, arr){
+function advancedPush(data, arr) {
     if (data !== '') {
-        arr.push(data)
+        arr.push(data);
     }
 }
+
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -151,9 +145,7 @@ exports.find = function (query) {
         return formatData(phoneBook);
     }
     for (var index = 0; index < phoneBook.length; ++index) {
-        for (var k in phoneBook[index]) {
-            advancedPush(helper(index, k, query),out);
-        }
+        advancedPush(helper(index, query), out);
     }
     if (out.length !== 0) {
         return formatData(out);
