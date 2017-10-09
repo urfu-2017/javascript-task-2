@@ -73,7 +73,7 @@ exports.find = function (query) {
         miniResult.push(phoneBook[number].name);
         // eslint-disable-next-line max-len
         miniResult.push(`+7 (${number.slice(0, 3)}) ${number.slice(3, 6)}-${number.slice(6, 8)}-${number.slice(8, 10)}`);
-        if (phoneBook[number].email !== undefined) {
+        if (phoneBook[number].email) {
             miniResult.push(phoneBook[number].email);
         }
         result.push(miniResult.join(', '));
@@ -103,7 +103,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function findContactsByString(query) {
-    if (query === '') {
+    if (!query) {
         return [];
     }
     let result = [];
