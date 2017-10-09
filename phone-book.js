@@ -36,6 +36,16 @@ function numberFormater(number) {
         number.substring(3, 6) + '-' + number.substring(6, 8) + '-' +
         number.substring(8, 10);
 }
+function checkInput(phone, name, email) {
+    var entry = {};
+    if (typeof email === 'undefined') {
+        entry = { phone: phone, name: name };
+    } else {
+        entry = { phone: phone, name: name, email: email };
+    }
+
+    return entry;
+}
 
 /**
  * Добавление записи в телефонную книгу
@@ -45,6 +55,7 @@ function numberFormater(number) {
  * @returns {boolean} success or failure
  */
 exports.add = function (phone, name, email) {
+    var entry = {};
     var reg = new RegExp('^[0-9]{10}$');
     if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
@@ -56,11 +67,7 @@ exports.add = function (phone, name, email) {
             return false;
         }
     }
-    if (typeof email === 'undefined'){
-        var entry = { phone: phone, name: name };
-    } else {
-        var entry = {phone: phone, name: name, email: email};
-    }
+    entry = checkInput(phone, name, email);
     phoneBook.push(entry);
 
     return true;
