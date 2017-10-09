@@ -172,7 +172,7 @@ exports.find = function (query) {
         throw new TypeError('Incorrect input!');
     }
     if (query === '') {
-        return;
+        return '';
     }
     if (query === '*') {
         return formatData(phoneBook);
