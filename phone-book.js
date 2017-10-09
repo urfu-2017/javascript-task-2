@@ -1,9 +1,10 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
-    if (!correctNumber(phone) || !correctName(name) || !correctInfo(phone)) {
+    if (!correctNumber(phone) || !correctName(name) ||
+    !correctInfo(phone) || !correctEmail(email)) {
 
         return false;
     }
@@ -37,6 +38,11 @@ function correctName(name) {
     return (typeof name === 'string' && name.length !== 0);
 }
 
+function correctEmail(email) {
+    return ((typeof email === 'string' &&
+    email.length > 0 && email.indexOf('@') !== -1) || email === undefined);
+}
+
 function correctInfo(phone) {
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
@@ -49,6 +55,9 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
+    if (!correctName(name) || !correctEmail(email)) {
+        return false;
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
@@ -84,7 +93,7 @@ exports.find = function (query) {
 };
 
 function findInfo(query, phone, name, email) {
-    if (phone.indexOf(query) !== -1 || name.indexOf(query) !== -1) {
+    if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1) {
 
         return true;
     }
@@ -106,4 +115,18 @@ function toFormat(phone, name, email) {
     }
 
     return format;
+}
+
+exports.importFromCsv = function (csv) {
+    var contacts = csv.split('\n');
+    var count = 0;
+    for (var i = 0; i < contacts.length; i++) {
+        var contact = contacts[i].split(';');
+        if (exports.update(contact[1], contact[0], contact[2]) ||
+    exports.add(contact[1], contact[0], contact[2])) {
+            count += 1;
+        }
+    }
+
+    return count;
 }
