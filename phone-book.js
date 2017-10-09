@@ -60,7 +60,7 @@ function checkInput(phone, name, email) {
 
     return entry;
 }
-function sanityCheck(phone, name, email){
+function sanityCheck (phone, name, email){
     var reg = new RegExp('^[0-9]{10}$');
     var regEmail = new RegExp('@');
     if (!reg.test(phone) || (typeof name === 'undefined') ||
@@ -84,8 +84,6 @@ function sanityCheck(phone, name, email){
  */
 exports.add = function (phone, name, email) {
     var entry = {};
-    var reg = new RegExp('^[0-9]{10}$');
-    var regEmail = new RegExp('@');
     if (!sanityCheck(phone, name, email)) {
         return false;
     }
