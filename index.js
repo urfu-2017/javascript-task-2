@@ -5,6 +5,7 @@ var phoneBook = require('./phone-book');
 // Эти записи добавятся, вернется true
 console.info(phoneBook.add('5554440044', 'Григорий', 'grisha@example.com'));
 console.info(phoneBook.add('5512220022', 'Борис', 'bori$s@example.com'));
+console.info(phoneBook.add('534534555555005543534534', 'Cookie'));
 
 // console.info(phoneBook.add('5551110011', 'Алекс'));
 // console.info(phoneBook.add('5553333332', 'Михаил', 'Misha@example.com'));
@@ -51,19 +52,19 @@ console.info(phoneBook.add('5512220022', 'Борис', 'bori$s@example.com'));
 // // ]
 
 // // Удаление
-// console.info(phoneBook.add('9193712923', 'Кристинка'));
-console.info(phoneBook.add('9193712923', 'christina', 'christina@example.com'));
-console.info(phoneBook.find('chris'));
+console.info(phoneBook.add('9193712923', 'Кристинка'));
+// console.info(phoneBook.add('9193712924', 'christina', 'christina@example.com'));
+console.info(phoneBook.findAndRemove(''));
 
 // if (phoneBook.isStar) {
 //     // Импортируем из csv
 //     var csv = [
-//         // 'Борис;5552220022;boris@example.com',
-//         // 'Григорий;5554440044;grisha@example.com',
-//         // 'Алексей;5551110011;alex@example.com',
-//         // 'Валерий;5553330033;valera@example.com',
-//         // 'Неизвестный;3330033;unknown@example.com'
-//         ''
+//         'Борис;5552220022;boris@example.com',
+//         'Григорий;5554440044;grisha@example.com',
+//         'Алексей;5551110011;alex@example.com',
+//         'Валерий;5553330033;valera@example.com',
+//         'Неизвестный;3330033;unknown@example.com'
+//         // '           '
 //     ].join('\n');
-//     phoneBook.importFromCsv(csv); // returns 4
+//     console.info(phoneBook.importFromCsv(csv)); // returns 4
 // }

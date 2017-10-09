@@ -24,15 +24,12 @@ function checkEmail(email) {
     if (email === undefined) {
         return true;
     }
-    if (email !== undefined && typeof(email) === 'string') {
-        return true;
-    }
 
-    return false;
+    return typeof(email) === 'string';
 }
 
 function checkPhone(phone) {
-    return phone !== undefined && /[0-9]{10}/.test(phone) && typeof(phone) === 'string';
+    return phone !== undefined && /^[0-9]{10}$/.test(phone) && typeof(phone) === 'string';
 }
 
 // На вход принимает «Телефон», «Имя» и «Электронную почту»
@@ -96,9 +93,6 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     let countDeleted = 0;
     if (typeof(query) === 'string') {
-        if (query.split()[0] === '' || query.split()[0] === ',') {
-            return countDeleted;
-        }
         let foundEntries = exports.find(query);
         foundEntries.forEach(entry => {
             let number = entry.split(', ')[1].replace(/\s|-|\(|\)/g, '').slice(2);
@@ -161,6 +155,9 @@ function formFoundData(foundEntries) {
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
+        if (query.split()[0] === '') {
+            return [];
+        }
         let entries = Object.values(phoneBook);
         let foundEntries = searchSubstring(query, entries);
 
@@ -180,7 +177,7 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-    if (typeof(csv) === 'string' && csv.split() !== '') {
+    if (typeof(csv) === 'string') {
         let data = csv.split('\n');
         let countBefore = Object.keys(phoneBook).length;
         let countUpdate = 0;
