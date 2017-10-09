@@ -46,7 +46,6 @@ function numberFormater(number) {
  */
 exports.add = function (phone, name, email) {
     var reg = new RegExp('^[0-9]{10}$');
-    var entry = { phone: phone, name: name, email: email };
     if (!reg.test(parseInt (phone)) || (typeof name === 'undefined') ||
         !checkIfName(name)) {
         return false;
@@ -56,6 +55,11 @@ exports.add = function (phone, name, email) {
             phoneBook[index].phone.localeCompare(phone) === 0) {
             return false;
         }
+    }
+    if (typeof email === 'undefined'){
+        var entry = { phone: phone, name: name };
+    } else {
+        var entry = {phone: phone, name: name, email: email};
     }
     phoneBook.push(entry);
 
