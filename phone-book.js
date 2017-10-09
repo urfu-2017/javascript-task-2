@@ -123,7 +123,7 @@ function helper(index, query) {
             return phoneBook[index];
         }
     }
-    
+
     return '';
 }
 function advancedPush(data, arr) {
