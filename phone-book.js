@@ -56,13 +56,8 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
-    var result = [];
     var y = 0;
-    if (typeof query !== 'string') {
-        return 0;
-    }
-    if (query === '') {
-
+    if (typeof query !== 'string' || query === '') {
         return 0;
     }
     if (query === '*') {
@@ -71,10 +66,13 @@ exports.findAndRemove = function (query) {
 
         return y;
     }
-    for (var i = 0; i < phoneBook.length; i++) {
+    var i = 0;
+    while (i < phoneBook.length) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
-            result.splice(phoneBook[i].length, 1);
+            phoneBook.splice(i, 1);
             y++;
+        } else {
+            i++;
         }
     }
 
