@@ -19,7 +19,7 @@ var phoneBook = [];
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    let newSub = { phone: phone, name: name, email: email };
+    let newSub = { phone: phone, name: name, email: email === '' ? undefined : email };
     if (validateSub(newSub) && isSubNotExist(newSub)) {
         phoneBook.push(newSub);
 
@@ -57,6 +57,7 @@ exports.update = function (phone, name, email, _compFlag = false) {
  * @returns {Integer}
  */
 exports.findAndRemove = function (query) {
+    // Создаем копию ТК
     var newPhoneBook = phoneBook.slice();
     var removedElementsCount = 0;
     for (var sub of newPhoneBook) {
@@ -120,7 +121,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function validateSub(subscriber) {
-    if (isNameValid(subscriber.name) && isEmailValid(subscriber.email) &&
+    if (isNameValid(subscriber.name) &&
     isPhoneValid(subscriber.phone)) {
 
         return true;
@@ -144,14 +145,14 @@ function isPhoneValid(phone) {
     return passRegExp(regExp, phone);
 }
 
-function isEmailValid(email) {
-    let regExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    if (email === undefined || email === null || passRegExp(regExp, email)) {
-        return true;
-    }
+// function isEmailValid(email) {
+//     let regExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+//     if (email === undefined || email === null || passRegExp(regExp, email)) {
+//         return true;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
 function isNameValid(name) {
     if (name === undefined || name === null || name.length === 0) {
