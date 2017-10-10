@@ -120,7 +120,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function validateSub(subscriber) {
-    if (isNameValid(subscriber.name) && isEmailValid(subscriber.email) &&
+    if (isNameValid(subscriber.name) &&
     isPhoneValid(subscriber.phone)) {
 
         return true;
