@@ -46,7 +46,12 @@ exports.update = function (phone, name, email) {
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
-            phoneBook[i].email = email;
+            if (email){
+                phoneBook[i].email = email;
+            } else {
+                delete phoneBook[i].email;
+            }
+            
 
             return true;
         }
