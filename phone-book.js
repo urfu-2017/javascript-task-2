@@ -12,16 +12,27 @@ const search = query => (query ? Array.from(phoneBook.entries()) : [])
     .filter(([phone, { name, email }]) =>
         query === '*' || phone.includes(query) || name.includes(query) || email.includes(query));
 
-const set = (phone, name, email, rewrite) =>
-    name && PHONE_PATTERN.test(phone) && (rewrite || !phoneBook.has(phone))
-        ? phoneBook.set(phone, { name, email }) || true : false;
+exports.add = (phone, name, email = '') => {
+    if (!name || !PHONE_PATTERN.test(phone) || phoneBook.has(phone)) {
+        return false;
+    }
 
-exports.add = (phone, name, email = '') => set(phone, name, email, false);
+    phoneBook.set(phone, { name, email });
 
-exports.update = (phone, name, email = '') => set(phone, name, email, true);
+    return true;
+};
 
-exports.findAndRemove = query => search(query)
-    .filter(([phone]) => phoneBook.delete(phone)).length;
+exports.update = (phone, name, email = '') => {
+    if (!name || !phoneBook.has(phone)) {
+        return false;
+    }
+
+    phoneBook.set(phone, { name, email });
+
+    return true;
+};
+
+exports.findAndRemove = query => search(query).filter(([phone]) => phoneBook.delete(phone)).length;
 
 exports.find = query => search(query)
     .map(([phone, { name, email }]) => `${name}, ${formatPhone(phone)}${email ? `, ${email}` : ''}`)
