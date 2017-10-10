@@ -56,7 +56,6 @@ exports.findAndRemove = function (query) {
     var result = [];
     var y = 0;
     if (typeof(query) !== 'string') {
-        
         return 0;
     }
     if (query === '') {
