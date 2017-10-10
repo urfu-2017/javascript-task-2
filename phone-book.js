@@ -3,17 +3,17 @@
 exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
-    if (correctNumber(phone) &&
-    correctName(name)) {
-        if (correctInfo(phone)) {
-            phoneBook.push({
-                phone: phone,
-                name: name,
-                email: email
-            });
-
-            return true;
+    if (correctNumber(phone) && correctName(name) && correctInfo(phone)) {
+        var obj = {
+            phone: phone,
+            name: name
+        };
+        if (email) {
+            obj.email = email;
         }
+        phoneBook.push(obj);
+
+        return true;
     }
 
     return false;
@@ -25,7 +25,7 @@ function correctNumber(phone) {
 
 function correctName(name) {
 
-    return (name && name.length > 0 && typeof name === 'string');
+    return (name && typeof name === 'string' && name.length > 0);
 }
 
 function correctInfo(phone) {
