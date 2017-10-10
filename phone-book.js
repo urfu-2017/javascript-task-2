@@ -25,15 +25,14 @@ exports.add = function (phone, name, email) {
         return false;
     }
 
-    email = typeof email === 'undefined' ? '' : email;
+    email = typeof email !== 'string' ? '' : email;
     phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
     return true;
 };
 
-function isValidRecord(phone, name, email) {
-    let haveStringType = typeof phone === 'string' && typeof name === 'string' &&
-    (typeof email === 'string' || typeof email === 'undefined');
+function isValidRecord(phone, name) {
+    let haveStringType = typeof phone === 'string' && typeof name === 'string';
 
     return haveStringType && name !== '' && phoneNumberPattern.test(phone);
 }
