@@ -4,8 +4,8 @@ exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
     if (correctNumber(phone) &&
-    correctInfo(phone)) {
-        if (correctName(name)) {
+    correctName(name)) {
+        if (correctInfo(phone)) {
             phoneBook.push({
                 phone: phone,
                 name: name,
