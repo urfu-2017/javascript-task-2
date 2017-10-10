@@ -20,12 +20,12 @@ exports.add = function (phone, name, email) {
 };
 
 function correctNumber(phone) {
-    return (typeof phone === 'string' && /^(\d){10}$/.test(phone));
+    return (phone && /^(\d){10}$/.test(phone));
 }
 
 function correctName(name) {
 
-    return (typeof name === 'string' && name.length > 0);
+    return (name && name.length > 0);
 }
 
 function correctInfo(phone) {
@@ -58,7 +58,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     var result = [];
     var y = 0;
-    if (typeof(query) !== 'string') {
+    if (! query) {
         return 0;
     }
     if (query === '') {
