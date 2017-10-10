@@ -34,19 +34,16 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
- * @param {Boolean} _completeFlag
  * @returns {Boolean}
  */
-exports.update = function (phone, name, email, _completeFlag = false) {
+exports.update = function (phone, name, email) {
     var subIndex = getSubIndexByPhone(phone);
     if (subIndex === -1 || !validateSub({ phone: phone, name: name, email: email })) {
         return false;
     }
     var sub = phoneBook[subIndex];
     sub.name = name;
-    if (email !== undefined || !_completeFlag) {
-        sub.email = email;
-    }
+    sub.email = email;
 
     return true;
 };
@@ -118,7 +115,7 @@ exports.importFromCsv = function (csv) {
     var csvCopy = csv.slice();
     for (var sub of csv) {
         if (!exports.add(sub.phone, sub.name, sub.email) &&
-        !exports.update(sub.phone, sub.name, sub.email, false)) {
+        !exports.update(sub.phone, sub.name, sub.email)) {
             csvCopy.splice(csv.indexOf(sub), 1);
             continue;
         }
