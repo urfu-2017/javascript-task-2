@@ -111,7 +111,7 @@ function findInfo(query, phone, name, email) {
 
         return true;
     }
-    if (email !== undefined && email.indexOf(query) !== -1) {
+    if (email && email.indexOf(query) !== -1) {
 
         return true;
     }
