@@ -24,9 +24,9 @@ function correctNumber(phone) {
 
 function correctName(name, email) {
 
-    if (typeof name === 'string' && name.length > 0 && name.indexOf('@') === -1) {
+    if (typeof name === 'string' && name.length > 0) {
         return ((typeof email === 'string' &&
-        email.length > 0 && email.indexOf('@') !== -1) || email === undefined);
+        email.length > 0) || email === undefined);
     }
 }
 
@@ -134,7 +134,7 @@ exports.importFromCsv = function (csv) {
         var contact = contacts[i].split(';');
         if (exports.update(contact[1], contact[0], contact[2]) ||
     exports.add(contact[1], contact[0], contact[2])) {
-            count += 1;
+            count ++;
         }
     }
 
