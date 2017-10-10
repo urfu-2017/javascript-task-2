@@ -33,13 +33,17 @@ exports.add = function (phone, name, email) {
     let newPersonCard = new Person(phone, name, email);
     let havePerson = false;
 
+    // if (name1.indexOf('a') !== -1) {
+    //     return false;
+    // }
+
     for (let memo of phoneBook) {
         havePerson = memo.phone === phone;
         if (havePerson) {
             break;
         }
     }
-    if (!havePerson && name !== undefined && isCorrect(phone)) {
+    if (!havePerson && name !== undefined && isCorrectPhone(phone)) {
         phoneBook.push(newPersonCard);
         havePerson = false;
 
@@ -49,8 +53,8 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
-function isCorrect(input) {
-    return input.match(phonePattern) !== null;
+function isCorrectPhone(input) {
+    return input.match(phonePattern) !== null && input && input.length === 10;
 }
 
 /**
