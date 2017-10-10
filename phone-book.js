@@ -40,7 +40,7 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
-    if (!correctName(name) && !correctNumber(phone)) {
+    if (!correctName(name)) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
