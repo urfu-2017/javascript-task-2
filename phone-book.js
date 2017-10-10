@@ -55,15 +55,19 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     var result = [];
     var y = 0;
-    if (query === undefined || query === '') {
+    if (typeof(query) !== 'string') {
+        
+        return 0;
+    }
+    if (query === '') {
 
         return 0;
     }
     if (query === '*') {
-        var allRemoved = phoneBook.length;
+        y = phoneBook.length;
         phoneBook = [];
 
-        return allRemoved;
+        return y;
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
@@ -77,7 +81,7 @@ exports.findAndRemove = function (query) {
 
 exports.find = function (query) {
     var result = [];
-    if (query === undefined || query === '') {
+    if (typeof query !== 'string' || query === '') {
         return result;
     }
     result = findTwo(query);
