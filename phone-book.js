@@ -21,7 +21,7 @@ const phoneNumberPattern = new RegExp('^\\d{10}$');
  */
 
 exports.add = function (phone, name, email) {
-    if (!isValidRecord(phone, name, email) || phoneBook.some(record => record.phone === phone)) {
+    if (!isValidRecord(phone, name) || phoneBook.some(record => record.phone === phone)) {
         return false;
     }
 
@@ -46,7 +46,7 @@ function isValidRecord(phone, name) {
  */
 exports.update = function (phone, name, email) {
     let recordIndex = phoneBook.findIndex(record => record.phone === phone);
-    if (!isValidRecord(phone, name, email) || recordIndex === -1) {
+    if (!isValidRecord(phone, name) || recordIndex === -1) {
         return false;
     }
 
@@ -67,7 +67,7 @@ exports.findAndRemove = function (query) {
     if (selectedRecords.length === 0) {
         return 0;
     }
-    phoneBook = selectedRecords.filter(record => !selectedRecords.includes(record));
+    phoneBook = phoneBook.filter(record => !selectedRecords.includes(record));
 
     return selectedRecords.length;
 };
