@@ -13,7 +13,7 @@ const search = query => (query ? Array.from(phoneBook.entries()) : [])
         query === '*' || phone.includes(query) || name.includes(query) || email.includes(query));
 
 const set = (phone, name, email, rewrite) => name && PHONE_PATTERN.test(phone) &&
-    ((rewrite && phoneBook.has(phone)) || (!rewrite && !phoneBook.has(phone)))
+    (!phoneBook.has(phone) || rewrite) && (phoneBook.has(phone) || !rewrite)
     ? phoneBook.set(phone, { name, email }) || true : false;
 
 exports.add = (phone, name, email = '') => set(phone, name, email, false);
