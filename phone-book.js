@@ -71,11 +71,11 @@ function findMatching(query) {
     query = String(query);
     let entries = [];
     if (query === '*') {
-        entries = [...phoneBook.entries()]
+        entries = [...phoneBook.entries()];
     } else if (query !== '') {
         entries = [...phoneBook.entries()]
             .filter(e => {
-                const [key, {name, email}] = e;
+                const [key, { name, email }] = e;
 
                 return [key, name, email].some(
                     x => String(x).includes(query)
