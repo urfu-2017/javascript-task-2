@@ -120,7 +120,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function validateSub(subscriber) {
-    if (isNameValid(subscriber.name) &&
+    if (isNameValid(subscriber.name) && isEmailValid(subscriber.email) &&
     isPhoneValid(subscriber.phone)) {
 
         return true;
@@ -145,12 +145,11 @@ function isPhoneValid(phone) {
 }
 
 function isEmailValid(email) {
-    let regExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    if (email === undefined || email === null || passRegExp(regExp, email)) {
-        return true;
+    if (email === undefined || email === null || email.length === 0) {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function isNameValid(name) {
