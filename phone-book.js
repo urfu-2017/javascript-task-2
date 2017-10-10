@@ -1,62 +1,146 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
-
-/**
- * Телефонная книга
- */
-var phoneBook;
-
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
+var phoneBook = [];
 exports.add = function (phone, name, email) {
+    if (correctNumber(phone) && correctName(name) && correctInfo(phone)) {
+        var obj = {
+            phone: phone,
+            name: name
+        };
+        if (email) {
+            obj.email = email;
+        }
+        phoneBook.push(obj);
 
+        return true;
+    }
+
+    return false;
 };
 
-/**
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
+function correctNumber(phone) {
+    return (phone && /^(\d){10}$/.test(phone));
+}
+
+function correctName(name) {
+
+    return (name !== '' && typeof name === 'string');
+}
+
+function correctInfo(phone) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
 exports.update = function (phone, name, email) {
+    if (!correctName(name)) {
+        return false;
+    }
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+            phoneBook[i].name = name;
+            phoneBook[i].email = email;
 
+            return true;
+        }
+    }
+
+    return false;
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
 exports.findAndRemove = function (query) {
+    var y = 0;
+    if (typeof query !== 'string' || query === '') {
+        return 0;
+    }
+    if (query === '*') {
+        y = phoneBook.length;
+        phoneBook = [];
 
+        return y;
+    }
+    var i = 0;
+    while (i < phoneBook.length) {
+        if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
+            phoneBook.splice(i, 1);
+            y++;
+        } else {
+            i++;
+        }
+    }
+
+    return y;
 };
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
 exports.find = function (query) {
+    var result = [];
+    if (typeof query !== 'string' || query === '') {
+        return result;
+    }
+    result = findTwo(query);
 
+    return result.sort();
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
-exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+function findTwo(query) {
+    var result = [];
+    if (query === '*') {
+        query = '';
+    }
 
-    return csv.split('\n').length;
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
+            result.push(toFormat(phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email));
+        }
+    }
+
+    return result;
+}
+
+function findInfo(query, phone, name, email) {
+    if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1) {
+
+        return true;
+    }
+    if (email && email.indexOf(query) !== -1) {
+
+        return true;
+    }
+
+    return false;
+}
+
+function toFormat(phone, name, email) {
+    var format = '';
+    var phonep = '+7 (' + phone.slice(0, 3) + ') ' +
+     phone.slice(3, 6) + '-' +
+    phone.slice(6, 8) + '-' + phone.slice(8, 10);
+    if (email) {
+        format = name + ', ' + phonep + ', ' + email;
+    } else {
+        format = name + ', ' + phonep;
+    }
+
+    return format;
+}
+
+exports.importFromCsv = function (csv) {
+    var contacts = csv.split('\n');
+    var count = 0;
+    for (var i = 0; i < contacts.length; i++) {
+        var contact = contacts[i].split(';');
+        if (exports.update(contact[1], contact[0], contact[2]) ||
+    exports.add(contact[1], contact[0], contact[2])) {
+            count ++;
+        }
+    }
+
+    return count;
 };
