@@ -20,7 +20,7 @@ exports.add = function (phone, name, email) {
 };
 
 function correctNumber(phone) {
-    return (phone !== undefined && /^(\d){10}$/.test(phone));
+    return (phone && /^(\d){10}$/.test(phone));
 }
 
 function correctName(name) {
