@@ -17,10 +17,19 @@ console.info(phoneBook.add('123456789', 'Wrong', 'wrong@name.com'));
 // Обновление
 phoneBook.update('5551110011', 'Алексей', 'alex@example.com');
 phoneBook.update('5553330033', 'Валерий');
+phoneBook.update('5553330033', 'Name', 'mail@mail.mail');
+phoneBook.update('5553330033', 'Name Surname', '');
 
 // В следующих примерах вернутся все записи
-console.info(phoneBook.find('*'));
-console.info(phoneBook.find('555'));
+// console.info(phoneBook.find('*'));
+// console.info(phoneBook.find('555'));
+// console.info(phoneBook.find('u'));
+// console.info(phoneBook.find('0'));
+// console.info(phoneBook.find(''));
+// console.info(phoneBook.find(' '));
+// console.info(phoneBook.find('  '));
+// console.info(phoneBook.find());
+// console.info(phoneBook.find(null));
 // Вывод будет следующий
 // [
 //   'Алексей, +7 (555) 111-00-11, alex@example.com',
@@ -29,8 +38,12 @@ console.info(phoneBook.find('555'));
 //   'Григорий, +7 (555) 444-00-44, grisha@example.com'
 // ]
 
+phoneBook.print();
 // Удаление
-phoneBook.findAndRemove('@'); // returns 3
+console.info(phoneBook.findAndRemove('.')); // returns 3
+phoneBook.print();
+// console.info(phoneBook.findAndRemove('*')); // returns 3
+phoneBook.print();
 
 if (phoneBook.isStar) {
     // Импортируем из csv
@@ -39,7 +52,12 @@ if (phoneBook.isStar) {
         'Григорий;5554440044;grisha@example.com',
         'Алексей;5551110011;alex@example.com',
         'Валерий;5553330033;valera@example.com',
-        'Неизвестный;3330033;unknown@example.com'
+        'Неизвестный;3330033;unknown@example.com',
+        'Name;+123456789;email',
+        'Namename;1234567890;',
+        'Namename;1234567891'
     ].join('\n');
     phoneBook.importFromCsv(csv); // returns 4
 }
+phoneBook.print();
+console.info(phoneBook.find('*'));

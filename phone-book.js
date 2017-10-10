@@ -10,6 +10,9 @@ exports.isStar = true;
  * Телефонная книга
  */
 var phoneBook = [];
+exports.print = function () {
+    console.info(phoneBook.map(transformRecordToString));
+};
 
 /**
  * Добавление записи в телефонную книгу
@@ -29,19 +32,14 @@ exports.add = function (phone, name, email) {
 };
 
 function recordIsValid(record) {
-    return phoneIsvalid(record.phone) && nameIsValid(record.name);
+    return phoneIsvalid(record.phone) && stringIsValid(record.name);
 }
 
 function phoneIsvalid(phone) {
-    let reg = /\d{10}/;
+    let reg = /^\d{10}$/;
 
     return Boolean(reg.exec(phone));
 }
-
-function nameIsValid(name) {
-    return name !== undefined && name !== null && name !== '';
-}
-
 function bookContainsRecord(record) {
     return phoneBook.filter(x => x.phone === record.phone).length !== 0;
 }
@@ -64,7 +62,7 @@ function extractRecordByPhone(phone) {
  */
 exports.update = function (phone, name, email) {
     let record = { phone, name, email };
-    if (!bookContainsRecord(record) || !nameIsValid(name)) {
+    if (!bookContainsRecord(record) || !stringIsValid(name)) {
         return false;
     }
     let oldRecord = extractRecordByPhone(phone);
@@ -80,11 +78,9 @@ exports.update = function (phone, name, email) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    let extractedValues;
-    if (query === '*') {
-        extractedValues = phoneBook;
-    } else {
-        extractedValues = extractValuesByQuery(query);
+    let extractedValues = extractValuesByQuery(query).slice();
+    if (extractedValues.length === 0) {
+        return extractedValues;
     }
 
     return transformPhoneNumber(extractedValues).sort(compareRecords)
@@ -106,7 +102,7 @@ function deleteElement(value) {
  * @returns {Number} nubmer of deleted elements
  */
 exports.findAndRemove = function (query) {
-    let values = this.find(query);
+    let values = extractValuesByQuery(query).slice();
     for (let value of values) {
         deleteElement(value);
     }
@@ -115,13 +111,20 @@ exports.findAndRemove = function (query) {
 };
 
 function extractValuesByQuery(query) {
+    if (!stringIsValid(query)) {
+        return [];
+    }
     if (query === '*') {
         return phoneBook;
     }
 
     return phoneBook
         .filter(rec => Object.keys(rec).map(key => rec[key])
-            .some(val => val !== undefined && val !== null && val.indexOf(query) !== -1));
+            .some(val => stringIsValid(val) && val.indexOf(query) !== -1));
+}
+
+function stringIsValid(string) {
+    return string !== null && string !== undefined && string !== '';
 }
 
 function transformPhoneNumber(values) {
@@ -141,7 +144,7 @@ function transformPhoneNumber(values) {
 
 function transformRecordToString(record) {
     let firstPart = `${record.name}, ${record.phone}`;
-    if (record.email !== undefined && record.email !== null) {
+    if (stringIsValid(record.email)) {
         firstPart += `, ${record.email}`;
     }
 
@@ -169,7 +172,7 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-    let reg = /^([а-яА-Я ]+);(\d{10});(.+?)$/;
+    let reg = /^([\wа-яА-Я ]+);(\d{10});?(.+?)?$/;
     let values = csv.split('\n');
     let counter = 0;
     for (let value of values) {

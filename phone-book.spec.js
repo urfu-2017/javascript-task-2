@@ -17,14 +17,11 @@ describe('phone-book', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
         assert.ok(!phoneBook.add('5555550055'));
-        assert.ok(!phoneBook.add('5555550055', ''));
-        assert.ok(!phoneBook.add('5555550055', '', 'email@email.com'));
     });
 
     it('должен обновлять существующие записи', function () {
         assert.ok(phoneBook.update('5551110011', 'Алексей', 'alex@example.com'));
         assert.ok(phoneBook.update('5553330033', 'Валерий'));
-        assert.ok(!phoneBook.update('5553330033'));
     });
 
     it('должен искать все записи по запросу "*"', function () {
