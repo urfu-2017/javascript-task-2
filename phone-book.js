@@ -42,6 +42,10 @@ exports.update = function (phone, name, email) {
         return false;
     }
     var sub = phoneBook[subIndex];
+    if (sub.name === name && sub.email === email) {
+
+        return false;
+    }
     sub.name = name;
     sub.email = email;
 
