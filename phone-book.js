@@ -52,7 +52,7 @@ exports.update = function (phone, name, email) {
 
     let selectedRecord = phoneBook[recordIndex];
     selectedRecord.name = name;
-    selectedRecord.email = typeof email === 'undefined' ? '' : email;
+    selectedRecord.email = typeof email !== 'string' ? '' : email;
 
     return true;
 };
