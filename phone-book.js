@@ -30,25 +30,14 @@ class Person {
  */
 
 exports.add = function (phone, name, email) {
-    let newPersonCard = new Person(phone, name, email);
-    let havePerson = false;
-
-    // if (name1.indexOf('a') !== -1) {
-    //     return false;
-    // }
-
-    for (let memo of phoneBook) {
-        havePerson = memo.phone === phone;
-        if (havePerson) {
-            break;
-        }
-    }
-    if (!name || typeof name !== 'string') {
+    let newPersonCard;
+    if (isValidFormat(phone, name)) {
+        newPersonCard = new Person(phone.toString(), name, email);
+    } else {
         return false;
     }
-    if (!havePerson && name !== undefined && isCorrectPhone(phone)) {
+    if (!havePerson(phone) && isCorrectPhone(phone.toString())) {
         phoneBook.push(newPersonCard);
-        havePerson = false;
 
         return true;
     }
@@ -56,6 +45,22 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
+function havePerson(phone) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+            return true;
+        }
+    }
+
+    return false;
+}
+function isValidFormat(phone, name) {
+    if (!name || typeof name !== 'string' || isNaN(phone) || phone === undefined) {
+        return false;
+    }
+
+    return true;
+}
 function isCorrectPhone(input) {
     return input.match(phonePattern) !== null && input && input.length === 10;
 }
