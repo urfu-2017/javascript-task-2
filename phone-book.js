@@ -25,7 +25,7 @@ function correctNumber(phone) {
 
 function correctName(name) {
 
-    return (name && name.length > 0 && typeof name === 'string');
+    return (name !== '' && typeof name === 'string');
 }
 
 function correctInfo(phone) {
@@ -46,12 +46,7 @@ exports.update = function (phone, name, email) {
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
-            if (email){
-                phoneBook[i].email = email;
-            } else {
-                delete phoneBook[i].email;
-            }
-            
+            phoneBook[i].email = email;
 
             return true;
         }
