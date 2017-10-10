@@ -43,6 +43,9 @@ exports.add = function (phone, name, email) {
             break;
         }
     }
+    if (!name || typeof name !== 'string') {
+        return false;
+    }
     if (!havePerson && name !== undefined && isCorrectPhone(phone)) {
         phoneBook.push(newPersonCard);
         havePerson = false;
@@ -65,6 +68,9 @@ function isCorrectPhone(input) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    // if (typeof name !== 'string' || !name) {
+    //             return false;
+    //         }
     for (let person of phoneBook) {
         if (person.phone === phone) {
             person.name = (name !== undefined) ? name : person.name;
