@@ -7,13 +7,13 @@ exports.add = function (phone, name, email) {
     !correctInfo(phone) || !correctName(name, email)) {
         return false;
     }
-        phoneBook.push({
-            phone: phone,
-            name: name,
-            email: email
-        });
+    phoneBook.push({
+        phone: phone,
+        name: name,
+        email: email
+    });
 
-        return true;
+    return true;
 };
 
 function correctNumber(phone) {
@@ -24,9 +24,9 @@ function correctNumber(phone) {
 
 function correctName(name, email) {
 
-    if (typeof name === 'string' && name.length > 0 && name.indexOf('@') == -1) {
+    if (typeof name === 'string' && name.length > 0 && name.indexOf('@') === -1) {
         return ((typeof email === 'string' &&
-        email.length > 0 && email.indexOf('@') !== -1) || email === undefined)
+        email.length > 0 && email.indexOf('@') !== -1) || email === undefined);
     }
 }
 
