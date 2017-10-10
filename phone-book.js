@@ -64,6 +64,9 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let selectedRecords = findRecords(query);
+    if (selectedRecords.length === 0) {
+        return 0;
+    }
     phoneBook = selectedRecords.filter(record => !selectedRecords.includes(record));
 
     return selectedRecords.length;
