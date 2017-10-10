@@ -90,11 +90,11 @@ exports.importFromCsv = function(csv) {
 		var name1;
 		var phone1;
 		var email1;;
-		csv1 = csv1.split('\n');
-		for (i = 0; i < csv1.length; i++) {
-			name1 = csv1[i].slice(0, csv1[i].indexOf(';'));
-			phone1 = csv1[i].slice(csv1[i].indexOf(';') + 1, csv1[i].lastIndexOf(';'));
-			email1 = csv1[i].slice(csv1[i].lastIndexOf(';') + 1, csv1[i].length);
+		csv = csv.split('\n');
+		for (i = 0; i < csv.length; i++) {
+			name1 = csv[i].slice(0, csv[i].indexOf(';'));
+			phone1 = csv[i].slice(csv[i].indexOf(';') + 1, csv[i].lastIndexOf(';'));
+			email1 = csv[i].slice(csv[i].lastIndexOf(';') + 1, csv[i].length);
 			if (add(phone1, name1, email1)) {
 				schet += 1;
 			}
@@ -103,9 +103,7 @@ exports.importFromCsv = function(csv) {
 			}
 		}
 		return schet
-	}
+	};
 	// Парсим csv
 	// Добавляем в телефонную книгу
 	// Либо обновляем, если запись с таким телефоном уже существует
-return csv.split('\n').length;{
-};
