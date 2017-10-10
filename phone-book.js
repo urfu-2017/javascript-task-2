@@ -57,16 +57,16 @@ exports.update = function (phone, name, email, _compFlag = false) {
  * @returns {Integer}
  */
 exports.findAndRemove = function (query) {
-    var subsToRemove = exports.find(query);
-    var tempIndex = 0;
-    for (var sub of subsToRemove) {
-        tempIndex = phoneBook.indexOf(sub);
-        if (tempIndex !== -1) {
-            phoneBook.splice(tempIndex, 1);
+    var newPhoneBook = phoneBook.slice();
+    var removedElementsCount = 0;
+    for (var sub of newPhoneBook) {
+        if (searchInSubForKeyword(sub, query)) {
+            phoneBook.splice(phoneBook.indexOf(sub), 1);
+            removedElementsCount++;
         }
     }
 
-    return subsToRemove.length;
+    return removedElementsCount;
 };
 
 /**
