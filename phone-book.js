@@ -120,7 +120,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function validateSub(subscriber) {
-    if (isNameValid(subscriber.name) && isEmailValid(subscriber.email) &&
+    if (isNameValid(subscriber.name) &&
     isPhoneValid(subscriber.phone)) {
 
         return true;
@@ -142,14 +142,6 @@ function isPhoneValid(phone) {
     var regExp = /^\d{10}$/;
 
     return passRegExp(regExp, phone);
-}
-
-function isEmailValid(email) {
-    if (email === undefined || email === null || email.length === 0) {
-        return false;
-    }
-
-    return true;
 }
 
 function isNameValid(name) {
