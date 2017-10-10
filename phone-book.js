@@ -3,8 +3,10 @@
 exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
-    if (correctNumber(phone) && correctName(name) &&
-    correctInfo(phone) && correctEmail(email)) {
+    if (!correctNumber(phone) ||
+    !correctInfo(phone) || !correctName(name, email)) {
+        return false;
+    }
         phoneBook.push({
             phone: phone,
             name: name,
@@ -12,9 +14,6 @@ exports.add = function (phone, name, email) {
         });
 
         return true;
-    }
-
-    return false;
 };
 
 function correctNumber(phone) {
@@ -23,14 +22,12 @@ function correctNumber(phone) {
     return pattern.test(phone);
 }
 
-function correctName(name) {
+function correctName(name, email) {
 
-    return (typeof name === 'string' && name.length !== 0);
-}
-
-function correctEmail(email) {
-    return ((typeof email === 'string' &&
-    email.length > 0 && email.indexOf('@') !== -1) || email === undefined);
+    if (typeof name === 'string' && name.length > 0 && name.indexOf('@') == -1) {
+        return ((typeof email === 'string' &&
+        email.length > 0 && email.indexOf('@') !== -1) || email === undefined)
+    }
 }
 
 function correctInfo(phone) {
