@@ -91,8 +91,8 @@ exports.find = function(query) {
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
  */
-exports.importFromCsv = function (csv) {
-    var name1;
+exports.importFromCsv = function (csv) {var schet=0;
+var name1;
 var phone1;
 var email1;;    
 csv1=csv1.split('\n');
@@ -100,7 +100,8 @@ csv1=csv1.split('\n');
 name1=csv1[i].slice(0,csv1[i].indexOf(';'));
 phone1=csv1[i].slice(csv1[i].indexOf(';')+1,csv1[i].lastIndexOf(';'));
 email1=csv1[i].slice(csv1[i].lastIndexOf(';')+1, csv1[i].length);
-exports.add(phone1, name1, email1)}
+if (add(phone1, name1, email1)) {schet+=1; }
+if (upd(phone1, name1, email1)){schet+=1;} } return schet}
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
