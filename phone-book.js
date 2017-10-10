@@ -120,7 +120,7 @@ exports.importFromCsv = function (csv) {
     for (var sub of csv) {
         if (!exports.add(sub.phone, sub.name, sub.email) &&
         !exports.update(sub.phone, sub.name, sub.email)) {
-            csvCopy.splice(csv.indexOf(sub), 1);
+            csvCopy.splice(csvCopy.indexOf(sub), 1);
             continue;
         }
     }
