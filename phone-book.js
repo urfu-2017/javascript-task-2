@@ -10,7 +10,7 @@ exports.isStar = true;
  * Телефонная книга
  */
 let phoneBook = [];
-const phoneNumberPattern = new RegExp('\\d{10}');
+const phoneNumberPattern = new RegExp('^\\d{10}$');
 
 /**
  * Добавление записи в телефонную книгу
@@ -33,7 +33,7 @@ function isValidRecord(phone, name, email) {
     let haveStringType = typeof phone === 'string' && typeof name === 'string' &&
     (typeof email === 'string' || typeof email === 'undefined');
 
-    return haveStringType && phoneNumberPattern.test(phone);
+    return haveStringType && name !== '' && phoneNumberPattern.test(phone);
 }
 
 /**
