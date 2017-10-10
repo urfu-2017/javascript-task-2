@@ -133,10 +133,7 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     var out = [];
-    if (typeof(query) !== 'string') {
-        throw new TypeError('Incorrect input!');
-    }
-    if (query === '') {
+    if (query === '' || typeof(query) !== 'string') {
 
         return 0;
     }
@@ -180,10 +177,7 @@ function advancedPush(data, arr) {
  */
 exports.find = function (query) {
     var out = [];
-    if (typeof(query) !== 'string') {
-        throw new TypeError('Incorrect input!');
-    }
-    if (query === '') {
+    if (query === '' || typeof(query) !== 'string') {
         return '';
     }
     if (query === '*') {
