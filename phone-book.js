@@ -60,6 +60,9 @@ exports.findAndRemove = function (query) {
     // Создаем копию ТК
     var newPhoneBook = phoneBook.slice();
     var removedElementsCount = 0;
+    if (query === '' || query === undefined) {
+        return removedElementsCount;
+    }
     for (var sub of newPhoneBook) {
         if (searchInSubForKeyword(sub, query)) {
             phoneBook.splice(phoneBook.indexOf(sub), 1);
@@ -76,25 +79,26 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    var newSubsArray = [];
+    var findResult = [];
+    // Если запрос путой или undefined - возвращает пустой массив
     if (query === '' || query === undefined) {
-        return newSubsArray;
+        return findResult;
     }
     for (var sub of phoneBook) {
         var subPushed = false;
         if (searchInSubForKeyword(sub, query)) {
-            newSubsArray.push(sub.name + ', +7 (' + sub.phone.substring(0, 3) +
+            findResult.push(sub.name + ', +7 (' + sub.phone.substring(0, 3) +
             ') ' + sub.phone.substring(3, 6) + '-' + sub.phone.substring(6, 8) +
             '-' + sub.phone.substring(8, 10));
             subPushed = true;
         }
         if (subPushed && sub.email !== undefined) {
-            newSubsArray[newSubsArray.length - 1] += ', ' + sub.email;
+            findResult[findResult.length - 1] += ', ' + sub.email;
         }
     }
-    newSubsArray = sortPhoneBookByName(newSubsArray);
+    findResult = sortPhoneBookByName(findResult);
 
-    return newSubsArray;
+    return findResult;
 };
 
 /**
