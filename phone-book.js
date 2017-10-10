@@ -67,7 +67,7 @@ exports.findAndRemove = function (query) {
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
-            result.push(phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email);
+            result.push(phoneBook[i]);
         }
     }
     result.splice(result.length, 1);
