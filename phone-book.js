@@ -11,9 +11,8 @@ exports.isStar = true;
  */
 let phoneBook = [];
 
-const REG_EMAIL = /^[0-9a-z-.]+@[0-9a-z-]{2,}.[a-z]{2,}$/i;
-const REG_PHONE = /\d{10}/;
-const REG_NAME = /[а-яё\w-]+/i;
+const REG_EMAIL = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
+const REG_PHONE = /^\d{10}$/;
 
 /**
  * Добавление записи в телефонную книгу
@@ -23,22 +22,27 @@ const REG_NAME = /[а-яё\w-]+/i;
  * @returns {boolean} - возвращает true или false в зависимости от успеха опереации
  */
 exports.add = function (phone, name, email) {
-    let newContact = {};
-    if (name !== undefined && REG_NAME.exec(name) && REG_PHONE.exec(phone)) {
-        newContact.name = name;
-        if (email === undefined) {
-            newContact.phone = phone;
-        } else if (REG_EMAIL.exec(email)) {
-            newContact.phone = phone;
-            newContact.email = email;
+    if (name && REG_PHONE.test(phone)) {
+        if (phoneBook.some(contact => contact.phone === phone)) {
+            return false;
+        }
+        if (!email) {
+            phoneBook.push({
+                name,
+                phone
+            });
+        } else if (REG_EMAIL.test(email)) {
+            phoneBook.push({
+                name,
+                phone,
+                email
+            });
+        } else {
+            return false;
         }
     } else {
         return false;
     }
-    if (phoneBook.some(contact => contact.phone === phone || contact.email === email)) {
-        return false;
-    }
-    phoneBook.push(newContact);
 
     return true;
 };
@@ -51,15 +55,15 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} - возвращает true или false в зависимости от успеха опереации
  */
 exports.update = function (phone, name, email) {
-    if (name === undefined || !REG_NAME.exec(name) || !REG_PHONE.exec(phone)) {
+    if (!name || !REG_PHONE.test(phone)) {
         return false;
     }
     phoneBook.forEach(function (contact) {
         if (contact.phone === phone) {
             contact.name = name;
-            if (email === undefined) {
+            if (!email) {
                 delete contact.email;
-            } else if (REG_EMAIL.exec(email)) {
+            } else if (REG_EMAIL.test(email)) {
                 contact.email = email;
             } else {
                 return false;
@@ -136,17 +140,15 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    if (!csv) {
+        return 0;
+    }
     var contacts = csv.split(/\r?\n+/);
     let contactCount = 0;
-    let newContact = false;
     contacts.forEach(contact => {
         var splitContact = contact.split(/;/);
-        if (module.exports.find(splitContact[1]) === 0) {
-            newContact = module.exports.add(splitContact[0], splitContact[1], splitContact[2]);
-        } else {
-            newContact = module.exports.update(splitContact[1], splitContact[0], splitContact[2]);
-        }
-        if (newContact) {
+        if (module.exports.add(splitContact[1], splitContact[0], splitContact[2]) ||
+            module.exports.update(splitContact[1], splitContact[0], splitContact[2])) {
             ++contactCount;
         }
     });
@@ -186,10 +188,10 @@ function formatPhone(phone) {
 }
 
 function formatContact(contact) {
-    let line = contact.name + ', ' + formatPhone(contact.phone);
+    let lineContact = contact.name + ', ' + formatPhone(contact.phone);
     if (contact.email !== undefined) {
-        line += ', ' + contact.email;
+        lineContact += ', ' + contact.email;
     }
 
-    return line;
+    return lineContact;
 }
