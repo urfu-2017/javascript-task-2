@@ -13,10 +13,10 @@ const search = query => (query ? Array.from(phoneBook.entries()) : [])
         query === '*' || phone.includes(query) || name.includes(query) || email.includes(query));
 
 exports.add = (phone, name, email = '') => (!name || !PHONE_PATTERN.test(phone) ||
-    phoneBook.has(phone)) ? false : phoneBook.set(phone, { name, email }) || true;
+    phoneBook.has(phone)) ? false : phoneBook.set(phone, { name, email }) && true;
 
 exports.update = (phone, name, email = '') => (!name || !phoneBook.has(phone)) ? false
-    : phoneBook.set(phone, { name, email }) || true;
+    : phoneBook.set(phone, { name, email }) && true;
 
 exports.findAndRemove = query => search(query).filter(([phone]) => phoneBook.delete(phone)).length;
 exports.find = query => search(query)
