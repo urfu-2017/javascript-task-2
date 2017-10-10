@@ -17,8 +17,20 @@ var phoneBook;
  * @param {String} name
  * @param {String} email
  */
-exports.add = function (phone, name, email) {
-
+exports.add = function(phone, name, email) {
+    phone = String(phone);
+    if (name === '' || (phone.length !== 10 && phone.length !== 0)) return false;
+    if (phone === undefined) phone = '';
+    if (email === undefined) email = '';
+    for (i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email) return false;
+    }
+    phoneBook.push({
+        name: name,
+        phone: phone,
+        email: email
+    });
+    return true;
 };
 
 /**
