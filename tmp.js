@@ -65,27 +65,20 @@ exports.update = function (phone, name, email) {
 };
 
 
-function findMatching(query) {
+function* findMatching(query) {
     query = String(query);
-    let entries = [];
+    if (query === '') {
+        return;
+    }
     if (query === '*') {
-        entries.push.apply(entries, [...phoneBook.entries()])
+        yield* phoneBook.keys();
     }
-    else if (query !== '') {
-        const selected = [...phoneBook.entries()]
-            .filter(e => {
-                const [key, {name, email}] = e;
-                return [key, name, email].some(
-                    x => String(x).includes(query)
-                );
-            });
-        entries.push.apply(entries, selected);
+    for (const [key, {name, email}] of phoneBook) {
+        if ([key, name, email].some(
+            (elem, num, arr) => String(elem).includes(query))) {
+            yield key;
+        }
     }
-
-    return entries.map(e => {
-        const {name, email} = e[1];
-        return {phone: e[0], name, email};
-    });
 }
 
 /**
@@ -95,7 +88,7 @@ function findMatching(query) {
 exports.findAndRemove = function (query) {
     return Array.from(findMatching(query))
         .map(
-            entry => phoneBook.delete(entry.phone))
+            key => phoneBook.delete(key))
         .filter(x => x)
         .length;
 };
@@ -105,7 +98,10 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
-    const entries = [...findMatching(query)];
+    const entries = Array.from(findMatching(query), phone => {
+        const {name, email} = phoneBook.get(phone);
+        return {phone, name, email};
+    });
     let res = [];
     for (const entry of entries) {
         let phoneComponents, pComps = PHONE_RE.exec(entry.phone)
@@ -135,7 +131,7 @@ exports.importFromCsv = function (csv) {
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
     return csv.split('\n')
-        .map(line => line.split(';'))
+        .map(l => l.split(';'))
         .map(l => addOrUpdate(l[1], l[0], l[2]))
         .filter(x => x)
         .length;
