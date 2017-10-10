@@ -190,7 +190,7 @@ exports.find = function (query) {
         return formatData(out);
     }
 
-    return '';
+    return out;
 };
 
 /*
