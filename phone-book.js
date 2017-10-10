@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
@@ -24,6 +24,8 @@ exports.add = function (phone, name, email) {
     if (!isValidRecord(phone, name, email) || phoneBook.some(record => record.phone === phone)) {
         return false;
     }
+
+    email = typeof email === 'undefined' ? '' : email;
     phoneBook.push({ 'phone': phone, 'name': name, 'email': email });
 
     return true;
@@ -62,7 +64,7 @@ exports.update = function (phone, name, email) {
  * @returns {Array}
  */
 exports.findAndRemove = function (query) {
-    let selectedRecords = findRecordsOrderedByName(query);
+    let selectedRecords = findRecords(query);
     phoneBook = selectedRecords.filter(record => !selectedRecords.includes(record));
 
     return selectedRecords.length;
@@ -74,12 +76,12 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    let selectedRecords = findRecordsOrderedByName(query);
+    let selectedRecords = findRecords(query);
 
     return selectedRecords.map(convertToString).sort();
 };
 
-function findRecordsOrderedByName(query) {
+function findRecords(query) {
     if (query === '*') {
         return phoneBook;
     }
@@ -106,6 +108,9 @@ function convertToString(record) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
+    if (typeof csv !== 'string') {
+        return 0;
+    }
     let parsedRecords = csv.split('\n').map(line => line.split(';'));
     let recordsCounter = 0;
     for (let recordTokens of parsedRecords) {
