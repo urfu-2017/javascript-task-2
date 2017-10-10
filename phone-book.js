@@ -76,6 +76,9 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     var newSubsArray = [];
+    if (query === '' || query === undefined) {
+        return newSubsArray;
+    }
     for (var sub of phoneBook) {
         var subPushed = false;
         if (searchInSubForKeyword(sub, query)) {
