@@ -85,7 +85,7 @@ function deleteData(data) {
 
 exports.findAndRemove = function (query) {
     if (!query) {
-        return false;
+        return 0;
     }
 
     if (query === '*') {
@@ -161,7 +161,7 @@ function changeBook(data) {
 
 exports.find = function (query) {
     if (!query) {
-        return false;
+        return [];
     }
 
     if (query === '*') {
