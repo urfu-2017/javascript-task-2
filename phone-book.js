@@ -20,12 +20,12 @@ exports.add = function (phone, name, email) {
 };
 
 function correctNumber(phone) {
-    return (phone && /^(\d){10}$/.test(phone));
+    return (phone !== undefined && /^(\d){10}$/.test(phone));
 }
 
 function correctName(name) {
 
-    return (name && name.length > 0);
+    return (name && name.length > 0 && typeof name === 'string');
 }
 
 function correctInfo(phone) {
@@ -40,7 +40,7 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
-    if (!correctName(name)) {
+    if (!correctName(name) && !correctNumber(phone)) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
@@ -58,7 +58,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     var result = [];
     var y = 0;
-    if (! query) {
+    if (typeof query !== 'string') {
         return 0;
     }
     if (query === '') {
