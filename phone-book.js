@@ -21,7 +21,7 @@ function makeEntry(phone, name, email) {
         return false;
     }
 
-    return {name, email}
+    return { name, email };
 }
 
 
@@ -41,6 +41,7 @@ function addOrUpdate(phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
     if (phoneBook.has(phone)) {
@@ -55,6 +56,7 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
     if (!phoneBook.has(phone)) {
@@ -69,28 +71,29 @@ function findMatching(query) {
     query = String(query);
     let entries = [];
     if (query === '*') {
-        entries.push.apply(entries, [...phoneBook.entries()])
-    }
-    else if (query !== '') {
-        const selected = [...phoneBook.entries()]
+        entries = [...phoneBook.entries()]
+    } else if (query !== '') {
+        entries = [...phoneBook.entries()]
             .filter(e => {
                 const [key, {name, email}] = e;
+
                 return [key, name, email].some(
                     x => String(x).includes(query)
                 );
             });
-        entries.push.apply(entries, selected);
     }
 
     return entries.map(e => {
-        const {name, email} = e[1];
-        return {phone: e[0], name, email};
+        const { name, email } = e[1];
+
+        return { phone: e[0], name, email };
     });
 }
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {Number}
  */
 exports.findAndRemove = function (query) {
     return Array.from(findMatching(query))
@@ -103,14 +106,15 @@ exports.findAndRemove = function (query) {
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array}
  */
 exports.find = function (query) {
     const entries = [...findMatching(query)];
     let res = [];
     for (const entry of entries) {
-        let phoneComponents, pComps = PHONE_RE.exec(entry.phone)
+        let pComps = PHONE_RE.exec(entry.phone)
             .slice(1, 9)
-            .filter((elem, ind, arr) => ind % 2 == 0);
+            .filter((elem, ind) => ind % 2 === 0);
         const formattedPhone = `+7 (${pComps[0]}) ${pComps[1]}-${pComps[2]}-${pComps[3]}`;
         let str = `${entry.name}, ${formattedPhone}`;
         if (entry.email !== undefined) {
