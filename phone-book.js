@@ -4,7 +4,7 @@ exports.isStar = true;
 var phoneBook = [];
 exports.add = function (phone, name, email) {
     if (!correctNumber(phone) ||
-    !correctInfo(phone) || !correctName(name, email)) {
+    !correctInfo(phone) || !correctName(name)) {
         return false;
     }
     phoneBook.push({
@@ -20,12 +20,9 @@ function correctNumber(phone) {
     return /^\d{10}$/.test(phone);
 }
 
-function correctName(name, email) {
+function correctName(name) {
 
-    if (typeof name === 'string' && name.length > 0) {
-        return ((typeof email === 'string' &&
-        email.length > 0) || email === undefined);
-    }
+    return (typeof name === 'string' && name.length > 0);
 }
 
 function correctInfo(phone) {
