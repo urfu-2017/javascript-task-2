@@ -57,7 +57,11 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     if (verifyPhone(phone) && !isExist(phone) && name) {
-        phoneBook[phone] = [name, email];
+        if (email && typeof(email) === 'string') {
+            phoneBook[phone] = [name, email];
+        } else {
+            phoneBook[phone] = [name];
+        }
 
         return true;
     }
@@ -92,7 +96,7 @@ exports.findAndRemove = function (query) {
     }
 
     let data = isInBook(query);
-    if (data) {
+    if (data !== []) {
         return deleteData(data);
     }
 
