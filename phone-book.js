@@ -39,7 +39,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email, _compFlag = false) {
     var subIndex = getSubIndexByPhone(phone);
-    if (subIndex === -1 || !validateSub(phoneBook[subIndex])) {
+    if (subIndex === -1 || !validateSub({ phone: phone, name: name, email: email })) {
         return false;
     }
     var sub = phoneBook[subIndex];
@@ -120,7 +120,7 @@ exports.importFromCsv = function (csv) {
 };
 
 function validateSub(subscriber) {
-    if (isNameValid(subscriber.name) &&
+    if (isNameValid(subscriber.name) && isEmailValid(subscriber.email) &&
     isPhoneValid(subscriber.phone)) {
 
         return true;
@@ -142,6 +142,15 @@ function isPhoneValid(phone) {
     var regExp = /^\d{10}$/;
 
     return passRegExp(regExp, phone);
+}
+
+function isEmailValid(email) {
+    let regExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if (email === undefined || email === null || passRegExp(regExp, email)) {
+        return true;
+    }
+
+    return false;
 }
 
 function isNameValid(name) {
@@ -172,17 +181,10 @@ function getSubIndexByPhone(phone) {
 
 function sortPhoneBookByName(array) {
     array.sort(function (a, b) {
-        if (a.substring(0, a.indexOf(',')).toLowerCase() <
-        b.substring(0, b.indexOf(',')).toLowerCase()) {
+        var a1 = a.slice(0, a.indexOf(','));
+        var b1 = b.slice(0, b.indexOf(','));
 
-            return -1;
-        } else if (a.substring(0, a.indexOf(',')).toLowerCase() >
-        b.substring(0, b.indexOf(',')).toLowerCase()) {
-
-            return 1;
-        }
-
-        return 0;
+        return a1.localeCompare(b1);
     });
 
     return array;
