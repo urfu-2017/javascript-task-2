@@ -17,9 +17,7 @@ exports.add = function (phone, name, email) {
 };
 
 function correctNumber(phone) {
-    var pattern = /^\d{10}$/;
-
-    return pattern.test(phone);
+    return /^\d{10}$/.test(phone);
 }
 
 function correctName(name, email) {
@@ -42,7 +40,7 @@ function correctInfo(phone) {
 }
 
 exports.update = function (phone, name, email) {
-    if (!correctName(name) || !correctNumber(phone)) {
+    if (!correctName(name)) {
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
