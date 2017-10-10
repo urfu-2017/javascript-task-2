@@ -25,7 +25,7 @@ function correctNumber(phone) {
 
 function correctName(name) {
 
-    return (name && typeof name === 'string' && name.length > 0);
+    return (name && name.length > 0 && typeof name === 'string');
 }
 
 function correctInfo(phone) {
