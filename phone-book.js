@@ -9,43 +9,155 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook = [];
 
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
+    let record = { phone: phone, name: name, email: email };
+    if (!recordIsValid(record) || bookContainsRecord(record)) {
+        return false;
+    }
+    phoneBook.push(record);
 
+    return true;
 };
+
+function recordIsValid(record) {
+    return phoneIsvalid(record.phone) && nameIsValid(record.name);
+}
+
+function phoneIsvalid(phone) {
+    let reg = /\d{10}/;
+
+    return Boolean(reg.exec(phone));
+}
+
+function nameIsValid(name) {
+    return name !== undefined && name !== null && name !== '';
+}
+
+function bookContainsRecord(record) {
+    return phoneBook.filter(x => x.phone === record.phone).length !== 0;
+}
+
+function extractRecordByPhone(phone) {
+    let values = phoneBook.filter(x => x.phone === phone);
+    if (values.length !== 1) {
+        throw new RangeError('Record is not in the phonebook');
+    }
+
+    return values[0];
+}
 
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    let record = { phone, name, email };
+    if (!bookContainsRecord(record) || !nameIsValid(name)) {
+        return false;
+    }
+    let oldRecord = extractRecordByPhone(phone);
+    oldRecord.name = name;
+    oldRecord.email = email;
 
-};
-
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
-exports.findAndRemove = function (query) {
-
+    return true;
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array}
  */
 exports.find = function (query) {
+    let extractedValues;
+    if (query === '*') {
+        extractedValues = phoneBook;
+    } else {
+        extractedValues = extractValuesByQuery(query);
+    }
 
+    return transformPhoneNumber(extractedValues).sort(compareRecords)
+        .map(transformRecordToString);
 };
+
+function deleteElement(value) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === value.phone) {
+            phoneBook.splice(i, 1);
+            break;
+        }
+    }
+}
+
+/**
+ * Удаление записей по запросу из телефонной книги
+ * @param {String} query
+ * @returns {Number} nubmer of deleted elements
+ */
+exports.findAndRemove = function (query) {
+    let values = this.find(query);
+    for (let value of values) {
+        deleteElement(value);
+    }
+
+    return values.length;
+};
+
+function extractValuesByQuery(query) {
+    if (query === '*') {
+        return phoneBook;
+    }
+
+    return phoneBook
+        .filter(rec => Object.keys(rec).map(key => rec[key])
+            .some(val => val !== undefined && val !== null && val.indexOf(query) !== -1));
+}
+
+function transformPhoneNumber(values) {
+    let result = [];
+    let reg = /(\d{3})(\d{3})(\d\d)(\d\d)/;
+    for (let record of values) {
+        let phoneParts = reg.exec(record.phone);
+        if (phoneParts === null) {
+            throw new RangeError('Wrong phone format');
+        }
+        let phone = `+7 (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`;
+        result.push({ name: record.name, phone: phone, email: record.email });
+    }
+
+    return result;
+}
+
+function transformRecordToString(record) {
+    let firstPart = `${record.name}, ${record.phone}`;
+    if (record.email !== undefined && record.email !== null) {
+        firstPart += `, ${record.email}`;
+    }
+
+    return firstPart;
+}
+
+function compareRecords(first, second) {
+    let value = 0;
+    if (first.name < second.name) {
+        value = -1;
+    } else if (first.name > second.name) {
+        value = 1;
+    }
+
+    return value;
+}
 
 /**
  * Импорт записей из csv-формата
@@ -57,6 +169,23 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    let reg = /^([а-яА-Я ]+);(\d{10});(.+?)$/;
+    let values = csv.split('\n');
+    let counter = 0;
+    for (let value of values) {
+        let match = reg.exec(value);
+        if (match === null) {
+            continue;
+        }
+        let record = { name: match[1], phone: match[2], email: match[3] };
+        let added = false;
+        if (bookContainsRecord(record)) {
+            added = this.update(record.phone, record.name, record.email);
+        } else {
+            added = this.add(record.phone, record.name, record.email);
+        }
+        counter += added ? 1 : 0;
+    }
 
-    return csv.split('\n').length;
+    return counter;
 };
