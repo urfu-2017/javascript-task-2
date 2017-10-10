@@ -1,62 +1,30 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
 
-/**
- * Телефонная книга
- */
-var phoneBook;
+const phoneBook = new Map();
+const PHONE_PATTERN = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
-exports.add = function (phone, name, email) {
+const formatPhone = phone => phone.replace(PHONE_PATTERN, (match, ...parts) =>
+    `+7 (${parts[0]}) ${parts[1]}-${parts[2]}-${parts[3]}`);
 
-};
+const search = query => (query ? Array.from(phoneBook.entries()) : [])
+    .filter(([phone, { name, email }]) =>
+        query === '*' || phone.includes(query) || name.includes(query) || email.includes(query));
 
-/**
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
-exports.update = function (phone, name, email) {
+exports.add = (phone, name, email = '') => (!name || !PHONE_PATTERN.test(phone) ||
+    phoneBook.has(phone)) ? false : phoneBook.set(phone, { name, email }) && true;
 
-};
+exports.update = (phone, name, email = '') => (!name || !phoneBook.has(phone)) ? false
+    : phoneBook.set(phone, { name, email }) && true;
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
-exports.findAndRemove = function (query) {
+exports.findAndRemove = query => search(query).filter(([phone]) => phoneBook.delete(phone)).length;
+exports.find = query => search(query)
+    .map(([phone, { name, email }]) => `${name}, ${formatPhone(phone)}${email ? `, ${email}` : ''}`)
+    .sort();
 
-};
+exports.importFromCsv = csv => csv.split('\n').filter(line => {
+    const [name, phone, email] = line.split(';');
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
-exports.find = function (query) {
-
-};
-
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
-exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
-
-    return csv.split('\n').length;
-};
+    return exports.add(phone, name, email) || exports.update(phone, name, email);
+}).length;
