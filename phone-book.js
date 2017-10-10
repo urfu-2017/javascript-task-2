@@ -34,17 +34,17 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
- * @param {Boolean} _compFlag
+ * @param {Boolean} _completeFlag
  * @returns {Boolean}
  */
-exports.update = function (phone, name, email, _compFlag = false) {
+exports.update = function (phone, name, email, _completeFlag = false) {
     var subIndex = getSubIndexByPhone(phone);
     if (subIndex === -1 || !validateSub({ phone: phone, name: name, email: email })) {
         return false;
     }
     var sub = phoneBook[subIndex];
     sub.name = name;
-    if (email !== undefined || !_compFlag) {
+    if (email !== undefined || !_completeFlag) {
         sub.email = email;
     }
 
@@ -111,11 +111,14 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    if (csv.length === 0) {
+        return csv.length;
+    }
     csv = convertCsvToArray(csv);
     var csvCopy = csv.slice();
     for (var sub of csv) {
         if (!exports.add(sub.phone, sub.name, sub.email) &&
-        !exports.update(sub.phone, sub.name, sub.email, true)) {
+        !exports.update(sub.phone, sub.name, sub.email, false)) {
             csvCopy.splice(csv.indexOf(sub), 1);
             continue;
         }
@@ -133,11 +136,8 @@ function validateSub(subscriber) {
 }
 
 function isSubNotExist(subscriber) {
-    for (var sub of phoneBook) {
-        if (sub.phone === subscriber.phone) {
-
-            return false;
-        }
+    if (getSubIndexByPhone(subscriber.phone) !== -1) {
+        return false;
     }
 
     return true;
@@ -186,8 +186,8 @@ function getSubIndexByPhone(phone) {
 
 function sortPhoneBookByName(array) {
     array.sort(function (a, b) {
-        var a1 = a.slice(0, a.indexOf(','));
-        var b1 = b.slice(0, b.indexOf(','));
+        var a1 = a.slice(0, a.indexOf(',')).toLowerCase();
+        var b1 = b.slice(0, b.indexOf(',')).toLowerCase();
 
         return a1.localeCompare(b1);
     });
