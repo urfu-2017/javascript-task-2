@@ -39,24 +39,50 @@ exports.add = function(phone, name, email) {
  * @param {String} name
  * @param {String} email
  */
-exports.update = function (phone, name, email) {
-
+exports.update = function(phone, name, email) {
+    phone = String(phone);
+    if (phone.length !== 10 && phone.length !== 0) return false;
+    if (name === undefined) name = '';
+    if (email === undefined) email = '';
+    for (i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+            phoneBook[i].name = name;
+            phoneBook[i].email = email;
+            return true;
+        }
+    }
+    return false;
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
  */
-exports.findAndRemove = function (query) {
-
+exports.findAndRemove = function(query) {
+    if (query === '') return undefined;
+    var schet = 0;
+    for (i = phoneBook.length - 1; i >= 0; i--) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1) {
+            phoneBook.splice(i, i + 1);
+            schet += 1;
+        }
+    }
+    return schet;
 };
-
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
  */
-exports.find = function (query) {
-
+exports.find = function(query) {
+    if (query === '') return undefined;
+    var exit = [];
+    for (i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1 || query === '*') {
+            exit.push(phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' + phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10) + ', ' + phoneBook[i].email)
+        }
+    }
+    exit.sort();
+    return exit;
 };
 
 /**
@@ -66,6 +92,15 @@ exports.find = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
+    var name1;
+var phone1;
+var email1;;    
+csv1=csv1.split('\n');
+	for (i=0; i<csv1.length;i++){
+name1=csv1[i].slice(0,csv1[i].indexOf(';'));
+phone1=csv1[i].slice(csv1[i].indexOf(';')+1,csv1[i].lastIndexOf(';'));
+email1=csv1[i].slice(csv1[i].lastIndexOf(';')+1, csv1[i].length);
+exports.add(phone1, name1, email1)}
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
