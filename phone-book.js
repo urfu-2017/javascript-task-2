@@ -48,10 +48,13 @@ exports.update = function (phone, name, email) {
             return true;
         }
     }
+    
+    return false;
 };
 
 exports.findAndRemove = function (query) {
     var result = [];
+    var y = 0;
     if (query === undefined || query === '') {
 
         return 0;
@@ -64,12 +67,12 @@ exports.findAndRemove = function (query) {
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
-            result.push(phoneBook[i]);
+            result.splice(phoneBook[i].length, 1);
+            y++;
         }
     }
-    result.splice(result.length, 1);
 
-    return result.length;
+    return y;
 };
 
 exports.find = function (query) {
