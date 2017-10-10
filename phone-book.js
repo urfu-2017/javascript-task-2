@@ -178,7 +178,7 @@ function advancedPush(data, arr) {
 exports.find = function (query) {
     var out = [];
     if (query === '' || typeof(query) !== 'string') {
-        return '';
+        return [];
     }
     if (query === '*') {
         return formatData(phoneBook);
