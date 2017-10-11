@@ -1,4 +1,4 @@
-/* eslint-disable max-len,valid-jsdoc,default-case,max-depth,no-unused-vars,linebreak-style */
+/* eslint-disable max-len,valid-jsdoc,default-case,max-depth,no-unused-vars,linebreak-style,complexity */
 'use strict';
 
 /**
@@ -85,7 +85,7 @@ exports.update = function update(phone, name, email) {
         for (let inf of phoneBook) {
             if (inf.phone === phone) {
                 inf.name = name;
-                inf.email = email === '' ? undefined : email;
+                inf.email = email === '' ? email.replace(undefined, '') : email;
 
                 return true;
             }
@@ -124,6 +124,9 @@ exports.findAndRemove = function findAndRemove(query) {
  */
 exports.find = function find(query) {
     let founded = [];
+    if (query === '') {
+        return false;
+    }
     query = query.replace('*', '');
     if (isString(query)) {
         for (let i = 0; phoneBook.length > i; i++) {
