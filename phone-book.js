@@ -70,7 +70,7 @@ exports.findAndRemove = function (query) {
     }
     if (query !== '') {
         let phoneNumbers = Object.keys(findRecords(query));
-        for (let i = 0; i <= phoneNumbers.length + 1; i++) {
+        for (let i = 0; i < phoneNumbers.length; i++) {
             delete phoneBook[phoneNumbers[i]];
         }
 
