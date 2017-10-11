@@ -72,26 +72,49 @@ function isCorrectPhone(input) {
  * @param {String} email
  * @returns {Boolean}
  */
+
+
 exports.update = function (phone, name, email) {
-    if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
+    if (typeof name !== 'string' || !name) {
         return false;
     }
+    let indexPhoned = -1;
+    let findPhoned = phoneBook.some(function (record, index) {
+        indexPhoned = index;
 
-    return updatePerson(phone, name, email);
-};
+        return record.phone === phone;
+    });
+    if (findPhoned && name) {
+        phoneBook[indexPhoned].name = name;
+        phoneBook[indexPhoned].phone = phone;
+        phoneBook[indexPhoned].email = email;
 
-
-function updatePerson(phone, name, email) {
-    for (let person of phoneBook) {
-        if (person.phone === phone) {
-            person.name = (name !== undefined) ? name : person.name;
-            person.email = (email !== undefined) ? email : undefined;
-
-            return true;
-        }
+        return true;
     }
 
     return false;
+};
+
+// exports.update = function (phone, name, email) {
+//     if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
+//         return false;
+//     }
+
+//     return updatePerson(phone, name, email);
+// };
+
+
+// function updatePerson(phone, name, email) {
+//     for (let person of phoneBook) {
+//         if (person.phone === phone) {
+//             person.name = (name !== undefined) ? name : person.name;
+//             person.email = (email !== undefined) ? email : undefined;
+
+//             return true;
+//         }
+//     }
+
+//     return false;
     // try {
     //     if (!isValidFormat(phone, name) || isCorrectPhone(phone)) {
     //         return false;
