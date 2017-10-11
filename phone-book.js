@@ -35,6 +35,18 @@ function normalizePhone(phone) {
 
     return result;
 }
+function reversePhone(normalizedPhone) {
+    var phone = '';
+    var actualPhone = normalizedPhone.split('+7 ')[1];
+    var symbol = ''
+    for(var i = 0; i < actualPhone; i++) {
+        symbol = actualPhone[i]; 
+        if (symbol !== '(' || symbol !== ')' || symbol !== '-' || symbol !== ' ') {
+            phone += symbol;
+        }
+    }
+    return phone;
+}
 function getNotesStruct(foundNames, foundNotes, result) {
     var anotherName;
     var anotherPhone;
@@ -135,7 +147,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     var foundNotes = getNotes(query);
     for (var i = 0; i < foundNotes.length; i++) {
-        delete phoneBook[foundNotes[i][1]];
+        delete phoneBook[reversePhone(foundNotes[i].split(', ')[1])];
     }
 
     return foundNotes.length;
