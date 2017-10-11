@@ -32,7 +32,7 @@ function normalizePhone(phone) {
     result += firstPart;
     result += ') ';
     result += secondPart;
-    
+
     return result;
 }
 function getNotesStruct(foundNames, foundNotes, result) {
