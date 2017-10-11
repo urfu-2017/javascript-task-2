@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!(phone in phoneBook) || !name) {
+    if (!(phone in phoneBook) || !isString(name) || name === '') {
         return false;
     }
     phoneBook[phone] = {
@@ -64,7 +64,7 @@ exports.findAndRemove = function (query) {
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
- * @returns {Number}
+ * @returns {Array}
  */
 exports.find = function (query) {
     return findNumbers(query)
