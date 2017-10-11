@@ -182,13 +182,13 @@ exports.find = function (query) {
         return getAllContacts();
     }
     for (let contact in phoneBook) {
-        if (phoneBook[contact].name.match(query) !== null) {
+        if (phoneBook[contact].name.search(query) !== -1) {
             result.push(phoneBook[contact].toString());
         } else if (!isEmpty(phoneBook[contact].phone) &&
-            phoneBook[contact].phone.match(query) !== null) {
+            phoneBook[contact].phone.search(query) !== -1) {
             result.push(phoneBook[contact].toString());
         } else if (!isEmpty(phoneBook[contact].email) &&
-            phoneBook[contact].email.match(query) !== null) {
+            phoneBook[contact].email.search(query) !== -1) {
             result.push(phoneBook[contact].toString());
         }
     }
@@ -202,7 +202,7 @@ exports.find = function (query) {
 function getAllContacts() {
     let result = [];
     for (let contact in phoneBook) {
-        if (phoneBook[contact].name !== undefined) {
+        if (!isEmpty(phoneBook[contact].name)) {
             result.push(phoneBook[contact].toString());
         }
     }
