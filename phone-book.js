@@ -84,7 +84,7 @@ exports.update = function (phone, name, email) {
     let updateUser = { phone: phone, name: name, email: email };
     let userPos = findUser(updateUser.phone);
     if (userPos !== 'error') {
-        if (typeof name === 'string') {
+        if (typeof name === 'string' && name.length !== 0) {
             phoneBook[userPos].name = name;
         }
         if (typeof email !== 'string') {
