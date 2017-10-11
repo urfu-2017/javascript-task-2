@@ -101,8 +101,8 @@ function sortByName(a, b) {
 }
 
 function entryContainsQuery(entry, query) {
-    return (entry.name.indexOf(query) !== -1 ||
-    entry.phone.indexOf(query) !== -1 ||
+    return (entry.name !== undefined && entry.name.indexOf(query) !== -1 ||
+    entry.phone !== undefined && entry.phone.indexOf(query) !== -1 ||
     entry.email !== undefined && entry.email.indexOf(query) !== -1);
 }
 
