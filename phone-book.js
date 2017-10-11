@@ -14,7 +14,7 @@ var FORMAT_PHONE = /\d{10}/;
 
 function checkValid(phone, name) {
     var okPhone = FORMAT_PHONE.exec(phone);
-    if (typeof name === 'string' && name !== '') {
+    if (typeof name === 'string' && name !== '' && phone.length === 10) {
 
         return (okPhone);
     }
@@ -77,7 +77,7 @@ exports.findAndRemove = function (query) {
             return 0;
         default:
             phoneBook = phoneBook.filter(value => {
-                if (typeof value.email === 'string' && value.email !== '') {
+                if (typeof value.email === 'string') {
 
                     return !(value.phone.includes(query) || value.name.includes(query) ||
                         value.email.includes(query));
