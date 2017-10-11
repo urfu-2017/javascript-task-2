@@ -4,6 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  *  */
+
 exports.isStar = true;
 
 /**
