@@ -44,10 +44,8 @@ exports.add = function (phone, name, email) {
  * @returns {Bool}
  */
 exports.update = function (phone, name, email) {
-    if (phone in phoneBook) {
-        if (name.match(/.+/) !== null) {
-            phoneBook[phone].Name = name;
-        }
+    if ((phone in phoneBook) && name.match(/.+/) !== null) {
+        phoneBook[phone].Name = name;
         if (email === undefined) {
             email = '';
         }
@@ -139,10 +137,7 @@ exports.importFromCsv = function (csv) {
     const records = csv.split('\n');
     for (let i = 0; i < records.length; i++) {
         const [name, phone, email] = records[i].split(';');
-        if ((phone in phoneBook) && (exports.update(phone, name, email))) {
-            countUpdate++;
-        }
-        if (exports.add(phone, name, email)) {
+        if (exports.update(phone, name, email) || exports.add(phone, name, email)) {
             countUpdate++;
         }
     }
