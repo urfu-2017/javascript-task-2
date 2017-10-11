@@ -74,6 +74,9 @@ exports.findAndRemove = function (query) {
     if (query === '') {
         return 0;
     }
+    if (typeof query !== 'string') {
+        return false;
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (toCheck(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
             phoneBook.splice(i, 1);
