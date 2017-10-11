@@ -40,6 +40,7 @@ exports.add = function(phone, name, email) {
         phone: phone,
         email: email
     });
+
     return true;
 };
 /**
@@ -60,6 +61,7 @@ exports.update = function(phone, name, email) {
             return true;
         }
     }
+
     return false
 };
 
@@ -78,7 +80,8 @@ phoneBook[i].email.indexOf(query) !== -1) {
             schet += 1;
         }
     }
-    return schet
+
+    return schet;
 };
 
 /**
@@ -98,7 +101,8 @@ phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' + ph
         }
     }
     exit.sort();
-    return exit
+
+    return exit;
 };
 
 /**
@@ -124,7 +128,8 @@ exports.importFromCsv = function(csv) {
             schet += 1;
         }
     }
-    return schet
+    
+    return schet;
 };
 // Парсим csv
 // Добавляем в телефонную книгу
