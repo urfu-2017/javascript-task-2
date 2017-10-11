@@ -81,7 +81,7 @@ exports.findAndRemove = function (query) {
  * @returns {Object}
  */
 exports.find = function (query) {
-    if (query === '') {
+    if (query === '' || typeof query !== 'string') {
         return null;
     }
     if (query === '*') {
@@ -108,6 +108,9 @@ exports.find = function (query) {
  */
 exports.importFromCsv = function (csv) {
     let entriesCount = 0;
+    if (typeof csv !== 'string') {
+        return entriesCount;
+    }
     let csvEntries = csv.split('\n');
 
     for (let csvEntry of csvEntries) {
@@ -126,6 +129,10 @@ exports.importFromCsv = function (csv) {
  * @returns {Boolean}
  */
 function isValidPhoneNumber(phoneNumber) {
+    if (typeof phoneNumber !== 'string') {
+        return false;
+    }
+
     return /^\d{10}$/.test(phoneNumber);
 }
 
@@ -150,7 +157,7 @@ function isExistingPhoneNumber(phoneNumber) {
  * @returns {Boolean}
  */
 function isCorrectName(name) {
-    return /.+/.test(name) && name !== undefined;
+    return /.+/.test(name) && name !== undefined && typeof name === 'string';
 }
 
 /**
