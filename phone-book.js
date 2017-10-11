@@ -32,6 +32,7 @@ function normalizePhone(phone) {
     result += firstPart;
     result += ') ';
     result += secondPart;
+    
     return result;
 }
 function getNotesStruct(foundNames, foundNotes, result) {
@@ -63,7 +64,7 @@ function getNotes(query) {
         }
     }
     foundNames.sort();
-    result = getNotesStruct(foundNames, foundNotes, []);
+    var result = getNotesStruct(foundNames, foundNotes, []);
 
     return result;
 }
