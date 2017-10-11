@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Регулярка для проверки номера телефона
@@ -67,7 +67,7 @@ exports.add = function (phone, name, email) {
 };
 
 /**
- * Check contact for existing in phone book
+ * Проверка контакта на его наличие в телефонной книге
  * @param {String} phone 
  * @param {String} name 
  * @param {String} email 
@@ -124,7 +124,7 @@ exports.findAndRemove = function (query) {
 };
 
 /**
- * Removes all elements and returns number of deleted items
+ * Удаление ВСЕХ записей из телефонной книги. Возвращает число удалённых записей.
  * @returns {Integer} number of deleted elements
  */
 function removeAll() {
@@ -177,10 +177,10 @@ exports.find = function (query) {
     for (let contact in phoneBook) {
         if (phoneBook[contact].name.match(query) !== null) {
             result.push(phoneBook[contact].toString());
-        } else if (!phoneBook[contact].phone !== undefined &&
+        } else if (phoneBook[contact].phone !== undefined &&
             phoneBook[contact].phone.match(query) !== null) {
             result.push(phoneBook[contact].toString());
-        } else if (!phoneBook[contact].email !== undefined &&
+        } else if (phoneBook[contact].email !== undefined &&
             phoneBook[contact].email.match(query) !== null) {
             result.push(phoneBook[contact].toString());
         }
