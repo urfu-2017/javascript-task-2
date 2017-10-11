@@ -1,9 +1,8 @@
 /* eslint-env mocha */
 'use strict';
 
-var assert = require('assert');
-
-var phoneBook = require('./phone-book');
+const assert = require('assert');
+const phoneBook = require('./phone-book');
 
 describe('phone-book', function () {
     it('должен добавлять записи', function () {
@@ -48,7 +47,7 @@ describe('phone-book', function () {
 
     if (phoneBook.isStar) {
         it('должен экспортировать из cvs', function () {
-            var csv = [
+            let csv = [
                 'Борис;5552220022;boris@example.com',
                 'Григорий;5554440044;grisha@example.com',
                 'Алексей;5551110011;alex@example.com',
