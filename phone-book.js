@@ -166,8 +166,13 @@ function unique(arr) {
 
 exports.find = function (query) {
     let answer = [];
+    let strAnswer = [];
 
-    if (query !== '*') {
+    if (typeof query !== 'string') {
+
+        return [];
+
+    } else if (query === '*') {
         let users = unique(findAll(query));
         for (let i = 0; i < users.length; i++) {
             answer.push(phoneBook[users[i]]);
@@ -177,15 +182,6 @@ exports.find = function (query) {
             answer.push(phoneBook[i]);
         }
     }
-    if (typeof query === 'string') {
-        return format(answer);
-    }
-
-    return [];
-};
-
-function format(answer) {
-    let strAnswer = [];
     answer.sort(sortParams);
     strAnswer = transformation(answer);
     if (strAnswer.length !== 0) {
@@ -193,7 +189,9 @@ function format(answer) {
 
         return strAnswer.join('').split('ж');
     }
-}
+
+    return [];
+};
 
 function sortParams(nameA, nameB) {
     if (nameA.name[0] > nameB.name[0]) {
