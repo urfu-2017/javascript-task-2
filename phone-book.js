@@ -27,7 +27,7 @@ exports.add = function(phone, name, email) {
     if (phone === undefined) phone = '';
     if (email === undefined) email = '';
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.adhelpen = function(phone, name, email)) return false;
+        if (exports.adhelpen(phone, name, email)) return false;
     }
     phoneBook.push({
         name: name,
