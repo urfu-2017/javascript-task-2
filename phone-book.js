@@ -112,7 +112,7 @@ exports.findhelp = function (one, two, free) {
     if (one !== -1 || two !== -1 || free !== -1) {
         return true;
     } 
-
+};
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
