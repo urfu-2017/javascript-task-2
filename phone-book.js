@@ -9,7 +9,6 @@ function checkPhone(number) {
     if (phoneReg.exec(number)) {
         return true;
     }
-    
     return false;
 }
 
@@ -17,7 +16,6 @@ function checkName(name) {
     if (name !== ' ' && name !== undefined && name !== null) {
         return true;
     }
-    
     return false;
 
 }
@@ -139,4 +137,4 @@ exports.importFromCsv = function (csv) {
     }
 
     return updateRecords;
-}
+};
