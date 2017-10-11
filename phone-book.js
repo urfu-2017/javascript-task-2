@@ -43,14 +43,15 @@ exports.add = function (phone, name, email) {
         return true;
     }
 
-    return false; 
+return false; 
 };
 
- /**
+/**
  * Обновление записи в телефонной книге
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Bool}
  */
 exports.update = function (phone, name, email) {
     var error = '';
@@ -77,9 +78,10 @@ exports.update = function (phone, name, email) {
     });
 };
 
- /**
+/**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {Bool}
 */
 exports.findAndRemove = function (query) {
     var countList = 0;
@@ -97,9 +99,10 @@ exports.findAndRemove = function (query) {
     return countList;
 };
 
- /**
+/**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Bool}
 */
 exports.find = function (query) {
     var findList = [];
