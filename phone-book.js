@@ -64,15 +64,25 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     var pB = phoneBook.length;
-    phoneBook = phoneBook.filter(value => {
-        if (typeof value.email === 'string') {
+    switch (query) {
+        case '*':
+            phoneBook = [];
 
-            return !(value.phone.includes(query) || value.name.includes(query) ||
-                value.email.includes(query));
-        }
+            return pB;
+        case '':
 
-        return !(value.phone.includes(query) || value.name.includes(query));
-    });
+            return 0;
+        default:
+            phoneBook = phoneBook.filter(value => {
+                if (typeof value.email === 'string') {
+
+                    return !(value.phone.includes(query) || value.name.includes(query) ||
+                        value.email.includes(query));
+                }
+
+                return !(value.phone.includes(query) || value.name.includes(query));
+            });
+    }
 
     return (pB - phoneBook.length);
 };
