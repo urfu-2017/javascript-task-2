@@ -11,7 +11,7 @@ exports.isStar = true;
  */
 var phoneBook = {};
 function checkPhone(phone) {
-    if(phone.match(/\d/g).length===10;) {
+    if(phone.match(/\d/g).length === 10) {
         return true;
     }
     return false;
