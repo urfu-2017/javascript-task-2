@@ -159,10 +159,10 @@ exports.importFromCsv = function (csv) {
         name1 = csv[i].slice(0, csv[i].indexOf(';'));
         phone1 = csv[i].slice(csv[i].indexOf(';') + 1, csv[i].lastIndexOf(';'));
         email1 = csv[i].slice(csv[i].lastIndexOf(';') + 1, csv[i].length);
-        if (exports.add(phone1, name1, email1)) {
+        if (exports.update(phone1, name1, email1)) {
             schet += 1;
         }
-        if (exports.update(phone1, name1, email1)) {
+        if (exports.add(phone1, name1, email1)) {
             schet += 1;
         }
     }
