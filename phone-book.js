@@ -77,7 +77,7 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    if (typeof query !== 'string') {
+    if (typeof query !== 'string' || query === '') {
         return [];
     }
 
