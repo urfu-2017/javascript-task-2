@@ -124,15 +124,15 @@ function updateOrAdd(phone, name, email) {
 
         return 1;
     }
-    if (phone.length === 10 && !/[^0-9]/.test(phone)) {
-        var arr = [name, email];
-        phoneBook[phone] = arr;
-
-        return 1;
+    if (phone.length !== 10 || /[^0-9]/.test(phone) || !name) {
+        return 0;
     }
+    var arr = [name, email];
+    phoneBook[phone] = arr;
 
-    return 0;
+    return 1;
 }
+
 exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
