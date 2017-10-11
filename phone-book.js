@@ -143,11 +143,16 @@ function removeAll() {
 
 function removeByKey(query) {
     let deleted = 0;
-    for (let contact in phoneBook) {
+    phoneBook.forEach(function (element, index) {
+        if (index < phoneBook.length) {
+            deleted = checkAndDelete(index, query);
+        }
+    });/*
+    for (let contact of phoneBook) {
         if (contact < phoneBook.length) {
             deleted = checkAndDelete(contact, query);
         }
-    }
+    }*/
 
     return deleted;
 }
