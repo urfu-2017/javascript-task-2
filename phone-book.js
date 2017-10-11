@@ -69,9 +69,9 @@ exports.findAndRemove = function (query) {
         return deleted.length;
     }
     if (query !== '') {
-        let phoneNumbers = Object.keys(findRecords(query));
-        for (let i = 0; i < phoneNumbers.length; i++) {
-            delete phoneBook[phoneNumbers[i]];
+        deleted = Object.keys(findRecords(query));
+        for (let i = 0; i < deleted.length; i++) {
+            delete phoneBook[deleted[i]];
         }
 
         return deleted.length;
