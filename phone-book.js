@@ -87,6 +87,10 @@ exports.findAndRemove = function (query) {
 
         return remoteCounter;
     }
+
+    if (query === '') {
+        return remoteCounter;
+    }
     for (let i = phoneBook.length - 1; i > -1; i--) {
         if (entryContainsQuery(phoneBook[i], query)) {
             phoneBook.splice(i, 1);
