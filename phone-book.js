@@ -86,6 +86,8 @@ exports.update = function (phone, name, email) {
     if (userPos !== 'error') {
         if (typeof name === 'string' && name.length !== 0) {
             phoneBook[userPos].name = name;
+        } else {
+            return false;
         }
         if (typeof email !== 'string') {
             phoneBook[userPos].email = undefined;
