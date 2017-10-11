@@ -60,41 +60,47 @@ exports.update = function(phone, name, email) {
             return true;
         }
     }
-    return false;
+    return false
 };
+
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @return {number}
  */
 exports.findAndRemove = function(query) {
-    if (query === '') return undefined;
+    if (query === '') { return undefined; }
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1) {
-			phoneBook.splice(i, i + 1);
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
+phoneBook[i].email.indexOf(query) !== -1) {
+            phoneBook.splice(i, i + 1);
             schet += 1;
         }
     }
-    return schet;
+    return schet
 };
+
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @return {array}
  */
 exports.find = function(query) {
-	if (query === '') return undefined;
-	var exit = [];
-	for (var i = 0; i < phoneBook.length; i++) {
-		if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
+    if (query === '') { return undefined; }
+    var exit = [];
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
  phoneBook[i].email.indexOf(query) !== -1 || query === '*') {
-			exit.push(phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
- phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10) + 
+            exit.push(phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
+phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10) +
 ', ' + phoneBook[i].email);
         }
     }
     exit.sort();
-    return exit;
+    return exit
 };
+
 /**
  * Импорт записей из csv-формата
  * @star
@@ -105,7 +111,7 @@ exports.importFromCsv = function(csv) {
     var schet = 0;
     var name1;
     var phone1;
-    var email1;;
+    var email1;
     csv = csv.split('\n');
     for (var i = 0; i < csv.length; i++) {
         name1 = csv[i].slice(0, csv[i].indexOf(';'));
@@ -118,7 +124,7 @@ exports.importFromCsv = function(csv) {
             schet += 1;
         }
     }
-    return schet;
+    return schet
 };
 // Парсим csv
 // Добавляем в телефонную книгу
