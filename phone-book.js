@@ -63,10 +63,7 @@ exports.add = function (phone, name, email) {
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (exports.addhelpen(phone, name, phoneBook[i].name,
-            phoneBook[i].phone)) {
-            return false;
-        }
-        if (exports.addhelpena(email, phoneBook[i].email)) {
+            phoneBook[i].phone) || exports.addhelpena(email, phoneBook[i].email)) {
             return false;
         }
     }
