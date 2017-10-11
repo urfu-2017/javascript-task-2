@@ -61,6 +61,12 @@ exports.findAndRemove = function (query) {
     if (typeof query !== 'string' || query === '') {
         return 0;
     }
+    if (query === '*') {
+        let length = phoneBook.length;
+        phoneBook = {};
+
+        return length;
+    }
 
     let matchedPhones = getMatches(query);
 
