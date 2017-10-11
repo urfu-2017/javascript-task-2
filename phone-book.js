@@ -131,7 +131,7 @@ function convertEntryToStr(entry) {
     let phone = `+7 (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`;
 
     let email = '';
-    if (entry.email !== undefined) {
+    if (entry.email !== undefined && entry.email !== '') {
         email = `, ${entry.email}`;
     }
 
