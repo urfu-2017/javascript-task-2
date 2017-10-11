@@ -24,7 +24,7 @@ function checkName(name) {
 
 function transformPhoneAndEmail(number, email) {
     let phone = '+7 (' + number.slice(0, 3) + ') ' + number.slice(3, 6) +
-    '-' + number.slice(6, 8) + '-' + number.slice(8, 10);
+        '-' + number.slice(6, 8) + '-' + number.slice(8, 10);
     if (email !== null && email !== undefined) {
         phone += ', ' + email;
     }
@@ -125,8 +125,8 @@ function recordsInBook(query) {
 }
 
 function checkRecord(record, query) {
-    if ((record.name.indexOf(query) !== -1) ||
-        ((record.email !== undefined) && (record.email.indexOf(query) !== -1))) {
+    if ((record.name.indexOf(query)) ||
+        ((record.email !== undefined) && (record.email.indexOf(query)))) {
 
         return true;
     }
