@@ -51,7 +51,7 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
-    if (checkRecordByPhone) {
+    if (checkPhone(phone) && checkName(name) && checkRecordByPhone) {
         phoneBook[phone] = { name, email };
 
         return true;
