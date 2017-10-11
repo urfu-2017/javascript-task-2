@@ -55,10 +55,10 @@ function getNotes(query) {
     var foundName = '';
     for (var i = 0; i < allNumbers.length; i++) {
         foundName = phoneBook[allNumbers[i]][0];
-        if (foundName.includes(query) || phoneBook[allNumbers[i]][1].includes(query)) {
+        if (query === '*' || allNumbers[i].includes(query)) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
-        } else if (query === '*' || allNumbers[i].includes(query)) {
+        } else if (foundName.includes(query) || phoneBook[allNumbers[i]][1].includes(query)) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
         }
