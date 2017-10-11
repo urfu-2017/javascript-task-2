@@ -39,7 +39,7 @@ function getNotesStruct(foundNames, foundNotes, result) {
     var anotherName;
     var anotherPhone;
     var anotherMail;
-    for (var i = 0; i < foundNames.length(); i++) {
+    for (var i = 0; i < foundNames.length; i++) {
         anotherName = foundNames[i];
         anotherPhone = normalizePhone(foundNotes[anotherName][0]);
         anotherMail = foundNotes[anotherName][1];
@@ -58,9 +58,14 @@ function getNotes(query) {
         if (query === '*' || allNumbers[i].includes(query)) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
-        } else if (foundName.includes(query) || phoneBook[allNumbers[i]][1].includes(query)) {
+        } else if (foundName.includes(query)) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
+        } else if (phoneBook[allNumbers[i]][1] != undefinded) {
+            if (phoneBook[allNumbers[i]][1].includes(query)) {
+                foundNames.push(foundName);
+                foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
+            }
         }
     }
     foundNames.sort();
