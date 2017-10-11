@@ -98,6 +98,7 @@ exports.findAndRemove = function (query) {
     for(var i = 0; i < foundNotes.length; i++) {
         delete phoneBook[foundNotes[i][1]];
     }
+    return foundNotes.length;
 };
 
 /**
