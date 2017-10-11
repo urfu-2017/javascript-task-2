@@ -60,9 +60,10 @@ function isCorrectName(name) {
     return true;
 }
 function isCorrectPhone(input) {
-    return (input.match(phonePattern) !== null && input && input.length === 10);
+    return (input.match(phonePattern) !== null);
 }
 
+// && input && input.length === 10
 // function isCorrectEmail(email) {
 //     return email.match(emailPattern);
 // }
@@ -75,9 +76,6 @@ function isCorrectPhone(input) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    // if (typeof name !== 'string' || !name) {
-    //             return false;
-    //         }
     if (!isCorrectName(name)) {
         return false;
     }
