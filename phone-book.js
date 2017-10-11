@@ -11,7 +11,6 @@ exports.isStar = true;
  */
 var phoneBook = [];
 var phonePattern = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
-// var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.\.[a-zA-Z]{2,}$/;
 
 class Person {
     constructor(phone, name, email) {
@@ -31,42 +30,40 @@ class Person {
  */
 
 exports.add = function (phone, name, email) {
-    if (isCorrectPhone(phone) && isCorrectName(name) && isNew(phone)) {
-        let newPerson = new Person (phone, name, email);
-        if (email) {
-            newPerson.email = email;
-        }
-        phoneBook.push(newPerson);
+    let newPersonCard;
+    if (isValidFormat(phone, name)) {
+        newPersonCard = new Person(phone.toString(), name, email);
+    } else {
+        return false;
+    }
+    if (!havePerson(phone) && isCorrectPhone(phone.toString())) {
+        phoneBook.push(newPersonCard);
 
         return true;
     }
-};
-// console.info(exports.add('5554440044', 'Григорий', 'grisha@example.com'));
 
-function isNew(phone) {
+    return false;
+};
+
+function havePerson(phone) {
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
-            return false;
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
-function isCorrectName(name) {
-    if (name === '' || typeof name !== 'string') {
+function isValidFormat(phone, name) {
+    if (!name || typeof name !== 'string' || isNaN(phone) || phone === undefined) {
         return false;
     }
 
     return true;
 }
 function isCorrectPhone(input) {
-    return (input.match(phonePattern) !== null);
+    return input.match(phonePattern) !== null && input && input.length === 10;
 }
-
-// && input && input.length === 10
-// function isCorrectEmail(email) {
-//     return email.match(emailPattern);
-// }
 
 /**
  * Обновление записи в телефонной книге
@@ -76,9 +73,9 @@ function isCorrectPhone(input) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isCorrectName(name)) {
-        return false;
-    }
+    // if (typeof name !== 'string' || !name) {
+    //             return false;
+    //         }
     for (let person of phoneBook) {
         if (person.phone === phone) {
             person.name = (name !== undefined) ? name : person.name;
@@ -90,15 +87,6 @@ exports.update = function (phone, name, email) {
 
     return false;
 };
-// console.info(exports.add('5551110011', 'Алекс'));
-// console.info(exports.add('5553330033', 'Валерий', 'valera@example.com'));
-// console.info(exports.update('5551110011', 'Алексей', 'alex@example.com'));
-// console.info(exports.update('5553330033', 'Валерий'));
-// console.info(exports.update('5553330022', 'lolo'));
-
-// function isValidData(phone, name) {
-//     return !(typeof name !== 'string' || !isCorrectPhone(phone) || !name);
-// }
 
 /**
  * Удаление записей по запросу из телефонной книги
@@ -133,13 +121,10 @@ function findToDel(delCard) {
 
 exports.find = function (query) {
     let result = [];
-    if (typeof query !== 'string') {
-        return result;
-    }
     switch (query) {
         case '*':
             return designingBook(phoneBook.sort(comapareNames));
-        case undefined || null:
+        case undefined:
             return [];
         case '':
             return [];
