@@ -14,9 +14,13 @@ var phoneBook;
  * @param {String} name
  * @param {String} email
  */
+exports.addhel = function(phone, name) {
+    if (name === '' || (phone.length !== 10 && phone.length !== 0)) return true; }
+
+
 exports.add = function(phone, name, email) {
     phone = String(phone);
-    if (name === '' || (phone.length !== 10 && phone.length !== 0)) return false;
+    if (exports.adhel(phone,name)) return false;
     if (phone === undefined) phone = '';
     if (email === undefined) email = '';
     for (var i = 0; i < phoneBook.length; i++) {
