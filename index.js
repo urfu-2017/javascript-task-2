@@ -29,7 +29,9 @@ console.info(phoneBook.find('555'));
 // ]
 
 // Удаление
+phoneBook.findAndRemove('uu');
 phoneBook.findAndRemove('@'); // returns 3
+phoneBook.findAndRemove('');
 
 if (phoneBook.isStar) {
     // Импортируем из csv

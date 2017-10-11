@@ -24,12 +24,32 @@ describe('phone-book', function () {
         assert.ok(phoneBook.update('5553330033', 'Валерий'));
     });
 
+    it('не должен обновлять несуществующие записи', function () {
+        assert.ok(!phoneBook.update('5000000000', 'Алексей', 'alex@example.com'));
+    });
+
+    it('не должен обновлять неверные записи', function () {
+        assert.ok(!phoneBook.update('5553330033', undefined, 'alex@example.com'));
+        assert.ok(!phoneBook.update('5553330033', '', 'alex@example.com'));
+    });
+
     it('должен искать все записи по запросу "*"', function () {
         assert.deepStrictEqual(phoneBook.find('*'), [
             'Алексей, +7 (555) 111-00-11, alex@example.com',
             'Борис, +7 (555) 222-00-22, boris@example.com',
             'Валерий, +7 (555) 333-00-33',
             'Григорий, +7 (555) 444-00-44, grisha@example.com'
+        ]);
+    });
+
+    it('должен искать все записи по пустому запросу " "', function () {
+        assert.deepStrictEqual(phoneBook.find(' '), [
+        ]);
+    });
+
+    it('должен искать все записи по запросу "а"', function () {
+        assert.deepStrictEqual(phoneBook.find('а'), [
+            'Валерий, +7 (555) 333-00-33'
         ]);
     });
 
