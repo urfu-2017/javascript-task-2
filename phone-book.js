@@ -18,9 +18,9 @@ exports.addhel = function(phone, name) {
     if (name === '' || phone.length !== 10) { return true; }
 };
 
-exports.addhelpen = function(phone, name, email) {
-    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone 
-|| phoneBook[i].email === email)) { return true; } 
+exports.addhelpen = function(phone, name, email, phoneBook[i].name, phoneBook[i].phone ,phoneBook[i].email) {
+    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email)) {
+        return true; } 
 };
 
 
@@ -30,7 +30,8 @@ exports.add = function(phone, name, email) {
     if (phone === undefined) { phone = ''; }
     if (email === undefined) { email = ''; }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.adhelpen(phone, name, email)) return false;
+        if (exports.adhelpen(phone, name, email, phoneBook[i].name, phoneBook[i].phone, phoneBook[i].email)) {
+            return false; }
     }
     phoneBook.push({
         name: name,
@@ -67,8 +68,7 @@ exports.findAndRemove = function(query) {
     if (query === '') return undefined;
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 
-            || phoneBook[i].email.indexOf(query) !== -1) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1) {
 			phoneBook.splice(i, i + 1);
             schet += 1;
         }
