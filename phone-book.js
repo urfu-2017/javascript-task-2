@@ -144,7 +144,7 @@ exports.find = function (query) {
 exports.finder = function (i) {
     var tert;
     if (phoneBook[i].email==='') {
-        tert=phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
+        tert = phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
 phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' +
 phoneBook[i].phone.slice(8, 10);
     } else { tert = phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
@@ -152,7 +152,7 @@ phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' +
 phoneBook[i].phone.slice(8, 10) + ', ' + phoneBook[i].email;
     }
     
-    retun tert;
+    return tert;
 };
 
 /**
