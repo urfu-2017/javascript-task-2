@@ -21,12 +21,16 @@ var phoneBook;
 exports.addhel = function (phone, name) {
     if (name === '' || phone.length !== 10) {
         return true;
+    } else {
+        return false;
     }
 };
 
 exports.addhelpen = function (phone, name, name1, phone1) {
     if (name === '' || (name1 === name || phone1 === phone)) {
         return true;
+    } else {
+        return false;
     }
 };
 
@@ -111,6 +115,8 @@ exports.findAndRemove = function (query) {
 exports.findhelp = function (one, two, free) {
     if (one !== -1 || two !== -1 || free !== -1) {
         return true;
+    } else {
+        return false;
     }
 };
 
