@@ -77,7 +77,7 @@ exports.findAndRemove = function (query) {
             return 0;
         default:
             phoneBook = phoneBook.filter(value => {
-                if (typeof value.email === 'string') {
+                if (typeof value.email === 'string' && value.email !== '') {
 
                     return !(value.phone.includes(query) || value.name.includes(query) ||
                         value.email.includes(query));
