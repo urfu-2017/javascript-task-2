@@ -35,7 +35,7 @@ exports.addhelpen = function (phone, name, name1, phone1) {
 };
 
 exports.addhelpena = function (email, email1) {
-    if (email === email1)) {
+    if (email === email1) {
         return true;
     }
 
