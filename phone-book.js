@@ -19,15 +19,11 @@ const correctPhoneRegExp = /^(\d{10})$/;
  * @param {String} email
  * @returns {Bool}
  */
-exports.add = function (phone, name, email) {
-    if (name === undefined) {
+exports.add = function (phone, name, email = '') {
+    if (name === undefined || name === '') {
         return false;
     }
-    if (phone.match(correctPhoneRegExp) !== null &&
-    name.match(/.+/) !== null && !(phone in phoneBook)) {
-        if (email === undefined) {
-            email = '';
-        }
+    if ((phone.match(correctPhoneRegExp) !== null) && !(phone in phoneBook)) {
         phoneBook[phone] = { Name: name, Email: email };
 
         return true;
@@ -43,12 +39,12 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  * @returns {Bool}
  */
-exports.update = function (phone, name, email) {
-    if ((phone in phoneBook) && name.match(/.+/) !== null) {
+exports.update = function (phone, name, email = '') {
+    if (name === undefined || name === '') {
+        return false;
+    }
+    if (phone in phoneBook) {
         phoneBook[phone].Name = name;
-        if (email === undefined) {
-            email = '';
-        }
         phoneBook[phone].Email = email;
 
         return true;
