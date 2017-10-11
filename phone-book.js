@@ -40,7 +40,7 @@ exports.update = function (phone, name, email) {
         return false;
     }
     let phoneBookEntry = getPhoneBookEntry(phone);
-    phoneBookEntry.email = (email === undefined) ? '' : email;
+    phoneBookEntry.email = (typeof email !== 'string') ? '' : email;
     phoneBookEntry.name = name;
 
     return true;
