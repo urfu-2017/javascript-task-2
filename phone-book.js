@@ -130,8 +130,8 @@ function mailCheck(i, str) {
 
 function findAll(str) {
     let answer = [];
-    if (str === undefined) {
-        return ['nothing'];
+    if (str.length === 0) {
+        return [];
     }
 
     for (let i = 0; i < phoneBook.length; i++) {
@@ -173,13 +173,13 @@ exports.find = function (query) {
         return [];
 
     } else if (query === '*') {
+        for (let i = 0; i < phoneBook.length; i++) {
+            answer.push(phoneBook[i]);
+        }
+    } else {
         let users = unique(findAll(query));
         for (let i = 0; i < users.length; i++) {
             answer.push(phoneBook[users[i]]);
-        }
-    } else {
-        for (let i = 0; i < phoneBook.length; i++) {
-            answer.push(phoneBook[i]);
         }
     }
     answer.sort(sortParams);
