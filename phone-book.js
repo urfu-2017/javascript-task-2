@@ -9,8 +9,54 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
-
+var phoneBook = {};
+function checkPhone(phone) {
+    if(phone.match(/\d/g).length===10;) {
+        return true;
+    }
+    return false;
+}
+function checkName(name) {
+    if(typeof(name) == 'string' && name !== '') {
+        return true;
+    }
+    return false;
+}
+function normalizePhone(phone) {
+    var firstPart = phone[0] + phone[1] + phone[2];
+    var secondPart = phone[3] + phone[4] + phone[5] + '-' + phone[6] + phone[7] + '-' + phone[8] + phone[9];
+    return '+7 ' + '(' + firstPart + ') ' + secondPart;       
+}    
+function getNotesStruct(foundNames, foundNotes, result) {
+    var anotherName;
+    var anotherPhone;
+    var anotherMail;
+    for(var i = 0; i < foundNames.length(); i++) {
+        anotherName = foundNames[i]
+        anotherPhone = normalizePhone(foundNotes[anotherName][0]);
+        anotherMail = foundNotes[anotherName][1];
+        result.push([anotherName + ', ' + anotherPhone + ', ' + anotherMail]);
+    }
+}
+function getNotes(query) {
+    var result = [];
+    var allNumbers = Object.keys(phoneBook);
+    var foundNames = [];
+    var foundNotes = {};
+    var foundName = '';
+    var foundMail = '';
+    for(var i = 0; i < allNumbers.length; i++) {
+        foundName = phoneBook[allNumbers[i]][0];
+        foundMail = phoneBook[allNumbers[i]][1];
+        if(query === '*' || allNumbers[i].includes(query) || foundName.includes(query) || foundMail.includes(query)) {
+            foundNames.push(foundName);
+            foundNotes[foundName] = [allNumbers[i],foundMail];
+        }
+    }
+    foundNames.sort();
+    result = getNotesStruct(foundNames, foundNotes, result);
+    return result;
+}
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -18,7 +64,13 @@ var phoneBook;
  * @param {String} email
  */
 exports.add = function (phone, name, email) {
-
+    if(checkPhone(phone) && checkName(name)) {
+        if(!Object.keys(phoneBook).includes(phone)) {
+            phoneBook[phone] = [name, email];
+        }
+        return true;
+    }
+    return false;
 };
 
 /**
@@ -28,7 +80,13 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
-
+    if(checkPhone(phone) && checkName(name)) {
+            if(phoneBook[phone] != undefined) {
+            phoneBook[phone] = [name, email];
+            return true;
+        }
+    }
+    return false;
 };
 
 /**
@@ -36,7 +94,10 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 exports.findAndRemove = function (query) {
-
+    var foundNotes = getNotes(query);
+    for(var i = 0; i < foundNotes.length; i++) {
+        delete phoneBook[foundNotes[i][1]];
+    }
 };
 
 /**
@@ -44,7 +105,10 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
-
+    if(typeof(query) === 'string') {
+        return getNotes(query);
+    }
+    return [];
 };
 
 /**
