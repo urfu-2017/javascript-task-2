@@ -14,7 +14,7 @@ function checkPhone(number) {
 }
 
 function checkName(name) {
-    if (name !== '' && typeof(name) === "string") {
+    if (name !== '' && typeof(name) === 'string') {
         return true;
     }
 
