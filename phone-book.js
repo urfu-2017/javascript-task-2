@@ -51,18 +51,19 @@ function isRecordExists(phone) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    if (typeof name !== 'string' || name === '') {
+        return false;
+    }
     var entry = getEntry(phone);
     if (entry === null) {
         return false;
     }
-    if (email !== '' && email !== undefined && email !== null) {
+    if (typeof email === 'string') {
         entry.email = email;
     } else {
         entry.email = '';
     }
-    if (name !== undefined && name !== '' && name !== null) {
-        entry.name = name;
-    }
+    entry.name = name;
 
     return true;
 };
