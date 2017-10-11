@@ -73,7 +73,7 @@ function isCorrectPhone(input) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isCorrectPhone(phone || !isValidFormat(phone, name))) {
+    if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
         return false;
     }
 
@@ -180,6 +180,7 @@ function findCards(book, query) {
     return result;
 
 }
+
 function designingBook(book) {
     let result = [];
     for (let card of book) {
