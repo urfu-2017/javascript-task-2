@@ -63,8 +63,8 @@ function havePerson(phone) {
     return false;
 }
 function isValidFormat(phone, name, email) {
-    if (!name || typeof name !== 'string' || isNaN(phone) ||
-    phone === undefined || !isCorrectEmail(email)) {
+    if (typeof name !== 'string' || isNaN(phone) ||
+    phone === undefined || !isCorrectEmail(email) || name === '') {
         return false;
     }
 
