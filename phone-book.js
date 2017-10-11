@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
@@ -18,12 +19,14 @@ var phoneBook;
  */
 exports.addhel = function (phone, name) {
     if (name === '' || phone.length !== 10) {
-        return true; }
+        return true;
+    }
 };
 
 exports.addhelpen = function (phone, name, email, name1, phone1, email1) {
     if (name === '' || (name1 === name || phone1 === phone || email1 === email)) {
-        return true; } 
+        return true;
+    } 
 };
 
 
@@ -35,7 +38,8 @@ exports.add = function (phone, name, email) {
     if (email === undefined) { email = ''; }
     for (var i = 0; i < phoneBook.length; i++) {
         if (exports.adhelpen(phone, name, email, phoneBook[i].name, phoneBook[i].phone, phoneBook[i].email)) {
-            return false; }
+            return false;
+        }
     }
     phoneBook.push({
         name: name,
@@ -56,9 +60,11 @@ exports.update = function (phone, name, email) {
     if (phone.length !== 10 && phone.length !== 0) {
         return false; }
     if (name === undefined) {
-        name = ''; }
+        name = '';
+    }
     if (email === undefined) {
-        email = ''; }
+        email = '';
+    }
     for (var i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
