@@ -20,29 +20,27 @@ var phoneBook = [];
 exports.add = function (phone, name, email) {
 error = '';
 if(!phone.match(/\b\d{10}\b/i)){
-error = 1;
+        error = 1;
 }
 if(!email){
-email = 0;
+        email = 0;
 }
 if(!name){
-error = 1;
+        error = 1;
 }
 if(error){
-return false;
-}
-else{
-phoneBook.forEach(function(item, i, arr) {
-if(item[0] == phone){
-error = 1;
-}
+        return false;
+    }else{
+        phoneBook.forEach(function(item, i, arr) {
+        if(item[0] === phone){
+            error = 1;
+        }
 });
 if(!error){
-phoneBook[phoneBook.length] = [phone, name, email];
-return true;
-}
-else{
-return false;
+        phoneBook[phoneBook.length] = [phone, name, email];
+        return true;
+    }else{
+        return false;
 }
 }
 };
