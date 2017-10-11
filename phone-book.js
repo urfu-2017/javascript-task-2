@@ -121,9 +121,8 @@ function extractListByQuery(query) {
             result.push(entry);
         }
     }
-    result.sort(sortByName);
 
-    return result;
+    return result.sort(sortByName);
 }
 
 
