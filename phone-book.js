@@ -18,8 +18,8 @@ exports.addhel = function(phone, name) {
     if (name === '' || phone.length !== 10) { return true; }
 };
 
-exports.addhelpen = function(phone, name, email, phoneBook[i].name, phoneBook[i].phone ,phoneBook[i].email) {
-    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email)) {
+exports.addhelpen = function(phone, name, email, name1, phone1, email1) {
+    if (name === '' || (name1 === name || phone1 === phone || email1 === email)) {
         return true; } 
 };
 
