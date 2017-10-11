@@ -34,13 +34,15 @@ function sameCheck(phone) {
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
     if (typeof newUser.email !== 'string') {
-        newUser.email = undefined;
+        newUser.email = '';
     }
     if (correctCheck(newUser)) {
         phoneBook.push(newUser);
+
+        return true;
     }
 
-    return true;
+    return false;
 };
 
 function correctCheck(newUser) {
@@ -86,7 +88,7 @@ exports.update = function (phone, name, email) {
         if (typeof email === 'string') {
             phoneBook[userPos].email = email;
         } else {
-            phoneBook[userPos].email = undefined;
+            phoneBook[userPos].email = '';
         }
 
         return true;
