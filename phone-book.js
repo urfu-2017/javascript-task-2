@@ -9,6 +9,7 @@ exports.isStar = true;
  */
 var phoneBook;
 /**
+ * @return string
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
