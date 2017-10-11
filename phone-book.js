@@ -197,21 +197,43 @@ exports.findAndRemove = function (query) {
  * @returns {String[]} 
  */
 
-exports.find = function (query) {
-    let result = [];
-    switch (query) {
-        case '*':
-            return designingBook(phoneBook.sort(comapareNames));
-        case undefined:
-            return [];
-        case '':
-            return [];
-        default:
-            result = findCards(phoneBook, query);
-            result.sort(comapareNames);
+// exports.find = function (query) {
+//     let result = [];
+//     switch (query) {
+//         case '*':
+//             return designingBook(phoneBook.sort(comapareNames));
+//         case undefined:
+//             return [];
+//         case '':
+//             return [];
+//         default:
+//             result = findCards(phoneBook, query);
+//             result.sort(comapareNames);
 
-            return designingBook(result);
+//             return designingBook(result);
+//     }
+// };
+
+
+exports.find = function (query) {
+    if (query === '') {
+        return [];
     }
+    if (query === '*') {
+        return designingBook(phoneBook.sort(comapareNames));
+    }
+    let res = phoneBook.filter(function (record) {
+        if (record.name.indexOf(query) !== -1 || record.phone.indexOf(query) !== -1) {
+            return true;
+        }
+        if (record.email) {
+            return record.email.indexOf(query) !== -1;
+        }
+
+        return false;
+    });
+
+    return designingBook(res);
 };
 
 function comapareNames(a, b) {
@@ -225,18 +247,18 @@ function comapareNames(a, b) {
     return 0;
 }
 
-function findCards(book, query) {
-    let result = [];
-    for (let card of book) {
-        if (card.name.indexOf(query) !== -1 || card.phone.indexOf(query) !== -1 ||
-        (card.email !== undefined && card.email.indexOf(query) !== -1)) {
-            result.push(card);
-        }
-    }
+// function findCards(book, query) {
+//     let result = [];
+//     for (let card of book) {
+//         if (card.name.indexOf(query) !== -1 || card.phone.indexOf(query) !== -1 ||
+//         (card.email !== undefined && card.email.indexOf(query) !== -1)) {
+//             result.push(card);
+//         }
+//     }
 
-    return result;
+//     return result;
 
-}
+// }
 function designingBook(book) {
     let result = [];
     for (let card of book) {
