@@ -67,6 +67,7 @@ exports.add = function (phone, name, email) {
     if (phoneBook[phone] || !name) {
         return false;
     }
+    email = email || '';
     var arr = [name, email];
     phoneBook[phone] = arr;
 
@@ -81,7 +82,9 @@ exports.update = function (phone, name, email) {
     email = email || '';
     if (phoneBook[phone]) {
         phoneBook[phone][0] = name;
-        phoneBook[phone][1] = email;
+        if (email !== '') {
+            phoneBook[phone][1] = email;
+        }
 
         return true;
     }
