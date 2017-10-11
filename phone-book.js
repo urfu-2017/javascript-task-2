@@ -26,29 +26,17 @@ exports.addhel = function (phone, name) {
     return false;
 };
 
-exports.addhelpen = function (phone, name, name1, phone1) {
-    if (name === '' || (name1 === name || phone1 === phone)) {
+exports.addhelpen = function (phone, name, email, i) {
+    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone ||
+        phoneBook[i].email === email)) {
         return true;
     }
 
     return false;
 };
 
-exports.addhelpena = function (email, email1) {
-    if (email === email1) {
-        return true;
-    }
 
-    return false;
-};
 
-exports.addhela = function (name, phone, email) {
-    phoneBook.push({
-        name: name,
-        phone: phone,
-        email: email
-    });
-};
 
 exports.add = function (phone, name, email) {
     phone = String(phone);
@@ -62,12 +50,15 @@ exports.add = function (phone, name, email) {
         email = '';
     }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.addhelpen(phone, name, phoneBook[i].name,
-            phoneBook[i].phone) || exports.addhelpena(email, phoneBook[i].email)) {
+        if (exports.addhelpen(phone, name, email, i)) {
             return false;
         }
     }
-    exports.addhela(name, phone, email);
+    phoneBook.push({
+        name: name,
+        phone: phone,
+        email: email
+    });
 
     return true;
 };
