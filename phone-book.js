@@ -74,7 +74,7 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
-    if (!name) {
+    if (!name || phoneBook[phone] {
 
         return false;
     }
