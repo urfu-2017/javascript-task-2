@@ -4,12 +4,12 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
  */
-let phoneBook = {};
+let phoneBook = new Map();
 
 /**
  * Добавление записи в телефонную книгу
@@ -20,10 +20,10 @@ let phoneBook = {};
  */
 exports.add = function (phone, name, email) {
     if (validatePhone(phone) && validateName(name)) {
-        if (phone in phoneBook) {
+        if (phoneBook.has(phone)) {
             return false;
         }
-        phoneBook[phone] = { 'name': name, 'email': email };
+        phoneBook.set(phone, { 'name': name, 'email': email });
 
         return true;
     }
@@ -40,11 +40,11 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     if (validatePhone(phone) && validateName(name)) {
-        if (!(phone in phoneBook)) {
+        if (!phoneBook.has(phone)) {
             return false;
         }
 
-        phoneBook[phone] = { 'name': name, 'email': email };
+        phoneBook.set(phone, { 'name': name, 'email': email });
 
         return true;
     }
@@ -62,16 +62,15 @@ exports.findAndRemove = function (query) {
         return 0;
     }
     if (query === '*') {
-        let length = phoneBook.length;
-        phoneBook = {};
+        let size = phoneBook.size;
+        phoneBook.clear();
 
-        return length;
+        return size;
     }
 
     let matchedPhones = getMatches(query);
-
     for (let phone of matchedPhones) {
-        delete matchedPhones[phone];
+        phoneBook.delete(phone);
     }
 
     return matchedPhones.length;
@@ -89,7 +88,7 @@ exports.find = function (query) {
 
     let matchedPhones;
     if (query === '*') {
-        matchedPhones = Object.keys(phoneBook);
+        matchedPhones = Array.from(phoneBook.keys());
     } else {
         matchedPhones = getMatches(query);
     }
@@ -98,8 +97,8 @@ exports.find = function (query) {
 
     let entries = [];
     for (let phone of matchedPhones) {
-        let emailPart = phoneBook[phone].email ? `, ${phoneBook[phone].email}` : '';
-        entries.push(`${phoneBook[phone].name}, ${formatPhone(phone)}` + emailPart);
+        let emailPart = phoneBook.get(phone).email ? `, ${phoneBook.get(phone).email}` : '';
+        entries.push(`${phoneBook.get(phone).name}, ${formatPhone(phone)}` + emailPart);
     }
 
     return entries;
@@ -151,28 +150,27 @@ function validateName(name) {
 function getMatches(query) {
     let matchedKeys = [];
 
-    for (let phone in phoneBook) {
-        if (!phoneBook.hasOwnProperty(phone)) {
-            continue;
-        }
-
-        let isPhoneMatched = phone.includes(query);
-        let isNameMatched = phoneBook[phone].name.includes(query);
-        let isEmailMatched = phoneBook[phone].email && phoneBook[phone].email.includes(query);
+    phoneBook.forEach((value, key) => {
+        let isPhoneMatched = key.indexOf(query) !== -1;
+        let isNameMatched = value.name.indexOf(query) !== -1;
+        let isEmailMatched = value.email && value.email.indexOf(query) !== -1;
 
         if (isPhoneMatched || isNameMatched || isEmailMatched) {
-            matchedKeys.push(phone);
+            matchedKeys.push(key);
         }
-    }
+    });
 
     return matchedKeys;
 }
 
 function phoneEntryComparer(first, second) {
-    if (phoneBook[first].name > phoneBook[second].name) {
+    let firstName = phoneBook.get(first).name;
+    let secondName = phoneBook.get(second).name;
+
+    if (firstName > secondName) {
         return 1;
     }
-    if (phoneBook[first].name < phoneBook[second].name) {
+    if (firstName < secondName) {
         return -1;
     }
 
