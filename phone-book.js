@@ -12,18 +12,17 @@ exports.isStar = true;
 const phoneBook = new Map();
 const PHONE_RE = /^\d{10}$/;
 const PHONE_COMPS_RE = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
-const NAME_RE = /^[A-ZА-Я][a-zа-я]+$/;
+// const NAME_RE = /^[А-Я][а-я]+$/;
 
 
 function makeEntry(phone, name, email) {
     if (typeof phone !== 'string' || typeof name !== 'string' ||
-        !PHONE_RE.test(phone) || !NAME_RE.test(name)) {
+        !PHONE_RE.test(phone)) {
         return false;
     }
-    const entry = { phone, name, email: typeof email === 'string' ? email : undefined };
-    entry.getStringRepr = getEntryStringRepr;
 
-    return entry;
+    return { phone, name,
+        email: typeof email === 'string' ? email : undefined };
 }
 
 
@@ -80,7 +79,7 @@ exports.update = function (phone, name, email) {
 
 
 function findMatching(query) {
-    query = String(query);
+    query = typeof query === 'string' ? query : '';
     let entries;
     if (query === '*') {
         entries = [...phoneBook.values()];
