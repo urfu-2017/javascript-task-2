@@ -184,10 +184,10 @@ exports.find = function (query) {
     for (let contact in phoneBook) {
         if (phoneBook[contact].name.match(query) !== null) {
             result.push(phoneBook[contact].toString());
-        } else if (phoneBook[contact].phone !== undefined &&
+        } else if (!isEmpty(phoneBook[contact].phone) &&
             phoneBook[contact].phone.match(query) !== null) {
             result.push(phoneBook[contact].toString());
-        } else if (phoneBook[contact].email !== undefined &&
+        } else if (!isEmpty(phoneBook[contact].email) &&
             phoneBook[contact].email.match(query) !== null) {
             result.push(phoneBook[contact].toString());
         }
