@@ -56,16 +56,20 @@ describe('phone-book', function () {
         ]);
     });
 
-    it('должен удалять элементы из телефонной книги', function () {
-        assert.strictEqual(phoneBook.findAndRemove('@'), 3);
+    it('не должен ничего удалять по пустому запросу', function () {
+        assert.strictEqual(phoneBook.findAndRemove(''), 0);
     });
 
-    it('должен удалять все по запросу звездочка', function () {
-        assert.strictEqual(phoneBook.findAndRemove('*'), 1);
+    it('должен удалять элементы из телефонной книги', function () {
+        assert.strictEqual(phoneBook.findAndRemove('a@'), 1);
     });
 
     it('не должен ничего удалять по пустому запросу', function () {
         assert.strictEqual(phoneBook.findAndRemove(''), 0);
+    });
+
+    it('должен удалять все по запросу звездочка', function () {
+        assert.strictEqual(phoneBook.findAndRemove('*'), 3);
     });
 
     if (phoneBook.isStar) {
