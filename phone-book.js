@@ -14,7 +14,7 @@ var FORMAT_PHONE = /\d{10}/;
 
 function checkValid(phone, name) {
     var okPhone = FORMAT_PHONE.exec(phone);
-    if (typeof name === 'string') {
+    if (typeof name === 'string' && name !== '') {
 
         return (okPhone);
     }
