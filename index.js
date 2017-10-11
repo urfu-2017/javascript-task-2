@@ -25,7 +25,6 @@ console.info(phoneBook.add('5555550055'));//F
 console.log('up +');
 console.info(phoneBook.update('5551110011', 'Алексей', 'alex@example.com'));//T
 console.info(phoneBook.update('5553330033', '', 'alex111@example.com'));//F
-console.info(phoneBook.update(null, 'Валерий',));//F
 console.info(phoneBook.update('5553330033', 'Валерий'));//T
 
 // В следующих примерах вернутся все записи
