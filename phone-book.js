@@ -44,9 +44,10 @@ function getNotesStruct(foundNames, foundNotes, result) {
         anotherPhone = normalizePhone(foundNotes[anotherName][0]);
         anotherMail = foundNotes[anotherName][1];
         if (anotherMail === undefined) {
-            anotherMail = '';
+            result.push(anotherName + ', ' + anotherPhone);
+        } else {
+            result.push(anotherName + ', ' + anotherPhone + ', ' + anotherMail);
         }
-        result.push(anotherName + ', ' + anotherPhone + ', ' + anotherMail);
     }
 
     return result;
