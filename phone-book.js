@@ -118,12 +118,13 @@ exports.find = function (query) {
 
 function updateOrAdd(phone, name, email) {
     if (phoneBook[phone]) {
+        email = email || '';
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
         return 1;
     }
-    if (phone.length === 10) {
+    if (phone.length === 10 || !/[^0-9]/.test(phone)) {
         var arr = [name, email];
         phoneBook[phone] = arr;
 
