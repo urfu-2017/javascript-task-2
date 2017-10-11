@@ -33,10 +33,19 @@ function sameCheck(phone) {
 
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
-    if (!/^\d{10}$/.test(newUser.phone)) {
-        return false;
+    if (typeof newUser.email !== 'string') {
+        newUser.email = '';
     }
-    if (newUser.phone.length !== 10 || typeof newUser.name !== 'string') {
+    if (correctCheck(newUser)) {
+        phoneBook.push(newUser);
+    }
+
+    return true;
+};
+
+function correctCheck(newUser) {
+    if (newUser.phone.length !== 10 || typeof newUser.name !== 'string' ||
+    newUser.name.length === 0 || !/^\d{10}$/.test(newUser.phone)) {
 
         return false;
     }
@@ -44,10 +53,9 @@ exports.add = function (phone, name, email) {
 
         return false;
     }
-    phoneBook.push(newUser);
 
     return true;
-};
+}
 
 function findUser(phone) {
     for (let i = 0; i < phoneBook.length; i++) {
@@ -75,7 +83,11 @@ exports.update = function (phone, name, email) {
         if (typeof name === 'string') {
             phoneBook[userPos].name = name;
         }
-        phoneBook[userPos].email = email;
+        if (typeof email === 'string') {
+            phoneBook[userPos].email = email;
+        } else {
+            phoneBook[userPos].email = '';
+        }
 
         return true;
     }
