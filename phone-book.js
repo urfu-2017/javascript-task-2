@@ -25,6 +25,7 @@ exports.add = function (phone, name, email) {
         return false;
     }
     let phoneBookEntry = { phone, name, email };
+    phoneBookEntry.email = (typeof email !== 'string') ? '' : email;
     phoneBook.push(phoneBookEntry);
 
     return true;
