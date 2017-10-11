@@ -24,8 +24,8 @@ exports.addhel = function (phone, name) {
     }
 };
 
-exports.addhelpen = function (phone, name, email, name1, phone1, email1) {
-    if (name === '' || (name1 === name || phone1 === phone || email1 === email)) {
+exports.addhelpen = function (phone, name, name1, phone1) {
+    if (name === '' || (name1 === name || phone1 === phone)) {
         return true;
     }
 };
@@ -43,8 +43,8 @@ exports.add = function (phone, name, email) {
         email = '';
     }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.adhelpen(phone, name, email, phoneBook[i].name,
-            phoneBook[i].phone, phoneBook[i].email)) {
+        if (exports.adhelpen(phone, name, phoneBook[i].name,
+            phoneBook[i].phone)) {
             return false;
         }
     }
