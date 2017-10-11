@@ -196,7 +196,7 @@ function phoneBookEntryToString(phoneBookEntry) {
     var d = phone.substring(8);
     var phoneNumber = `+7 (${a}) ${b}-${c}-${d}`;
 
-    if (phoneBookEntry.email === undefined || phoneBookEntry.email === '') {
+    if (typeof phoneBookEntry.email !== 'string' || phoneBookEntry.email === '') {
         return `${phoneBookEntry.name}, ${phoneNumber}`;
     }
 
