@@ -183,13 +183,13 @@ exports.findAndRemove = function (query) {
 //     return num;
 // };
 
-function findToDel(delCard) {
-    for (let i = 0; i < phoneBook; i++) {
-        if (phoneBook[i].phone === delCard.phone) {
-            return i;
-        }
-    }
-}
+// function findToDel(delCard) {
+//     for (let i = 0; i < phoneBook; i++) {
+//         if (phoneBook[i].phone === delCard.phone) {
+//             return i;
+//         }
+//     }
+// }
 
 /**
  * Поиск записей по запросу в телефонной книге
