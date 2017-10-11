@@ -34,7 +34,7 @@ function sameCheck(phone) {
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
     if (typeof newUser.email !== 'string') {
-        newUser.email = '';
+        newUser.email = undefined;
     }
     if (correctCheck(newUser)) {
         phoneBook.push(newUser);
@@ -86,7 +86,7 @@ exports.update = function (phone, name, email) {
         if (typeof email === 'string') {
             phoneBook[userPos].email = email;
         } else {
-            phoneBook[userPos].email = '';
+            phoneBook[userPos].email = undefined;
         }
 
         return true;
