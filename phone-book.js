@@ -59,7 +59,7 @@ exports.update = function (phone, name, email) {
         }
     }
 
-
+    reutrn false;
 };
 
 exports.findAndRemove = function (query) {
