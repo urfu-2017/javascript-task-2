@@ -39,6 +39,12 @@ function checkPhone(phone) {
     return true;
 }
 // функции для find + findAndRemove
+function validQuery(query) {
+    if (typeof(query) !== 'string' || query === '' || query === undefined ||
+    query === null) {
+        return '';
+    }
+}
 function outPhone(i) {
     return '+7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
     phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) +
@@ -118,10 +124,8 @@ exports.update = function (phone, name, email) {
     return false;
 };
 exports.find = function (query) {
-    if (typeof(query) !== 'string' || query === '') {
-
-        return '';
-    } else if (query === '*') {
+    validQuery(query);
+    if (query === '*') {
         phoneBook.sort(sortName);
 
         return outRecord();
@@ -134,6 +138,7 @@ exports.find = function (query) {
     }
 };
 exports.findAndRemove = function (query) {
+    validQuery(query);
     let delPhoneBook = exports.find(query);
     let count = 0;
     for (let i = 0; i < delPhoneBook.length; i++) {
