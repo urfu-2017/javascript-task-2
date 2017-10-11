@@ -9,6 +9,7 @@ function checkPhone(number) {
     if (phoneReg.exec(number)) {
         return true;
     }
+    
     return false;
 }
 
@@ -16,11 +17,12 @@ function checkName(name) {
     if (name !== ' ' && name !== undefined && name !== null) {
         return true;
     }
+    
     return false;
 
 }
 
-function TransformPhone(number) {
+function transformPhone(number) {
     return ('+7 (' + number.slice(0, 3) + ') ' + number.slice(3, 6) +
     '-' + number.slice(6, 8) + '-' + number.slice(8, 10));
 }
@@ -29,6 +31,7 @@ function checkRecordByPhone(number) {
     if (phoneBook[number]) {
         return true;
     }
+
     return false;
 }
 
@@ -57,15 +60,18 @@ exports.findAndRemove = function (query) {
     if (query === '*') {
         deleted = Object.keys(phoneBook);
         phoneBook = {};
+
         return deleted.length;
     }
     if (query !== '') {
         let phoneNumbers = Object.keys(findRecords(query));
         for (let i = 0; i <= phoneNumbers.length + 1; i++) {
             delete phoneBook[phoneNumbers[i]];
-        }
+
+
         return deleted.length;
     }
+
     return 0;
 
 };
@@ -77,9 +83,9 @@ exports.find = function (query) {
     for (let phone of phoneNumbers) {
         let contacts = [];
         contacts.push(records[phone].name);
-        contacts.push(TransformPhone(phone));
+        contacts.push(transformPhone(phone));
         contacts.push(records[phone].email);
-        result.push(contacts.join(', '))
+        result.push(contacts.join(', '));
     }
 
     return result.sort();
@@ -92,7 +98,7 @@ function findRecords(query) {
         result = phoneBook;
     }
     if (query !== '') {
-        result = recordsInBook(query)
+        result = recordsInBook(query);
     } else {
         result = {};
     }
@@ -115,7 +121,7 @@ function recordsInBook(query) {
 
 function checkRecord(record, query) {
     if ((record.name.indexOf(query)) ||
-        (record.email.indexOf(query))){
+        (record.email.indexOf(query))) {
 
         return true;
     }
