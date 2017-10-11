@@ -76,10 +76,10 @@ exports.find = function (query, needToDelete) {
         var result = [record.name,
             convertPhoneNumberToUnified(record.phone),
             record.email]
-                .filter(function (value) {
-                    return value;
-                })
-                .join(', ');
+            .filter(function (value) {
+                return value;
+            })
+            .join(', ');
         resultStrings.push(result);
     });
 
