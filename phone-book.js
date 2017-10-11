@@ -74,45 +74,46 @@ function isCorrectPhone(input) {
  */
 
 
-exports.update = function (phone, name, email) {
-    if (typeof name !== 'string' || !name) {
-        return false;
-    }
-    let indexPhoned = -1;
-    let findPhoned = phoneBook.some(function (record, index) {
-        indexPhoned = index;
-
-        return record.phone === phone;
-    });
-    if (findPhoned && name) {
-        phoneBook[indexPhoned].name = name;
-        phoneBook[indexPhoned].phone = phone;
-        phoneBook[indexPhoned].email = email;
-
-        return true;
-    }
-
-    return false;
-};
-
 // exports.update = function (phone, name, email) {
-//     if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
+//     if (typeof name !== 'string' || !name) {
 //         return false;
 //     }
+//     let indexPhoned = -1;
+//     let findPhoned = phoneBook.some(function (record, index) {
+//         indexPhoned = index;
 
-//     return updatePerson(phone, name, email);
+//         return record.phone === phone;
+//     });
+//     if (findPhoned && name) {
+//         phoneBook[indexPhoned].name = name;
+//         phoneBook[indexPhoned].phone = phone;
+//         phoneBook[indexPhoned].email = email;
+
+//         return true;
+//     }
+
+//     return false;
 // };
 
+exports.update = function (phone, name, email) {
+    if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
+        return false;
+    }
 
-// function updatePerson(phone, name, email) {
-//     for (let person of phoneBook) {
-//         if (person.phone === phone) {
-//             person.name = (name !== undefined) ? name : person.name;
-//             person.email = (email !== undefined) ? email : undefined;
+    return updatePerson(phone, name, email);
+};
 
-//             return true;
-//         }
-//     }
+
+function updatePerson(phone, name, email) {
+    for (let person of phoneBook) {
+        if (person.phone === phone) {
+            person.name = (name !== undefined) ? name : person.name;
+            person.email = (email !== undefined) ? email : undefined;
+
+            return true;
+        }
+    }
+}
 
 //     return false;
 // try {
@@ -137,15 +138,50 @@ exports.update = function (phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
-    let listToDel = exports.find(query);
-    let num = listToDel.length;
-    for (let cardToDel of listToDel) {
-        let indexDel = findToDel(cardToDel);
-        phoneBook.splice(indexDel, 1);
+    if (query === '') {
+        return 0;
     }
+    if (query === '*') {
+        let del = phoneBook.length;
+        phoneBook = [];
 
-    return num;
+        return del;
+    }
+    let personFind = phoneBook.filter(function (record) {
+        if (record.name.indexOf(query) !== -1 || record.phone.indexOf(query) !== -1) {
+            return true;
+        }
+        if (record.email) {
+            return record.email.indexOf(query) !== -1;
+        }
+
+        return false;
+    });
+    phoneBook = phoneBook.filter(function (record) {
+        let flag = true;
+
+        personFind.forEach(function (item) {
+            if (item.phone === record.phone) {
+                flag = false;
+            }
+        });
+
+        return flag;
+    });
+
+    return personFind.length;
 };
+
+// exports.findAndRemove = function (query) {
+//     let listToDel = exports.find(query);
+//     let num = listToDel.length;
+//     for (let cardToDel of listToDel) {
+//         let indexDel = findToDel(cardToDel);
+//         phoneBook.splice(indexDel, 1);
+//     }
+
+//     return num;
+// };
 
 function findToDel(delCard) {
     for (let i = 0; i < phoneBook; i++) {
