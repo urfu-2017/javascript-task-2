@@ -58,7 +58,7 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     let toRemove = __find(query);
     toRemove.forEach(function (entry) {
-        delete phoneBook[entry.phone];
+        delete phoneBook[entry.number];
     });
 
     return toRemove.length;
