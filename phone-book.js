@@ -76,10 +76,8 @@ exports.findAndRemove = function (query) {
 
         return deleted.length;
     }
-    else {
-        
+    if (query === '') {
         return 0;
-    
     }
 
 };
