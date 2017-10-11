@@ -3,7 +3,7 @@ const { Storage } = require('./storage');
 const validationRules = require('./validation-rules');
 const { PhonebookEntry } = require('./phonebook-entry');
 const { formatPhoneEntry } = require('./utils');
-const { AllFieldsHandler, AsteriskHandler, EmptyHandler } = require('./search-handlers');
+const { handlersList } = require('./search-handlers');
 
 /**
  * Сделано задание на звездочку
@@ -61,7 +61,7 @@ exports.update = function (phone, name, email) {
 };
 
 function find(query) {
-    return [EmptyHandler, AsteriskHandler, AllFieldsHandler]
+    return handlersList
         .find(x => x.canHandle(query))
         .handle(query, storage);
 }

@@ -11,8 +11,8 @@ exports.AsteriskHandler = {
     handle: (query, storage) => Array.from(storage.findAll(() => true))
 };
 
-exports.AllFieldsHandler = {
-    canHandle: () => true,
+exports.FullTextHandler = {
+    canHandle: (query) => typeof query === 'string',
     handle: function (query, storage) {
         let entries = storage.findAll(
             entry => Object.values(entry)
@@ -22,4 +22,16 @@ exports.AllFieldsHandler = {
         return Array.from(entries);
     }
 };
+
+exports.DefaultHandler = {
+    canHandle: () => true,
+    handle: () => []
+};
+
+exports.handlersList = [
+    exports.EmptyHandler,
+    exports.AsteriskHandler,
+    exports.FullTextHandler,
+    exports.DefaultHandler
+];
 
