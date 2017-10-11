@@ -33,13 +33,13 @@ function normalizePhone(phone) {
     result += ') ';
     result += secondPart;
     return result;
-}    
+}
 function getNotesStruct(foundNames, foundNotes, result) {
     var anotherName;
     var anotherPhone;
     var anotherMail;
-    for(var i = 0; i < foundNames.length(); i++) {
-        anotherName = foundNames[i]
+    for (var i = 0; i < foundNames.length(); i++) {
+        anotherName = foundNames[i];
         anotherPhone = normalizePhone(foundNotes[anotherName][0]);
         anotherMail = foundNotes[anotherName][1];
         result.push([anotherName + ', ' + anotherPhone + ', ' + anotherMail]);
@@ -48,33 +48,32 @@ function getNotesStruct(foundNames, foundNotes, result) {
     return result;
 }
 function getNotes(query) {
-    var result = [];
     var allNumbers = Object.keys(phoneBook);
     var foundNames = [];
     var foundNotes = {};
     var foundName = '';
-    var foundMail = '';
-    for(var i = 0; i < allNumbers.length; i++) {
+    for (var i = 0; i < allNumbers.length; i++) {
         foundName = phoneBook[allNumbers[i]][0];
-        foundMail = phoneBook[allNumbers[i]][1];
-        if (foundName.includes(query) || foundMail.includes(query)) {
+        if (foundName.includes(query) || phoneBook[allNumbers[i]][1].includes(query)) {
             foundNames.push(foundName);
-            foundNotes[foundName] = [allNumbers[i],foundMail];
+            foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
         } else if (query === '*' || allNumbers[i].includes(query)) {
             foundNames.push(foundName);
-            foundNotes[foundName] = [allNumbers[i],foundMail];
+            foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
         }
     }
     foundNames.sort();
-    result = getNotesStruct(foundNames, foundNotes, result);
+    result = getNotesStruct(foundNames, foundNotes, []);
 
     return result;
 }
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {boolean} operation result
  */
 exports.add = function (phone, name, email) {
     if (checkPhone(phone) && checkName(name)) {
@@ -93,10 +92,11 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {boolean} operation result
  */
 exports.update = function (phone, name, email) {
     if (checkPhone(phone) && checkName(name)) {
-            if(phoneBook[phone] !== undefined) {
+        if (phoneBook[phone] !== undefined) {
             phoneBook[phone] = [name, email];
 
             return true;
@@ -109,10 +109,11 @@ exports.update = function (phone, name, email) {
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {number} notes
  */
 exports.findAndRemove = function (query) {
     var foundNotes = getNotes(query);
-    for(var i = 0; i < foundNotes.length; i++) {
+    for (var i = 0; i < foundNotes.length; i++) {
         delete phoneBook[foundNotes[i][1]];
     }
 
@@ -122,6 +123,7 @@ exports.findAndRemove = function (query) {
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array} result
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
