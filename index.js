@@ -2,21 +2,22 @@
 
 var phoneBook = require('./phone-book');
 
-console.info(phoneBook.add('1112223344', 'Андрей', 'a@a.ru'));
+console.info(phoneBook.add('1112223344', 'Андрей', ''));
 console.info(phoneBook.add('0987654321', 'Андрей 367f.adраор', 'a@a.org'));
 console.info(phoneBook.add('1112225566', 'Сергей', 'b@a.ru'));
-console.info(phoneBook.add('1112225566', 'Георгий', 'b@a.ru'));
-console.info(phoneBook.add('1234567890', 'Илья'));
-console.info(phoneBook.add('1234567899', ''));
-console.info(phoneBook.update('1234567899', 'Андрей'));
+console.info(phoneBook.find('*'));
+// console.info(phoneBook.add('1112225566', 'Георгий', 'b@a.ru'));
+// console.info(phoneBook.add('1234567890', 'Илья'));
+// console.info(phoneBook.add('1234567899', ''));
+// console.info(phoneBook.update('1234567899', 'Андрей'));
 console.info(phoneBook.update('1112225566', 'Андрей', 'b@b.com'));
 console.info(phoneBook.find('*'));
 let symbol = '';
 console.info(phoneBook.findAndRemove(symbol));
-console.info(phoneBook.findAndRemove('Андрей'));
+// console.info(phoneBook.findAndRemove('Андрей'));
 console.info(phoneBook.find('*'));
 let csv = [
-    'Алексей;1112223344;alex@alex.alex',
+    // 'Алексей;1112223344;alex@alex.alex',
     'Алексей;1112223355;alex@alex.alex',
     'Урод;1112223356;',
     'СтранныйD;111222335a;',

@@ -40,7 +40,7 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     let record = { phone, name, email };
-    if (!bookContainsRecord(record) || !recordIsValid(record)) {
+    if (!recordIsValid(record) || !bookContainsRecord(record)) {
         return false;
     }
     let oldRecord = extractRecordByPhone(phone);
@@ -61,8 +61,7 @@ exports.find = function (query) {
         return [];
     }
 
-    return transformPhoneNumber(extractedValues).sort(compareRecords)
-        .map(transformRecordToString);
+    return extractedValues.sort(compareRecords).map(transformRecordToString);
 };
 
 /**
@@ -90,16 +89,11 @@ function phoneIsvalid(phone) {
 }
 
 function bookContainsRecord(record) {
-    return phoneBook.filter(x => x.phone === record.phone).length !== 0;
+    return phoneBook.some(entry => entry.phone === record.phone);
 }
 
 function extractRecordByPhone(phone) {
-    let values = phoneBook.filter(x => x.phone === phone);
-    if (values.length !== 1) {
-        throw new RangeError('Record is not in the phonebook');
-    }
-
-    return values[0];
+    return phoneBook.find(x => x.phone === phone);
 }
 
 function deleteElement(value) {
@@ -129,22 +123,19 @@ function stringIsValid(string) {
         string !== undefined && string.toString() !== '';
 }
 
-function transformPhoneNumber(values) {
-    let result = [];
+function transformPhoneNumber(record) {
     let reg = /(\d{3})(\d{3})(\d\d)(\d\d)/;
-    for (let record of values) {
-        let phoneParts = reg.exec(record.phone);
-        if (phoneParts === null) {
-            throw new RangeError('Wrong phone format');
-        }
-        let phone = `+7 (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`;
-        result.push({ name: record.name, phone: phone, email: record.email });
+    let phoneParts = reg.exec(record.phone);
+    if (phoneParts === null) {
+        throw new RangeError('Wrong phone format');
     }
+    let phone = `+7 (${phoneParts[1]}) ${phoneParts[2]}-${phoneParts[3]}-${phoneParts[4]}`;
 
-    return result;
+    return { name: record.name, phone: phone, email: record.email };
 }
 
 function transformRecordToString(record) {
+    record = transformPhoneNumber(record);
     let firstPart = `${record.name}, ${record.phone}`;
     if (stringIsValid(record.email)) {
         firstPart += `, ${record.email}`;
@@ -177,17 +168,11 @@ exports.importFromCsv = function (csv) {
     if (!stringIsValid(csv)) {
         return 0;
     }
-    let reg = /^(.+);(\d{10});?(.+?)?$/;
-    let values = csv.split('\n');
+    let values = csv.split('\n').map(string => string.split(';'));
     let counter = 0;
-    for (let value of values) {
-        let match = reg.exec(value);
-        if (match === null) {
-            continue;
-        }
-        let record = { name: match[1], phone: match[2], email: match[3] };
-        if (this.add(record.phone, record.name, record.email) ||
-            this.update(record.phone, record.name, record.email)) {
+    for (let [name, phone, email] of values) {
+        if (this.add(phone, name, email) ||
+            this.update(phone, name, email)) {
             counter++;
         }
     }
