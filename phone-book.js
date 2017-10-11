@@ -161,8 +161,8 @@ function removeByKey(query) {
 function checkAndDelete(contact, query) {
     let deleted = 0;
     if (phoneBook[contact].name.match(query) !== null ||
-    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.find(query) !== -1) ||
-    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.find(query) !== -1)) {
+    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.search(query) !== -1) ||
+    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.search(query) !== -1)) {
         phoneBook.splice(contact, 1);
         deleted = contact === phoneBook.length ? deleted + 1
             : deleted + 1 + checkAndDelete(contact, query);
