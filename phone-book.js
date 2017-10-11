@@ -32,18 +32,17 @@ exports.add = function (phone, name, email) {
     if (error) {
         return false;
     }
-	phoneBook.forEach(function(item, i, arr) {
-		if (item[0] === phone) {
-			error = 1;
-		}
-	});
-	if (!error) {
-		phoneBook[phoneBook.length] = [phone, name, email];
-		return true;
-	} else {
-		return false;
-	}
-    
+    phoneBook.forEach(function(item, i, arr) {
+        if (item[0] === phone) {
+            error = 1;
+        }
+    });
+    if (!error) {
+        phoneBook[phoneBook.length] = [phone, name, email];
+        return true;
+    } else {
+        return false;
+    }  
 };
 
 /**
