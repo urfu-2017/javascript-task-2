@@ -38,13 +38,14 @@ function normalizePhone(phone) {
 function reversePhone(normalizedPhone) {
     var phone = '';
     var actualPhone = normalizedPhone.split('+7 ')[1];
-    var symbol = ''
-    for(var i = 0; i < actualPhone; i++) {
-        symbol = actualPhone[i]; 
+    var symbol = '';
+    for (var i = 0; i < actualPhone; i++) {
+        symbol = actualPhone[i];
         if (symbol !== '(' || symbol !== ')' || symbol !== '-' || symbol !== ' ') {
             phone += symbol;
         }
     }
+
     return phone;
 }
 function getNotesStruct(foundNames, foundNotes, result) {
