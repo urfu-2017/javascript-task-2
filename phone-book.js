@@ -27,7 +27,7 @@ exports.addhel = function (phone, name) {
 exports.addhelpen = function (phone, name, email, name1, phone1, email1) {
     if (name === '' || (name1 === name || phone1 === phone || email1 === email)) {
         return true;
-    } 
+    }
 };
 
 
@@ -44,7 +44,7 @@ exports.add = function (phone, name, email) {
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if (exports.adhelpen(phone, name, email, phoneBook[i].name,
-phoneBook[i].phone, phoneBook[i].email)) {
+            phoneBook[i].phone, phoneBook[i].email)) {
             return false;
         }
     }
@@ -56,6 +56,7 @@ phoneBook[i].phone, phoneBook[i].email)) {
 
     return true;
 };
+
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
@@ -66,7 +67,8 @@ phoneBook[i].phone, phoneBook[i].email)) {
 exports.update = function (phone, name, email) {
     phone = String(phone);
     if (phone.length !== 10 && phone.length !== 0) {
-        return false; }
+        return false;
+    }
     if (name === undefined) {
         name = '';
     }
@@ -91,7 +93,8 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     if (query === '') {
-        return undefined; }
+        return undefined;
+    }
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
         if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
