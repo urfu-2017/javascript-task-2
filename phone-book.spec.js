@@ -17,6 +17,7 @@ describe('phone-book', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
         assert.ok(!phoneBook.add('5555550055'));
+        assert.ok(!phoneBook.add('5551110022', undefined));
     });
 
     it('должен обновлять существующие записи', function () {
@@ -40,6 +41,16 @@ describe('phone-book', function () {
             'Валерий, +7 (555) 333-00-33',
             'Григорий, +7 (555) 444-00-44, grisha@example.com'
         ]);
+    });
+
+    it('должен искать все записи по запросу "alex"', function () {
+        assert.deepStrictEqual(phoneBook.find('alex'), [
+            'Алексей, +7 (555) 111-00-11, alex@example.com'
+        ]);
+    });
+
+    it('не должен находить по пустому запросу', function () {
+        assert.strictEqual(phoneBook.find('').length, 0);
     });
 
     it('должен удалять элементы из телефонной книги', function () {
