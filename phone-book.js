@@ -37,7 +37,7 @@ exports.addhelpen = function (phone, name, name1, phone1) {
 
 exports.add = function (phone, name, email) {
     phone = String(phone);
-    if (exports.adhel(phone, name)) {
+    if (exports.addhel(phone, name)) {
         return false;
     }
     if (phone === undefined) {
