@@ -12,12 +12,11 @@ exports.isStar = true;
 const phoneBook = new Map();
 const PHONE_RE = /^\d{10}$/;
 const PHONE_COMPS_RE = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
-// const NAME_RE = /^[А-Я][а-я]+$/;
 
 
 function makeEntry(phone, name, email) {
     if (typeof phone !== 'string' || typeof name !== 'string' ||
-        !PHONE_RE.test(phone)) {
+        !PHONE_RE.test(phone) || name === '') {
         return false;
     }
 
