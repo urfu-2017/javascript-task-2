@@ -22,9 +22,7 @@ function validData(phone, name) {
 
 function searchData(phon, nam, email) {
     for (var i = 0; i < phoneBook.length; i++) {
-        if
-        (phoneBook[i].phone === phon || phoneBook[i].name === nam || phoneBook[i].email === email) {
-
+        if (phoneBook[i].phone === phon) {
             return false;
 
         }
