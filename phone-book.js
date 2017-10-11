@@ -105,10 +105,11 @@ exports.update = function (phone, name, email) {
     if (isEmpty(name)) {
         return false;
     }
-    for (let contact in phoneBook) {
-        if (phoneBook[contact].phone === phone) {
-            phoneBook[contact].name = name;
-            phoneBook[contact].email = email;
+    for (let index in phoneBook) {
+        if (!isEmpty(phoneBook[index].phone) &&
+            phoneBook[index].phone === phone) {
+            phoneBook[index].name = name;
+            phoneBook[index].email = email;
 
             return true;
         }
