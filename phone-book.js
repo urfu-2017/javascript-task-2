@@ -121,14 +121,19 @@ exports.find = function (query) {
     phoneBook.sort(sName);
     var entries = [];
     for (let entry of phoneBook) {
-        var record = conversionToFormat(entry).join(', ');
-        if (record.indexOf(query) !== -1) {
+        if (isContainsQuery(query, entry)) {
+            var record = conversionToFormat(entry).join(', ');
             entries.push(record);
         }
     }
 
     return entries;
 };
+
+function isContainsQuery(query, entry) {
+    return (entry.name.indexOf(query) !== -1 || entry.phone.indexOf(query) !== -1 ||
+    entry.email.indexOf(query) !== -1);
+}
 
 function outputAllEntries() {
     phoneBook.sort(sName);
