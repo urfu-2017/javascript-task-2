@@ -13,13 +13,12 @@ const phoneBook = new Map();
 const PHONE_RE = /^\d{10}$/;
 const PHONE_COMPS_RE = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
 const NAME_RE = /^[A-ZА-Я][a-zа-я]+$/;
-const EMAIL_RE = /[\w_\-.]+@[\w_\-.]+\.[\w_\-.]+/;
 
 
 function makeEntry(phone, name, email) {
     if (typeof phone !== 'string' || typeof name !== 'string' ||
         !PHONE_RE.test(phone) || !NAME_RE.test(name) ||
-        (email !== undefined && typeof email === 'string' && !EMAIL_RE.test(email))) {
+        (email !== undefined && typeof email === 'string')) {
         return false;
     }
     const entry = { phone, name, email };
