@@ -138,10 +138,10 @@ exports.importFromCsv = function (csv) {
     var k = 0;
     var lines = csv.split('\n');
     for (let i = 0; i < lines.length; i += 1) {
-        if (oneString.length !== 2 && oneString.length !== 3) {
+        var line = lines[i].split(';');
+        if (line.length !== 2 && line.length !== 3) {
             continue;
         }
-        var line = lines[i].split(';');
         if (exports.add(line[1], line[0], line[2])) {
             k++;
             continue;
