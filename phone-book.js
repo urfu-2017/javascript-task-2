@@ -76,8 +76,11 @@ exports.findAndRemove = function (query) {
 
         return deleted.length;
     }
-
-    return 0;
+    else {
+        
+        return 0;
+    
+    }
 
 };
 
@@ -138,7 +141,8 @@ exports.importFromCsv = function (csv) {
     let updateRecords = 0;
     for (const record of records) {
         let [name, phone, email] = record.split(';');
-        if (exports.update(phone, name, email) || exports.add(phone, name, email)) {
+        if (checkPhone(phone) && checkName(name) &&
+            (exports.update(phone, name, email) || exports.add(phone, name, email))) {
             updateRecords++;
         }
     }
