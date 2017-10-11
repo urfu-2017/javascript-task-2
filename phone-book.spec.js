@@ -42,6 +42,17 @@ describe('phone-book', function () {
         ]);
     });
 
+    it('должен искать все записи по пустому запросу " "', function () {
+        assert.deepStrictEqual(phoneBook.find(' '), [
+        ]);
+    });
+
+    it('должен искать все записи по запросу "а"', function () {
+        assert.deepStrictEqual(phoneBook.find('а'), [
+            'Валерий, +7 (555) 333-00-33'
+        ]);
+    });
+
     it('должен искать все записи по запросу "555"', function () {
         assert.deepStrictEqual(phoneBook.find('555'), [
             'Алексей, +7 (555) 111-00-11, alex@example.com',

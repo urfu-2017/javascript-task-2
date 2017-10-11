@@ -19,7 +19,9 @@ var phoneBook = [];
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!isValidPhoneNumber(phone) || !isCorrectName(name) || isExistingPhoneNumber(phone)) {
+    if (!isValidPhoneNumber(phone) ||
+    !isCorrectName(name) ||
+    phoneBook.some(x => x.phone === phone)) {
         return false;
     }
     let phoneBookEntry = { phone, name, email };
@@ -52,25 +54,17 @@ exports.update = function (phone, name, email) {
  * @returns {Object}
  */
 exports.findAndRemove = function (query) {
-    let deletedEntriesCount = 0;
-    if (query === '') {
-        return deletedEntriesCount;
+    let deletedEntriesCount = phoneBook.length;
+    if (query === '' || typeof query !== 'string') {
+        return 0;
     }
     if (query === '*') {
-        deletedEntriesCount = phoneBook.length;
         phoneBook = [];
 
         return deletedEntriesCount;
     }
-    let newPhoneBook = [];
-    for (let phoneBookEntry of phoneBook) {
-        if (!isContainsPattern(phoneBookEntry, query)) {
-            newPhoneBook.push(phoneBookEntry);
-        } else {
-            deletedEntriesCount += 1;
-        }
-    }
-    phoneBook = newPhoneBook;
+    phoneBook = phoneBook.filter(x => !isContainsPattern(x, query));
+    deletedEntriesCount -= phoneBook.length;
 
     return deletedEntriesCount;
 };
@@ -89,13 +83,7 @@ exports.find = function (query) {
 
         return getQueryResult(phoneBook);
     }
-    let result = [];
-    for (let phoneBookEntry of phoneBook) {
-        if (isContainsPattern(phoneBookEntry, query)) {
-            result.push(phoneBookEntry);
-        }
-    }
-    result.sort(compareName);
+    let result = phoneBook.filter(x => isContainsPattern(x, query)).sort(compareName);
 
     return getQueryResult(result);
 };
