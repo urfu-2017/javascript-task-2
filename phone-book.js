@@ -15,7 +15,10 @@ var phoneBook;
  * @param {String} email
  */
 exports.addhel = function(phone, name) {
-    if (name === '' || (phone.length !== 10 && phone.length !== 0)) return true; }
+    if (name === '' || (phone.length !== 10 && phone.length !== 0)) {return true; }}
+
+exports.addhelpen = function(phone, name, email) {
+    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email) {return true; }}
 
 
 exports.add = function(phone, name, email) {
@@ -24,7 +27,7 @@ exports.add = function(phone, name, email) {
     if (phone === undefined) phone = '';
     if (email === undefined) email = '';
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email) return false;
+        if (exports.adhelpen = function(phone, name, email)) return false;
     }
     phoneBook.push({
         name: name,
