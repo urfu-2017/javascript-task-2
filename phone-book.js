@@ -60,7 +60,7 @@ exports.findAndRemove = function (query) {
         delete matchedPhones[phone];
     }
 
-    return -1;
+    return matchedPhones.length;
 };
 
 /**
