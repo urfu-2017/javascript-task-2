@@ -83,7 +83,7 @@ exports.findAndRemove = function (query) {
     for (let entry of phoneBook) {
         var record = conversionToFormat(entry).join(', ');
         if (record.indexOf(query) === -1) {
-            newPhoneBook.push(entry);
+            newPhoneBook.push(record);
         }
     }
 
