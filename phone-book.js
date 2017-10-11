@@ -32,17 +32,17 @@ exports.add = function (phone, name, email) {
     if (error) {
         return false;
     }
-    phoneBook.forEach(function (item, i) {
+    phoneBook.forEach(function (item) {
         if (item[0] === phone) {
             error = 1;
         }
     });
     if (!error) {
         phoneBook[phoneBook.length] = [phone, name, email];
+		
         return true;
-    } else {
-        return false;
-    }  
+    }
+    return false; 
 };
 
 /**
@@ -81,10 +81,10 @@ exports.update = function (phone, name, email) {
  * @param {String} query
 */
 exports.findAndRemove = function (query) {
+	var countList = 0;
     if (query) {
-        var countList = 0;
         phoneBook.forEach(function (item, i) {
-            item.forEach( function(item2) {
+            item.forEach(function (item2) {
                 if (item2 === query){
                     delete phoneBook[i];
                     countList++;
@@ -114,8 +114,8 @@ exports.find = function (query) {
     if (query === '*') {
         phoneBook.forEach(function (item) {
             item[0] =
-                '+7 (' + item[0].slice(0, 3) + ') '
-                + item[0].slice(3, 6) + '-' + item[0].slice(6, 8) + '-' + item[0].slice(8, 10);
+                '+7 (' + item[0].slice(0, 3) + ') ' +
+                item[0].slice(3, 6) + '-' + item[0].slice(6, 8) + '-' + item[0].slice(8, 10);
             findList[findList.length] = item[1] + ' ' + item[0] + ' ' + item[2];
         });
     }
