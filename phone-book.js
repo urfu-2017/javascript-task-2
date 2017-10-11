@@ -22,9 +22,14 @@ function checkName(name) {
 
 }
 
-function transformPhone(number) {
-    return ('+7 (' + number.slice(0, 3) + ') ' + number.slice(3, 6) +
-    '-' + number.slice(6, 8) + '-' + number.slice(8, 10));
+function transformPhoneAndEmail(number, email) {
+    let phone = '+7 (' + number.slice(0, 3) + ') ' + number.slice(3, 6) +
+    '-' + number.slice(6, 8) + '-' + number.slice(8, 10);
+    if (email !== null && email !== undefined){
+        phone += ', ' + email;
+    }
+
+    return phone;
 }
 
 function checkRecordByPhone(number) {
