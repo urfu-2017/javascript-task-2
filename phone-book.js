@@ -29,9 +29,9 @@ exports.addhel = function (phone, name) {
 exports.addhelpen = function (phone, name, name1, phone1) {
     if (name === '' || (name1 === name || phone1 === phone)) {
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 };
 
 
@@ -115,9 +115,9 @@ exports.findAndRemove = function (query) {
 exports.findhelp = function (one, two, free) {
     if (one !== -1 || two !== -1 || free !== -1) {
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 };
 
 /**
