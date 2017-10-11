@@ -20,8 +20,8 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     var regexp = /^\d{10}$/;
-    if (regexp.test(phone) && name !== undefined && name !== '' &&
-    name !== null && isRecordExists(phone) === false) {
+    if (regexp.test(phone) && typeof name === 'String' && name !== '' &&
+    !isRecordExists(phone)) {
         var entry = { phone, name, email };
         phoneBook.push(entry);
 
