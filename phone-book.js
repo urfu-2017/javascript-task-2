@@ -40,6 +40,10 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     if (validatePhone(phone) && validateName(name)) {
+        if (!(phone in phoneBook)) {
+            return false;
+        }
+
         phoneBook[phone] = { 'name': name, 'email': email };
 
         return true;
