@@ -35,7 +35,7 @@ exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
     if (correctCheck(newUser)) {
         if (typeof newUser.email !== 'string') {
-            newUser.email = '';
+            newUser.email = undefined;
         }
         phoneBook.push(newUser);
 
