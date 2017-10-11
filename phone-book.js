@@ -27,6 +27,7 @@ exports.add = function (phone, name, email) {
     let isValid = [
         ...validationRules.name,
         ...validationRules.phone,
+        ...validationRules.email,
         ...validationRules.insertDataIntegrity]
         .every(rule => rule(phone, name, email, storage));
     if (isValid) {
@@ -47,6 +48,7 @@ exports.update = function (phone, name, email) {
     let isValid = [
         ...validationRules.name,
         ...validationRules.phone,
+        ...validationRules.email,
         ...validationRules.updateDataIntegrity]
         .every(rule => rule(phone, name, email, storage));
     if (isValid) {

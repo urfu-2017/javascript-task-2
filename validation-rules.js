@@ -12,6 +12,12 @@ exports.name = [
     (phone, name) => name.length > 0
 ];
 
+exports.email = [
+    (phone, name, email) => isNullOrUndefined(email) || typeof email === 'string',
+    (phone, name, email) => isNullOrUndefined(email) || email.length > 3,
+    (phone, name, email) => isNullOrUndefined(email) || /^\S+@\S+$/.test(email)
+];
+
 exports.insertDataIntegrity = [
     (phone, name, email, storage) => {
         return !storage.contains(x => Object.is(x.phone, phone));
