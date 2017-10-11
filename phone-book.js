@@ -60,7 +60,7 @@ exports.findAndRemove = function (query) {
         delete matchedPhones[phone];
     }
 
-    return -1;
+    return matchedPhones.length;
 };
 
 /**
@@ -117,7 +117,7 @@ exports.importFromCsv = function (csv) {
  * @returns {Boolean} true если номер телефона записан корректно, иначе false
  */
 function validatePhone(phone) {
-    return typeof(phone) === 'string' && /^\d{10}$/.test(phone);
+    return phone && /^\d{10}$/.test(phone);
 }
 
 /**
