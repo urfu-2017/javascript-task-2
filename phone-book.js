@@ -147,12 +147,7 @@ function removeByKey(query) {
         if (index < phoneBook.length) {
             deleted = checkAndDelete(index, query);
         }
-    });/*
-    for (let contact of phoneBook) {
-        if (contact < phoneBook.length) {
-            deleted = checkAndDelete(contact, query);
-        }
-    }*/
+    });
 
     return deleted;
 }
@@ -166,8 +161,8 @@ function removeByKey(query) {
 function checkAndDelete(contact, query) {
     let deleted = 0;
     if (phoneBook[contact].name.match(query) !== null ||
-    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.match(query) !== null) ||
-    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.match(query) !== null)) {
+    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.find(query) !== -1) ||
+    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.find(query) !== -1)) {
         phoneBook.splice(contact, 1);
         deleted = contact === phoneBook.length ? deleted + 1
             : deleted + 1 + checkAndDelete(contact, query);
