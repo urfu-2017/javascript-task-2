@@ -146,7 +146,7 @@ exports.update = function (phone, name, email) {
  * @returns {number} notes
  */
 exports.findAndRemove = function (query) {
-    if (typeof(queyr) !== 'string') {
+    if (typeof(query) !== 'string') {
         return 0;
     }
     var foundNotes = getNotes(query);
