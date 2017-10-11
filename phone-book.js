@@ -4,7 +4,6 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-
 exports.isStar = true;
 
 /**
@@ -31,8 +30,9 @@ function checkValid(phone, name) {
  */
 
 exports.add = function (phone, name, email) {
+    phone = String(phone);
     if (checkValid(phone, name) && !phoneBook.some(value => value.phone === phone)) {
-        phoneBook.push({ phone: String(phone), name: String(name), email });
+        phoneBook.push({ phone, name, email });
 
         return true;
     }
@@ -48,9 +48,10 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
+    phone = String(phone);
     if (checkValid(phone, name) && phoneBook.some(value => value.phone === phone)) {
         phoneBook[phoneBook.findIndex(value => value.phone === phone)] =
-            { phone: String(phone), name: String(name), email };
+            { phone, name, email };
 
         return true;
     }
