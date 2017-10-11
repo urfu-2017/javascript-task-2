@@ -39,9 +39,9 @@ function reversePhone(normalizedPhone) {
     var phone = '';
     var actualPhone = normalizedPhone.split('+7 ')[1];
     var symbol = '';
-    for (var i = 0; i < actualPhone; i++) {
+    for (var i = 0; i < actualPhone.length; i++) {
         symbol = actualPhone[i];
-        if (symbol !== '(' || symbol !== ')' || symbol !== '-' || symbol !== ' ') {
+        if (symbol !== '(' && symbol !== ')' && symbol !== '-' && symbol !== ' ') {
             phone += symbol;
         }
     }
