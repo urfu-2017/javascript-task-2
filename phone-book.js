@@ -9,12 +9,11 @@ exports.isStar = true;
  */
 var phoneBook;
 /**
- * @return Boolean;
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
  * @param {String} email
- * @return {boolean} 
+ * @returns {boolean} 
  */
 exports.addhel = function(phone, name) {
     if (name === '' || phone.length !== 10) { return true; }
