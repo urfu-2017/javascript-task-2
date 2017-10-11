@@ -173,12 +173,23 @@ exports.find = function (query) {
         for (let i = 0; i < users.length; i++) {
             answer.push(phoneBook[users[i]]);
         }
-    } else {
+    } else if (typeof query === 'string') {
         for (let i = 0; i < phoneBook.length; i++) {
             answer.push(phoneBook[i]);
         }
+    } else {
+        return [];
     }
+    if (typeof query === 'string') {
+        return transform(answer);
+    }
+
+    return [];
+};
+
+function transform(answer) {
     answer.sort(sortParams);
+    let strAnswer = [];
     strAnswer = transformation(answer);
     if (strAnswer.length !== 0) {
         delete strAnswer[strAnswer.length - 1];
@@ -186,8 +197,8 @@ exports.find = function (query) {
         return strAnswer.join('').split('ж');
     }
 
-    return [];
-};
+    return strAnswer;
+}
 
 function sortParams(nameA, nameB) {
     if (nameA.name[0] > nameB.name[0]) {
