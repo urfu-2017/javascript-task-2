@@ -1,4 +1,4 @@
-/* eslint-disable max-len,valid-jsdoc,default-case,max-depth,no-unused-vars,linebreak-style,complexity */
+/* eslint-disable max-len,valid-jsdoc,default-case,max-depth,no-unused-vars,linebreak-style,complexity,max-statements,no-undef,no-console */
 'use strict';
 
 /**
@@ -105,16 +105,25 @@ exports.update = function update(phone, name, email) {
 
 exports.findAndRemove = function findAndRemove(query) {
     let c = 0;
+    let j = [];
+    let allIndexes = [];
+    let newIndexes = [];
     let newPhoneBook = [];
     if (isString(query)) {
         for (let i = 0; phoneBook.length > i; i++) {
+            allIndexes.push(i);
             if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) !== -1) {
-                newPhoneBook[i] = phoneBook[i];
+                j.push(i);
                 c++;
             }
-            phoneBook[i] = newPhoneBook[i];
+            // phoneBook[i] = phoneBook[j[i]];
         }
 
+        newIndexes = deleter(allIndexes, j);
+        for (let i = 0; newIndexes.length > i; i++) {
+            newPhoneBook[i] = (phoneBook[newIndexes[i]]);
+        }
+        phoneBook = newPhoneBook;
 
         return c;
     }
@@ -146,6 +155,11 @@ exports.find = function find(query) {
 
     return false;
 };
+
+
+function deleter(ai, j) {
+    return ai.filter(val => !j.includes(val));
+}
 
 /**
  * Импорт записей из csv-формата
