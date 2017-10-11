@@ -32,7 +32,7 @@ exports.add = function (phone, name, email) {
     if (error) {
         return false;
     }
-    phoneBook.forEach(function(item, i, arr) {
+    phoneBook.forEach( function(item, i, arr) {
         if (item[0] === phone) {
             error = 1;
         }
@@ -65,7 +65,7 @@ exports.update = function (phone, name, email) {
     if (error) {
         return false;
     }
-    phoneBook.forEach(function(item, i) {
+    phoneBook.forEach( function(item, i) {
         if (item[0] === phone) {
             phoneBook[i][1] = name;
             phoneBook[i][2] = email;
@@ -83,8 +83,8 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     if (query) {
         var j = 0;
-        phoneBook.forEach(function(item, i) {
-            item.forEach(function(item2, i2) {
+        phoneBook.forEach( function(item, i) {
+            item.forEach( function(item2) {
                 if (item2 === query){
                     delete phoneBook[i];
                     j++;
@@ -92,7 +92,8 @@ exports.findAndRemove = function (query) {
             });
         });
     }
-    return j;
+	var count = j;
+    return count;
 };
 
 /**
@@ -102,8 +103,8 @@ exports.findAndRemove = function (query) {
 exports.find = function (query) {
     var findList = [];
     if (query) {
-        phoneBook.forEach(function(item, i) {
-            item.forEach(function(item2, i2) {
+        phoneBook.forEach( function(item) {
+            item.forEach( function(item2) {
                 if (item2 === query) {
                     item[0] = '+7 (' + item[0].slice(0, 3) + ') ' + item[0].slice(3, 6) + '-' + item[0].slice(6, 8) + '-' + item[0].slice(8, 10);
                     findList[findList.length] = item[1] + ' ' + item[0] + ' ' + item[2];
@@ -111,9 +112,11 @@ exports.find = function (query) {
             });
         });
     }
-    if (query === "*") {
-        phoneBook.forEach(function(item, i) {
-            item[0] = '+7 (' + item[0].slice(0, 3) + ') ' + item[0].slice(3, 6) + '-' + item[0].slice(6, 8) + '-' + item[0].slice(8, 10);
+    if (query === '*') {
+        phoneBook.forEach( function(item) {
+            item[0] =
+			    '+7 (' + item[0].slice(0, 3) + ') '
+				+ item[0].slice(3, 6) + '-' + item[0].slice(6, 8) + '-' + item[0].slice(8, 10);
             findList[findList.length] = item[1] + ' ' + item[0] + ' ' + item[2];
         });
     }
