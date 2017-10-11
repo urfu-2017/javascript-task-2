@@ -41,7 +41,8 @@ var like = function (request, str) {
  * @returns {Boolean}
  */
 var satisfiesTheTrequest = function (request, phone, name, email) {
-    return request === '*' || like(request, phone) || like(request, name) || like(request, email);
+    return request !== '' &&
+        (request === '*' || like(request, phone) || like(request, name) || like(request, email));
 };
 
 /**
@@ -53,6 +54,7 @@ var satisfiesTheTrequest = function (request, phone, name, email) {
  */
 exports.add = function (phone, name, email) {
     name = name || '';
+    phone = phone || '';
     if (name !== '' && /^[0-9]{10}$/.test(phone) && !phoneBook[phone]) {
         phoneBook[phone] = [name, email || ''];
 
