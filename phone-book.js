@@ -172,23 +172,21 @@ exports.find = function (query) {
         for (let i = 0; i < users.length; i++) {
             answer.push(phoneBook[users[i]]);
         }
-    } else if (typeof query === 'string') {
+    } else {
         for (let i = 0; i < phoneBook.length; i++) {
             answer.push(phoneBook[i]);
         }
-    } else {
-        return [];
     }
     if (typeof query === 'string') {
-        return transform(answer);
+        return format(answer);
     }
 
     return [];
 };
 
-function transform(answer) {
-    answer.sort(sortParams);
+function format(answer) {
     let strAnswer = [];
+    answer.sort(sortParams);
     strAnswer = transformation(answer);
     if (strAnswer.length !== 0) {
         delete strAnswer[strAnswer.length - 1];
