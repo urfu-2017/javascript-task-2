@@ -48,6 +48,21 @@ function getNotesStruct(foundNames, foundNotes, result) {
 
     return result;
 }
+
+function checking(query, number, name, email) {
+    if (query === '*' || number.includes(query)) {
+
+        return true;
+    } else if (name.includes(query)) {
+
+        return true;
+    } else if (email !== undefined && email.includes(query)) {
+
+        return true;
+    }
+
+    return false;
+}
 function getNotes(query) {
     var allNumbers = Object.keys(phoneBook);
     var foundNames = [];
@@ -55,17 +70,9 @@ function getNotes(query) {
     var foundName = '';
     for (var i = 0; i < allNumbers.length; i++) {
         foundName = phoneBook[allNumbers[i]][0];
-        if (query === '*' || allNumbers[i].includes(query)) {
+        if (checking(query, allNumbers[i], foundName, phoneBook[allNumbers[i]][1])) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
-        } else if (foundName.includes(query)) {
-            foundNames.push(foundName);
-            foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
-        } else if (phoneBook[allNumbers[i]][1] != undefinded) {
-            if (phoneBook[allNumbers[i]][1].includes(query)) {
-                foundNames.push(foundName);
-                foundNotes[foundName] = [allNumbers[i], phoneBook[allNumbers[i]][1]];
-            }
         }
     }
     foundNames.sort();
