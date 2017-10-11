@@ -17,11 +17,10 @@ const NAME_RE = /^[A-ZА-Я][a-zа-я]+$/;
 
 function makeEntry(phone, name, email) {
     if (typeof phone !== 'string' || typeof name !== 'string' ||
-        !PHONE_RE.test(phone) || !NAME_RE.test(name) ||
-        (email !== undefined && typeof email === 'string')) {
+        !PHONE_RE.test(phone) || !NAME_RE.test(name)) {
         return false;
     }
-    const entry = { phone, name, email };
+    const entry = { phone, name, email: typeof email === 'string' ? email : undefined };
     entry.getStringRepr = getEntryStringRepr;
 
     return entry;
