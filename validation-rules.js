@@ -1,5 +1,4 @@
 'use strict';
-const { PhonebookEntry } = require('./phonebook-entry');
 const { isNullOrUndefined } = require('./utils');
 
 exports.phone = [
