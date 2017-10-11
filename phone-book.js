@@ -82,9 +82,7 @@ exports.update = function (phone, name, email) {
     email = email || '';
     if (phoneBook[phone]) {
         phoneBook[phone][0] = name;
-        if (email !== '') {
-            phoneBook[phone][1] = email;
-        }
+        phoneBook[phone][1] = email;
 
         return true;
     }
