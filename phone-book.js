@@ -105,12 +105,16 @@ exports.update = function update(phone, name, email) {
 
 exports.findAndRemove = function findAndRemove(query) {
     let c = 0;
+    let newPhoneBook = [];
     if (isString(query)) {
         for (let i = 0; phoneBook.length > i; i++) {
             if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) !== -1) {
+                newPhoneBook[i] = phoneBook[i];
                 c++;
             }
+            phoneBook[i] = newPhoneBook[i];
         }
+
 
         return c;
     }
