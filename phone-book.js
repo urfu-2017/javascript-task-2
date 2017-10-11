@@ -115,7 +115,7 @@ exports.find = function (query) {
     if (query === '*') {
         return outputAllEntries();
     }
-    if (query === '') {
+    if (query === '' || typeof query !== 'string') {
         return [];
     }
     phoneBook.sort(sName);
