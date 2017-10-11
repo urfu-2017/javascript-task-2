@@ -31,7 +31,7 @@ function checkValid(phone, name) {
 
 exports.add = function (phone, name, email) {
     if (checkValid(phone, name) && !phoneBook.some(value => value.phone === phone)) {
-        phoneBook.push({ phone, name, email });
+        phoneBook.push({ phone: String(phone), name: String(name), email });
 
         return true;
     }
@@ -48,7 +48,8 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     if (checkValid(phone, name) && phoneBook.some(value => value.phone === phone)) {
-        phoneBook[phoneBook.findIndex(value => value.phone === phone)] = { phone, name, email };
+        phoneBook[phoneBook.findIndex(value => value.phone === phone)] =
+            { phone: String(phone), name: String(name), email };
 
         return true;
     }
