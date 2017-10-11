@@ -21,9 +21,8 @@ var phoneBook;
 exports.addhel = function (phone, name) {
     if (name === '' || phone.length !== 10) {
         return true;
-    } else {
-        return false;
     }
+    return false;
 };
 
 exports.addhelpen = function (phone, name, name1, phone1) {
