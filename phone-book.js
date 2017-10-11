@@ -45,7 +45,7 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
-function checkEmail(email) {
+function isCorrectEmail(email) {
     if (email === undefined) {
         return true;
     }
@@ -64,7 +64,7 @@ function havePerson(phone) {
 }
 function isValidFormat(phone, name, email) {
     if (!name || typeof name !== 'string' || isNaN(phone) ||
-    phone === undefined || checkEmail(email)) {
+    phone === undefined || !isCorrectEmail(email)) {
         return false;
     }
 
