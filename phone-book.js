@@ -12,11 +12,12 @@ exports.isStar = true;
 var phoneBook = [];
 
 /**
-* Добавление записи в телефонную книгу
-* @param {String} phone
-* @param {String} name
-* @param {String} email
-*/
+ * Добавление записи в телефонную книгу
+ * @param {String} phone
+ * @param {String} name
+ * @param {String} email
+ * @returns {Bool}
+ */
 exports.add = function (phone, name, email) {
     var error = '';
     if (!phone.match(/\b\d{10}\b/i )) {
@@ -46,11 +47,11 @@ exports.add = function (phone, name, email) {
 };
 
 /**
-* Обновление записи в телефонной книге
-* @param {String} phone
-* @param {String} name
-* @param {String} email
-*/
+ * Обновление записи в телефонной книге
+ * @param {String} phone
+ * @param {String} name
+ * @param {String} email
+ */
 exports.update = function (phone, name, email) {
     var error = '';
     if (!phone.match(/\b\d{10}\b/i)) {
@@ -77,8 +78,8 @@ exports.update = function (phone, name, email) {
 };
 
 /**
-* Удаление записей по запросу из телефонной книги
-* @param {String} query
+ * Удаление записей по запросу из телефонной книги
+ * @param {String} query
 */
 exports.findAndRemove = function (query) {
     if (query) {
@@ -96,11 +97,11 @@ exports.findAndRemove = function (query) {
 };
 
 /**
-* Поиск записей по запросу в телефонной книге
-* @param {String} query
+ * Поиск записей по запросу в телефонной книге
+ * @param {String} query
 */
 exports.find = function (query) {
-    findList = [];
+    var findList = [];
     if (query) {
         phoneBook.forEach(function(item, i, arr) {
             item.forEach(function(item2, i2, arr2) {
@@ -122,10 +123,10 @@ exports.find = function (query) {
 };
 
 /**
-* Импорт записей из csv-формата
-* @star
-* @param {String} csv
-* @returns {Number} – количество добавленных и обновленных записей
+ * Импорт записей из csv-формата
+ * @star
+ * @param {String} csv
+ * @returns {Number} – количество добавленных и обновленных записей
 */
 exports.importFromCsv = function (csv) {
 // Парсим csv
