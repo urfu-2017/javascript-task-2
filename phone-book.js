@@ -10,18 +10,35 @@ exports.isStar = true;
  * Телефонная книга
  */
 const phoneBook = new Map();
-const PHONE_RE = /^(([1-9])\2\2)((\d)\4\4)((\d)\6)((\d)\8)$/;
+const PHONE_RE = /^\d{10}$/;
+const PHONE_COMPS_RE = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
 const NAME_RE = /^[A-ZА-Я][a-zа-я]+$/;
 const EMAIL_RE = /[\w_\-.]+@[\w_\-.]+\.[\w_\-.]+/;
 
 
 function makeEntry(phone, name, email) {
-    if (!PHONE_RE.test(phone) || !NAME_RE.test(name) ||
+    if (typeof phone !== 'string' || typeof name !== 'string' ||
+        !PHONE_RE.test(phone) || !NAME_RE.test(name) ||
         (email !== undefined && !EMAIL_RE.test(email))) {
         return false;
     }
+    const entry = { phone, name, email };
+    entry.getStringRepr = getEntryStringRepr;
 
-    return { name, email };
+    return entry;
+}
+
+
+function getEntryStringRepr(entry) {
+    let comps = PHONE_COMPS_RE.exec(entry.phone)
+        .slice(1, 5);
+    const formattedPhone = `+7 (${comps[0]}) ${comps[1]}-${comps[2]}-${comps[3]}`;
+    let result = `${entry.name}, ${formattedPhone}`;
+    if (entry.email !== undefined) {
+        result += `, ${entry.email}`;
+    }
+
+    return result;
 }
 
 
@@ -69,25 +86,19 @@ exports.update = function (phone, name, email) {
 
 function findMatching(query) {
     query = String(query);
-    let entries = [];
+    let entries;
     if (query === '*') {
-        entries = [...phoneBook.entries()];
+        entries = [...phoneBook.values()];
     } else if (query !== '') {
-        entries = [...phoneBook.entries()]
-            .filter(e => {
-                const [key, { name, email }] = e;
-
-                return [key, name, email].some(
-                    x => String(x).includes(query)
-                );
-            });
+        entries = [...phoneBook.values()]
+            .filter(e => Object.values(e).some(
+                x => String(x).includes(query)
+            ));
+    } else {
+        entries = [];
     }
 
-    return entries.map(e => {
-        const { name, email } = e[1];
-
-        return { phone: e[0], name, email };
-    });
+    return entries;
 }
 
 /**
@@ -109,22 +120,11 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    const entries = [...findMatching(query)];
-    let res = [];
-    for (const entry of entries) {
-        let pComps = PHONE_RE.exec(entry.phone)
-            .slice(1, 9)
-            .filter((elem, ind) => ind % 2 === 0);
-        const formattedPhone = `+7 (${pComps[0]}) ${pComps[1]}-${pComps[2]}-${pComps[3]}`;
-        let str = `${entry.name}, ${formattedPhone}`;
-        if (entry.email !== undefined) {
-            str += `, ${entry.email}`;
-        }
-        res.push(str);
-    }
-    res.sort();
+    const entries = [...findMatching(query)]
+        .map(e => getEntryStringRepr(e));
+    entries.sort();
 
-    return res;
+    return entries;
 };
 
 
