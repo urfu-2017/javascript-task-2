@@ -18,6 +18,8 @@ describe('phone-book', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
         assert.ok(!phoneBook.add('5555550055'));
+        assert.ok(!phoneBook.add('555\n550055'));
+        assert.ok(!phoneBook.add('5555a50b55'));
         assert.ok(!phoneBook.add());
         assert.ok(!phoneBook.add(''));
         assert.ok(!phoneBook.add(' '));
@@ -39,6 +41,7 @@ describe('phone-book', function () {
         assert.ok(!phoneBook.update('5553330032'));
         assert.ok(!phoneBook.update('1234567890'));
         assert.ok(!phoneBook.update('5553330033', ''));
+        assert.ok(!phoneBook.update(null, ''));
         assert.ok(!phoneBook.update('5553330033', null, 'mailmailmail'));
         // assert.ok(phoneBook.update('5553330033', 'Name', 'mail@mail.mail'));
         // assert.ok(phoneBook.update('5553330033', 'Name', ''));

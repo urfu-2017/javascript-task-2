@@ -125,7 +125,8 @@ function extractValuesByQuery(query) {
 }
 
 function stringIsValid(string) {
-    return string !== null && string !== undefined && string.toString() !== '';
+    return typeof string === 'string' && string !== null &&
+        string !== undefined && string.toString() !== '';
 }
 
 function transformPhoneNumber(values) {
