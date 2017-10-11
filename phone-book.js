@@ -16,18 +16,19 @@ var phoneBook;
  */
 exports.addhel = function(phone, name) {
     if (name === '' || phone.length !== 10) { return true; }
-}
+};
 
 exports.addhelpen = function(phone, name, email) {
-    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email)) { return true; } 
-}
+    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone 
+|| phoneBook[i].email === email)) { return true; } 
+};
 
 
 exports.add = function(phone, name, email) {
     phone = String(phone);
-    if (exports.adhel(phone,name)) return false;
-    if (phone === undefined) phone = '';
-    if (email === undefined) email = '';
+    if (exports.adhel(phone, name)) { return false; }
+    if (phone === undefined) { phone = ''; }
+    if (email === undefined) { email = ''; }
     for (var i = 0; i < phoneBook.length; i++) {
         if (exports.adhelpen(phone, name, email)) return false;
     }
@@ -46,9 +47,9 @@ exports.add = function(phone, name, email) {
  */
 exports.update = function(phone, name, email) {
     phone = String(phone);
-    if (phone.length !== 10 && phone.length !== 0) return false;
-    if (name === undefined) name = '';
-    if (email === undefined) email = '';
+    if (phone.length !== 10 && phone.length !== 0) { return false; }
+    if (name === undefined) { name = ''; }
+    if (email === undefined) { email = ''; }
     for (var i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
             phoneBook[i].name = name;
@@ -66,7 +67,8 @@ exports.findAndRemove = function(query) {
     if (query === '') return undefined;
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 || phoneBook[i].email.indexOf(query) !== -1) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 
+            || phoneBook[i].email.indexOf(query) !== -1) {
 			phoneBook.splice(i, i + 1);
             schet += 1;
         }
