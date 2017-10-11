@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
@@ -180,7 +180,6 @@ function findCards(book, query) {
     return result;
 
 }
-
 function designingBook(book) {
     let result = [];
     for (let card of book) {
