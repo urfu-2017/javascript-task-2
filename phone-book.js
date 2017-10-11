@@ -104,8 +104,7 @@ exports.importFromCsv = function (csv) {
 
     return csv.split('\n')
         .map(string => [...string.split(';')])
-        .filter(fields => fields.length === 3)
-        .map(([name, phone, email]) => [phone, name, email])
+        .map(([name, phone, email]) => [phone, name, email === '' ? undefined : email])
         .map(fields => exports.add(...fields) || exports.update(...fields))
         .filter(result => result === true)
         .length;
