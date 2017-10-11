@@ -52,7 +52,27 @@ exports.update = function (phone, name, email) {
  * @returns {Object}
  */
 exports.findAndRemove = function (query) {
-    return phoneBook[query];
+    let deletedEntriesCount = 0;
+    if (query === '') {
+        return deletedEntriesCount;
+    }
+    if (query === '*') {
+        deletedEntriesCount = phoneBook.length;
+        phoneBook = [];
+
+        return deletedEntriesCount;
+    }
+    let newPhoneBook = [];
+    for (let phoneBookEntry of phoneBook) {
+        if (!isContainsPattern(phoneBookEntry, query)) {
+            newPhoneBook.push(phoneBookEntry);
+        } else {
+            deletedEntriesCount += 1;
+        }
+    }
+    phoneBook = newPhoneBook;
+
+    return deletedEntriesCount;
 };
 
 /**
@@ -87,11 +107,17 @@ exports.find = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+    let entriesCount = 0;
+    let csvEntries = csv.split('\n');
 
-    return csv.split('\n').length;
+    for (let csvEntry of csvEntries) {
+        let [name, phone, email] = csvEntry.split(';');
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
+            entriesCount++;
+        }
+    }
+
+    return entriesCount;
 };
 
 /**
@@ -109,8 +135,8 @@ function isValidPhoneNumber(phoneNumber) {
  * @returns {Boolean}
  */
 function isExistingPhoneNumber(phoneNumber) {
-    for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phoneNumber) {
+    for (let phoneBookEntry of phoneBook) {
+        if (phoneBookEntry.phone === phoneNumber) {
             return true;
         }
     }
@@ -133,9 +159,9 @@ function isCorrectName(name) {
  * @returns {Object}
  */
 function getPhoneBookEntry(phone) {
-    for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
-            return phoneBook[i];
+    for (let phoneBookEntry of phoneBook) {
+        if (phoneBookEntry.phone === phone) {
+            return phoneBookEntry;
         }
     }
 }
@@ -171,19 +197,18 @@ function phoneBookEntryToString(phoneBookEntry) {
 }
 
 function isContainsPattern(phoneBookEntry, pattern) {
-    if (phoneBookEntry.phone.indexOf(pattern) !== 1) {
+    if (phoneBookEntry.phone.indexOf(pattern) !== -1) {
         return true;
     }
-    if (phoneBookEntry.email.indexOf(pattern) !== 1) {
+    if (phoneBookEntry.email.indexOf(pattern) !== -1) {
         return true;
     }
-    if (phoneBookEntry.name.indexOf(pattern) !== 1) {
+    if (phoneBookEntry.name.indexOf(pattern) !== -1) {
         return true;
     }
 
     return false;
 }
-
 
 function compareName(firstPhoneBookEntry, secondfirstPhoneBookEntry) {
     return firstPhoneBookEntry.name > secondfirstPhoneBookEntry.name;
