@@ -50,12 +50,6 @@ describe('phone-book', function () {
         ]);
     });
 
-    it('должен искать все записи по запросу "444-00-44"', function () {
-        assert.deepStrictEqual(phoneBook.find('555'), [
-            'Григорий, +7 (555) 444-00-44, grisha@example.com'
-        ]);
-    });
-
     it('должен удалять элементы из телефонной книги', function () {
         assert.strictEqual(phoneBook.findAndRemove('@'), 3);
     });
@@ -72,25 +66,4 @@ describe('phone-book', function () {
             assert.strictEqual(phoneBook.importFromCsv(csv), 4);
         });
     }
-
-    if (phoneBook.isStar) {
-        it('должен экспортировать из cvs-2', function () {
-            phoneBook.findAndRemove('*');
-            var csv = [
-                'Борис;5552220022;boris@example.com;somevalue',
-                '',
-                'Сергей;',
-                'Владимир;6662220022',
-                'Владимир;6662220022'
-            ].join('\n');
-            assert.strictEqual(phoneBook.importFromCsv(csv), 2);
-        });
-    }
-
-    it('+++', function () {
-        assert.ok(phoneBook.findAndRemove('*'));
-        assert.deepStrictEqual(phoneBook.find('*'), [
-
-        ]);
-    });
 });
