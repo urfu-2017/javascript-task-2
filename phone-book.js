@@ -33,6 +33,9 @@ function sameCheck(phone) {
 
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
+    if (!/^\d{10}$/.test(newUser.phone)) {
+        return false;
+    }
     if (newUser.phone.length !== 10 || typeof newUser.name !== 'string') {
 
         return false;
@@ -177,7 +180,7 @@ function transformation(answer) {
     for (let i = 0; i < answer.length; i++) {
         strAnswer.push(answer[i].name + ', +7 (' + answer[i].phone.substring(0, 3) + ') ' +
         answer[i].phone.substring(3, 6) + '-' +
-        answer[i].phone.substring(6, 8) + '-' + answer[i].phone.substring(8, 9));
+        answer[i].phone.substring(6, 8) + '-' + answer[i].phone.substring(8, 10));
         if (answer[i].email !== undefined) {
             strAnswer.push(', ' + answer[i].email);
         }
