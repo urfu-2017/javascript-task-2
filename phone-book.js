@@ -21,7 +21,7 @@ var phoneBook = [];
 exports.add = function (phone, name, email) {
     var regexp = /^\d{10}$/;
     if (regexp.test(phone) && name !== undefined && name !== '' &&
-    isRecordExists(phone) === false) {
+    name !== null && isRecordExists(phone) === false) {
         var entry = { phone, name, email };
         phoneBook.push(entry);
 
@@ -53,12 +53,12 @@ exports.update = function (phone, name, email) {
     if (entry === null) {
         return false;
     }
-    if (email !== '' && email !== undefined) {
+    if (email !== '' && email !== undefined && email !== null) {
         entry.email = email;
     } else {
         entry.email = '';
     }
-    if (name !== undefined && name !== '') {
+    if (name !== undefined && name !== '' && name !== null) {
         entry.name = name;
     }
 
@@ -66,9 +66,9 @@ exports.update = function (phone, name, email) {
 };
 
 function getEntry(phone) {
-    for (var i = 0; i < phoneBook.length; i++) {
-        if (phone === phoneBook[i].phone) {
-            return phoneBook[i];
+    for (var entry of phoneBook) {
+        if (phone === entry.phone) {
+            return entry;
         }
     }
 
@@ -81,16 +81,20 @@ function getEntry(phone) {
  * @returns {Number}
  */
 exports.findAndRemove = function (query) {
-    let entries = exports.find(query);
-    var count = entries.length;
+    var count = 0;
+    if (query === '*') {
+        count = phoneBook.length;
+    } else {
+        let entries = exports.find(query);
+        count = entries.length;
+    }
     var newPhoneBook = [];
     for (let entry of phoneBook) {
         var record = conversionToFormat(entry).join(', ');
-        if (record.indexOf(query) === -1) {
+        if (record.indexOf(query) === -1 && query !== '*') {
             newPhoneBook.push(entry);
         }
     }
-
     phoneBook = newPhoneBook;
 
     return count;

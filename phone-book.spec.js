@@ -60,6 +60,14 @@ describe('phone-book', function () {
         assert.strictEqual(phoneBook.findAndRemove('@'), 3);
     });
 
+    it('должен удалять все по запросу звездочка', function () {
+        assert.strictEqual(phoneBook.findAndRemove('*'), 1);
+    });
+
+    it('не должен ничего удалять по пустому запросу', function () {
+        assert.strictEqual(phoneBook.findAndRemove(''), 0);
+    });
+
     if (phoneBook.isStar) {
         it('должен экспортировать из cvs', function () {
             var csv = [

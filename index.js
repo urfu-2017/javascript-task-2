@@ -32,6 +32,7 @@ console.info(phoneBook.find('555'));
 
 // Удаление
 phoneBook.findAndRemove('@'); // returns 3
+phoneBook.findAndRemove('*'); // returns 1
 
 if (phoneBook.isStar) {
     // Импортируем из csv
