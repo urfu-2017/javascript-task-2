@@ -74,6 +74,17 @@ exports.update = function (phone, name, email = '') {
  * @returns {Number}
  */
 exports.findAndRemove = function (query) {
+    if (query === '') {
+        return 0;
+    }
+
+    if (query === '*') {
+        var current = phoneBook.length;
+        phoneBook = [];
+
+        return current;
+    }
+
     var removePhoneBook = [];
 
     for (var element of phoneBook) {
