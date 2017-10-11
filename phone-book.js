@@ -58,6 +58,10 @@ exports.update = function (phone, name, email) {
  * @returns {Number} число удалённых записей
  */
 exports.findAndRemove = function (query) {
+    if (typeof query !== 'string' || query === '') {
+        return 0;
+    }
+
     let matchedPhones = getMatches(query);
 
     for (let phone of matchedPhones) {
