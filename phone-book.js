@@ -50,8 +50,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     phone = String(phone);
     if (checkValid(phone, name) && phoneBook.some(value => value.phone === phone)) {
-        phoneBook[phoneBook.findIndex(value => value.phone === phone)] =
-            { phone, name, email };
+        phoneBook[phoneBook.findIndex(value => value.phone === phone)] = { phone, name, email };
 
         return true;
     }
@@ -67,6 +66,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     var pB = phoneBook.length;
+    query = String(query);
     switch (query) {
         case '*':
             phoneBook = [];
