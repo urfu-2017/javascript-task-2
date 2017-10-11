@@ -61,7 +61,7 @@ function removeInObj(query) {
 }
 
 exports.add = function (phone, name, email) {
-    if (phone.length !== 10) {
+    if (/[^0-9]/.test(phone) || phone.length !== 10) {
         return false;
     }
     if (phoneBook[phone] || !name) {
