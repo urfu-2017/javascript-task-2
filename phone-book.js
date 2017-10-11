@@ -20,7 +20,7 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     const regForPhone = /^\d{10}$/;
-    if (!regForPhone.test(phone) || name === undefined) {
+    if (!regForPhone.test(phone) || !name) {
         return false;
     }
     for (let element of phoneBook) {
@@ -43,7 +43,7 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     const regForPhone = /^\d{10}$/;
     let changed = false;
-    if (!regForPhone.test(phone) || name === undefined) {
+    if (!regForPhone.test(phone) || !name) {
         return false;
     }
 
@@ -56,7 +56,7 @@ exports.update = function (phone, name, email) {
             break;
         }
     }
-    if (phoneBook[1].email === undefined) {
+    if (changed && phoneBook[1].email === undefined) {
         delete phoneBook[1].email;
     }
 
@@ -71,12 +71,10 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let count = 0;
-    if (query === '') {
+    if (!query || typeof query !== 'string') {
         return 0;
     }
-    if (typeof query !== 'string') {
-        return false;
-    }
+
     for (let i = 0; i < phoneBook.length; i++) {
         if (toCheck(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
             phoneBook.splice(i, 1);
@@ -107,7 +105,7 @@ function toDoABeautifulPhone(phone, name, email) {
  */
 exports.find = function (query) {
     let result = [];
-    if (query === '') {
+    if (!query) {
         return result;
     }
     if (query === '*') {
