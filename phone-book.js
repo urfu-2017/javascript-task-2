@@ -98,7 +98,7 @@ exports.findAndRemove = function (query) {
     }
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
-        if (exports.findhelp(phoneBook[i].name.indexOf(query), 
+        if (exports.findhelp(phoneBook[i].name.indexOf(query),
             phoneBook[i].phone.indexOf(query), phoneBook[i].email.indexOf(query))) {
             phoneBook.splice(i, i + 1);
             schet += 1;
@@ -111,8 +111,9 @@ exports.findAndRemove = function (query) {
 exports.findhelp = function (one, two, free) {
     if (one !== -1 || two !== -1 || free !== -1) {
         return true;
-    } 
+    }
 };
+
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -124,8 +125,9 @@ exports.find = function (query) {
     }
     var exit = [];
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
- phoneBook[i].email.indexOf(query) !== -1 || query === '*') {
+        if (exports.findhelp(phoneBook[i].name.indexOf(query),
+            phoneBook[i].phone.indexOf(query), phoneBook[i].email.indexOf(query)) ||
+            query === '*') {
             exit.push(phoneBook[i].name + ', +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
 phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) + '-' +
 phoneBook[i].phone.slice(8, 10) + ', ' + phoneBook[i].email);
