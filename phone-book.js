@@ -33,9 +33,20 @@ function sameCheck(phone) {
 
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
+    if (correctCheck(newUser)) {
+        phoneBook.push(newUser);
 
-    if (newUser.phone.length !== 10 || typeof newUser.name !== 'string' ||
-        newUser.name.length === 0 || !/^\d{10}$/.test(newUser.phone)) {
+        return true;
+    }
+
+    return false;
+};
+
+function correctCheck(newUser) {
+    if (!/^\d{10}$/.test(newUser.phone)) {
+        return false;
+    }
+    if (newUser.phone.length !== 10 || typeof newUser.name !== 'string') {
 
         return false;
     }
@@ -43,10 +54,9 @@ exports.add = function (phone, name, email) {
 
         return false;
     }
-    phoneBook.push(newUser);
 
     return true;
-};
+}
 
 function findUser(phone) {
     for (let i = 0; i < phoneBook.length; i++) {
