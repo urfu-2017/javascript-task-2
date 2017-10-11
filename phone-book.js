@@ -71,7 +71,7 @@ function isValidFormat(phone, name, email) {
     return true;
 }
 function isCorrectPhone(phone) {
-    return phone.match(phonePattern) !== null && phone && phone.length === 10;
+    return phone !== undefined && phone.match(phonePattern) && typeof(phone) === 'string';
 }
 
 /**
