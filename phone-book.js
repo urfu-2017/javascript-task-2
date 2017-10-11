@@ -137,7 +137,8 @@ function checkRecord(record, query) {
 exports.importFromCsv = function (csv) {
     let records = csv.split('\n');
     let updateRecords = 0;
-    for (const [name, phone, email] of records) {
+    for (const record of records) {
+        let [name, phone, email] = record.split(';');
         if (exports.update(phone, name, email) || exports.add(phone, name, email)) {
             updateRecords++;
         }
