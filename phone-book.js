@@ -166,7 +166,6 @@ function unique(arr) {
 
 exports.find = function (query) {
     let answer = [];
-    let strAnswer = [];
 
     if (query !== '*') {
         let users = unique(findAll(query));
@@ -196,8 +195,6 @@ function transform(answer) {
 
         return strAnswer.join('').split('ж');
     }
-
-    return strAnswer;
 }
 
 function sortParams(nameA, nameB) {
