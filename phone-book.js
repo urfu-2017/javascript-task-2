@@ -93,7 +93,7 @@ function coompareName(a, b) {
 }
 
 function toformat(value) {
-    if (typeof value.email !== 'string') {
+    if (typeof value.email !== 'string' || value.email === '') {
 
         return (value.name + ', +7 (' + value.phone.slice(0, 3) + ') ' + value.phone.slice(3, 6) +
             '-' + value.phone.slice(6, 8) + '-' + value.phone.slice(8));
