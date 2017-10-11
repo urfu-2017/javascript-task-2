@@ -73,9 +73,14 @@ function isCorrectPhone(input) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    // if (typeof name !== 'string' || !name) {
-    //             return false;
-    //         }
+    if (!isCorrectPhone(phone || !isValidFormat(phone, name))) {
+        return false;
+    }
+
+    return updatePerson(phone, name, email);
+};
+
+function updatePerson(phone, name, email) {
     for (let person of phoneBook) {
         if (person.phone === phone) {
             person.name = (name !== undefined) ? name : person.name;
@@ -86,7 +91,7 @@ exports.update = function (phone, name, email) {
     }
 
     return false;
-};
+}
 
 /**
  * Удаление записей по запросу из телефонной книги
