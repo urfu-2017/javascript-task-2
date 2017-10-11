@@ -71,7 +71,7 @@ function isValidFormat(phone, name, email) {
     return true;
 }
 function isCorrectPhone(phone) {
-    return phone !== undefined && phone.match(phonePattern) && typeof(phone) === 'string';
+    return phone !== undefined && phone.match(phonePattern) !== null && typeof(phone) === 'string';
 }
 
 /**
@@ -82,30 +82,8 @@ function isCorrectPhone(phone) {
  * @returns {Boolean}
  */
 
-
-// exports.update = function (phone, name, email) {
-//     if (typeof name !== 'string' || !name) {
-//         return false;
-//     }
-//     let indexPhoned = -1;
-//     let findPhoned = phoneBook.some(function (record, index) {
-//         indexPhoned = index;
-
-//         return record.phone === phone;
-//     });
-//     if (findPhoned && name) {
-//         phoneBook[indexPhoned].name = name;
-//         phoneBook[indexPhoned].phone = phone;
-//         phoneBook[indexPhoned].email = email;
-
-//         return true;
-//     }
-
-//     return false;
-// };
-
 exports.update = function (phone, name, email) {
-    if (!isCorrectPhone(phone) || !isValidFormat(phone, name)) {
+    if (!havePerson(phone) || !isCorrectPhone(phone) || !isValidFormat(phone, name)) {
         return false;
     }
 
@@ -123,21 +101,6 @@ function updatePerson(phone, name, email) {
         }
     }
 }
-
-//     return false;
-// try {
-//     if (!isValidFormat(phone, name) || isCorrectPhone(phone)) {
-//         return false;
-//     }
-//     var personToUpdate = exports.findAndRemove(phone);
-//     if (personToUpdate === 0) {
-//         return false;
-//     }
-//     phoneBook.push(new Person(phone, name, email));
-//     return true;
-// } catch (e) {
-//     return false;
-// }
 
 
 /**
@@ -181,24 +144,6 @@ exports.findAndRemove = function (query) {
     return personFind.length;
 };
 
-// exports.findAndRemove = function (query) {
-//     let listToDel = exports.find(query);
-//     let num = listToDel.length;
-//     for (let cardToDel of listToDel) {
-//         let indexDel = findToDel(cardToDel);
-//         phoneBook.splice(indexDel, 1);
-//     }
-
-//     return num;
-// };
-
-// function findToDel(delCard) {
-//     for (let i = 0; i < phoneBook; i++) {
-//         if (phoneBook[i].phone === delCard.phone) {
-//             return i;
-//         }
-//     }
-// }
 
 /**
  * Поиск записей по запросу в телефонной книге
@@ -263,17 +208,6 @@ function designingBook(book) {
 
 }
 
-
-/*
-    Метод __find__ для поиска записей:
-* На вход принимает запрос в виде строки
-* Ищет вхождение этой строки хотя бы в одно из полей «Телефон», «Имя» и «Электронную почту»
-* Возвращает отсортированный по «Имени» массив строк в формате `name, phone, email`
-* «Имя» и «Электронную почту» выводит как есть, а «Телефон» в формате `+7 (555) 666-77-88`
-* Пустой запрос не должен ничего находить
-* Запрос «*» находит все записи
-    */
-
 /**
  * Импорт записей из csv-формата
  * @star
@@ -288,10 +222,6 @@ exports.importFromCsv = function (csv) {
         num = (exports.add(phone, name, email) ||
         exports.update(phone, name, email)) ? num + 1 : num;
     }
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
 
     return num;
-    // return csv.split('\n').length;
 };
