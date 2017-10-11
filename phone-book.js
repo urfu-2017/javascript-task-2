@@ -11,13 +11,15 @@ exports.isStar = true;
  */
 var phoneBook = [];
 var FORMAT_PHONE = /\d{10}/;
-var FORMAT_NAME = /[А-яа-я]+/;
 
 function checkValid(phone, name) {
     var okPhone = FORMAT_PHONE.exec(phone);
-    var okName = FORMAT_NAME.exec(name);
+    if (typeof name === 'string') {
 
-    return (okPhone && okName);
+        return (okPhone);
+    }
+
+    return false;
 }
 
 /**
@@ -47,7 +49,6 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     if (checkValid(phone, name) && phoneBook.some(value => value.phone === phone)) {
         phoneBook[phoneBook.findIndex(value => value.phone === phone)] = { phone, name, email };
-        console.info(phoneBook);
 
         return true;
     }
