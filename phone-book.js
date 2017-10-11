@@ -81,6 +81,11 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let remoteCounter = 0;
+    if (query === '*') {
+        remoteCounter = phoneBook.length;
+        phoneBook.splice(0, phoneBook.length);
+        return remoteCounter;
+    }
     for (let i = phoneBook.length - 1; i > -1; i--) {
         if (entryContainsQuery(phoneBook[i], query)) {
             phoneBook.splice(i, 1);
