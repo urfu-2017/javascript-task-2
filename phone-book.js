@@ -162,9 +162,13 @@ exports.find = function (query) {
     }
     answer.sort(sortParams);
     strAnswer = transformation(answer);
-    delete strAnswer[strAnswer.length - 1];
+    if (strAnswer.length !== 0) {
+        delete strAnswer[strAnswer.length - 1];
 
-    return strAnswer.join('').split('ж');
+        return strAnswer.join('').split('ж');
+    }
+
+    return [];
 };
 
 function sortParams(nameA, nameB) {
