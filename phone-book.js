@@ -126,7 +126,7 @@ function recordsInBook(query) {
 
 function checkRecord(record, query) {
     if ((record.name.indexOf(query)) ||
-        (record.email.indexOf(query))) {
+        ((email !== undefined) && (record.email.indexOf(query)))) {
 
         return true;
     }
