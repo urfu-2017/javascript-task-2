@@ -18,7 +18,7 @@ exports.addhel = function(phone, name) {
     if (name === '' || (phone.length !== 10 && phone.length !== 0)) {return true; }}
 
 exports.addhelpen = function(phone, name, email) {
-    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email) {return true; }}
+    if (name === '' || (phoneBook[i].name === name || phoneBook[i].phone === phone || phoneBook[i].email === email) { return true; }}
 
 
 exports.add = function(phone, name, email) {
