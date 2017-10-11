@@ -74,21 +74,11 @@ exports.findAndRemove = function (query) {
 
         return false;
     });
-    var arr = [];
-    function equal(oneObj) {
-        for (var j = 0; j < phoneBook.length; j++) {
-            if (oneObj !== phoneBook[j]) {
-                arr.push(phoneBook[j]);
-            }
-        }
-
-        return arr;
-
+    for (var i = 0; i < result.length; i++) {
+        phoneBook.splice(phoneBook.indexOf(result[i]), 1);
     }
+
     var res = result.length;
-    for (var i = 0; i < res; i++) {
-        phoneBook = equal(result[i]);
-    }
 
     return res;
 
