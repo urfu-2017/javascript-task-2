@@ -14,7 +14,7 @@ function checkPhone(number) {
 }
 
 function checkName(name) {
-    if (name !== ' ' && name !== undefined && name !== null) {
+    if (name !== '' && typeof(name) === "string") {
         return true;
     }
 
@@ -25,7 +25,7 @@ function checkName(name) {
 function transformPhoneAndEmail(number, email) {
     let phone = '+7 (' + number.slice(0, 3) + ') ' + number.slice(3, 6) +
         '-' + number.slice(6, 8) + '-' + number.slice(8, 10);
-    if (email !== null && email !== undefined) {
+    if (email !== null && email !== undefined && email !== '') {
         phone += ', ' + email;
     }
 
