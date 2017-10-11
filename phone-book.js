@@ -10,6 +10,7 @@ exports.isStar = true;
  * Телефонная книга
  */
 var phoneBook;
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -33,11 +34,17 @@ exports.addhelpen = function (phone, name, email, name1, phone1, email1) {
 exports.add = function (phone, name, email) {
     phone = String(phone);
     if (exports.adhel(phone, name)) {
-        return false; }
-    if (phone === undefined) { phone = ''; }
-    if (email === undefined) { email = ''; }
+        return false;
+    }
+    if (phone === undefined) {
+        phone = '';
+    }
+    if (email === undefined) {
+        email = '';
+    }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.adhelpen(phone, name, email, phoneBook[i].name, phoneBook[i].phone, phoneBook[i].email)) {
+        if (exports.adhelpen(phone, name, email, phoneBook[i].name,
+phoneBook[i].phone, phoneBook[i].email)) {
             return false;
         }
     }
@@ -54,6 +61,7 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {boolean}
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
@@ -73,13 +81,13 @@ exports.update = function (phone, name, email) {
         }
     }
 
-    return false
+    return false;
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
- * @return {number}
+ * @returns{number}
  */
 exports.findAndRemove = function (query) {
     if (query === '') {
@@ -103,7 +111,8 @@ phoneBook[i].email.indexOf(query) !== -1) {
  */
 exports.find = function (query) {
     if (query === '') {
-        return undefined; }
+        return undefined;
+    }
     var exit = [];
     for (var i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
