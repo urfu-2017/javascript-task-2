@@ -21,8 +21,8 @@ var phoneBook = [];
  */
 class Contact {
     constructor(phone, name, email) {
-        if (name === undefined || name === null || name === '') {
-            throw Error('1');
+        if (isEmpty(name)) {
+            throw TypeError;
         }
         if (phone.match(regexp) === null) {
             throw Error('2');
@@ -41,6 +41,15 @@ class Contact {
 
         return this.name + ', ' + phone + ', ' + this.email;
     }
+}
+
+/**
+ * Проверяет строку, пустая-ли она.
+ * @param {String} str 
+ * @returns {Boolean} empty ? true: false
+ */
+function isEmpty(str) {
+    return str === undefined || str === null || str === '';
 }
 
 /**
@@ -93,7 +102,7 @@ function checkContact(phone, name, email) {
  * @returns {Boolean} result
  */
 exports.update = function (phone, name, email) {
-    if (name === null || name === '') {
+    if (isEmpty(name)) {
         return false;
     }
     for (let contact in phoneBook) {
@@ -114,13 +123,11 @@ exports.update = function (phone, name, email) {
  * @returns {Integer} number of deleted elements
  */
 exports.findAndRemove = function (query) {
-    let deleted = 0;
     if (query === '*') {
         return removeAll();
     }
-    deleted = removeByKey(query);
 
-    return deleted;
+    return removeByKey(query);
 };
 
 /**
@@ -153,9 +160,9 @@ function removeByKey(query) {
  */
 function checkAndDelete(contact, query) {
     let deleted = 0;
-    if (phoneBook[contact].name.match(query) ||
-    (phoneBook[contact].phone !== undefined && phoneBook[contact].phone.match(query)) ||
-    (phoneBook[contact].email !== undefined && phoneBook[contact].email.match(query))) {
+    if (phoneBook[contact].name.match(query) !== null ||
+    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.match(query) !== null) ||
+    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.match(query) !== null)) {
         phoneBook.splice(contact, 1);
         deleted = contact === phoneBook.length ? deleted + 1
             : deleted + 1 + checkAndDelete(contact, query);
