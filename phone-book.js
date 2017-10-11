@@ -100,7 +100,7 @@ exports.find = function (query) {
 function findRecords(query) {
     let result = {};
     if (query === '*') {
-        result = phoneBook;
+        return phoneBook;
     }
     if (query !== '') {
         result = recordsInBook(query);
@@ -114,7 +114,7 @@ function findRecords(query) {
 function recordsInBook(query) {
     let records = {};
     for (let contact of Object.keys(phoneBook)) {
-        if (checkRecord(phoneBook[contact], query) || contact.indexOf(query)) {
+        if (checkRecord(phoneBook[contact], query) || contact.indexOf(query) >= 0) {
             records[contact] = {
                 name: phoneBook[contact].name,
                 email: phoneBook[contact].email };
@@ -125,8 +125,8 @@ function recordsInBook(query) {
 }
 
 function checkRecord(record, query) {
-    if ((record.name.indexOf(query)) ||
-        ((record.email !== undefined && record.email !== null) && (record.email.indexOf(query)))) {
+    if ((record.name.indexOf(query) >= 0) ||
+        ((record.email !== undefined && record.email !== null) && (record.email.indexOf(query) >= 0))) {
 
         return true;
     }
