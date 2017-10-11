@@ -18,7 +18,7 @@ var phoneBook = [];
 * @param {String} email
 */
 exports.add = function (phone, name, email) {
-    error = '';
+    var error = '';
     if (!phone.match(/\b\d{10}\b/i)){
         error = 1;
     }
@@ -30,16 +30,16 @@ exports.add = function (phone, name, email) {
     }
     if (error){
         return false;
-    }else{
+    }else {
         phoneBook.forEach(function(item, i, arr) {
-           if(item[0] === phone){
+           if (item[0] === phone){
                error = 1;
             }
         });
         if (!error){
             phoneBook[phoneBook.length] = [phone, name, email];
             return true;
-        }else{
+        }else {
             return false;
         }
     }
@@ -52,7 +52,7 @@ exports.add = function (phone, name, email) {
 * @param {String} email
 */
 exports.update = function (phone, name, email) {
-    error = '';
+    var error = '';
     if (!phone.match(/\b\d{10}\b/i)){
         error = 1;
     }
@@ -70,7 +70,7 @@ exports.update = function (phone, name, email) {
             phoneBook[i][1] = name;
             phoneBook[i][2] = email;
             return true;
-        }else{
+        }else {
             return false;
         }
     });
@@ -82,7 +82,7 @@ exports.update = function (phone, name, email) {
 */
 exports.findAndRemove = function (query) {
     if (query){
-        j = 0;
+        var j = 0;
         phoneBook.forEach(function(item, i, arr) {
             item.forEach(function(item2, i2, arr2) {
                 if (item2 === query){
