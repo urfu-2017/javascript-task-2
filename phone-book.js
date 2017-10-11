@@ -11,14 +11,14 @@ exports.isStar = false;
  */
 var phoneBook = {};
 function checkPhone(phone) {
-    if (phone.match(/\d/g).length === 10) {
+    if (typeof(phone) === 'string' && phone.match(/\d/g).length === 10) {
         return true;
     }
 
     return false;
 }
 function checkName(name) {
-    if (typeof(name) === 'string' && name !== '') {
+    if (typeof(name) === 'string') {
         return true;
     }
 
@@ -120,6 +120,8 @@ exports.update = function (phone, name, email) {
 
             return true;
         }
+
+        return false;
     }
 
     return false;
