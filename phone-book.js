@@ -13,7 +13,7 @@ var phoneBook = {};
 const PHONE_REGEX = /^\d{10}$/;
 
 function isCorrect(phone, name) {
-    return PHONE_REGEX.test(phone) && name !== undefined;
+    return PHONE_REGEX.test(phone) && name;
 }
 
 /**
