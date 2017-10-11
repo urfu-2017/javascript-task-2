@@ -42,6 +42,14 @@ exports.addhelpena = function (email, email1) {
     return false;
 };
 
+exports.addhela = function (name, phone, email) {
+    phoneBook.push({
+        name: name,
+        phone: phone,
+        email: email
+    });
+};
+
 exports.add = function (phone, name, email) {
     phone = String(phone);
     if (exports.addhel(phone, name)) {
@@ -62,11 +70,7 @@ exports.add = function (phone, name, email) {
             return false;
         }
     }
-    phoneBook.push({
-        name: name,
-        phone: phone,
-        email: email
-    });
+    exports.addhela(name, phone, email);
 
     return true;
 };
