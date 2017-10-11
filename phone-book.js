@@ -70,6 +70,8 @@ exports.update = function (phone, name, email) {
 
         return true;
     }
+
+    return false;
 };
 
 /**
