@@ -36,10 +36,8 @@ function testAdd(phone, name) {
         return false;
     }
 
-    if (typeof (phone) !== 'undefined') {
-        if (phone.length !== 10 || phone.match(/[^\d]/g, '')) {
-            return false;
-        }
+    if (typeof (phone) !== 'undefined' && phone.length !== 10 || phone.match(/[^\d]/g, '')) {
+        return false;
     }
     if (!moreTest(phone) || !moreTest(name)) {
         return false;
@@ -50,12 +48,14 @@ function testAdd(phone, name) {
 
 function test2() {
     for (var str in phoneBook) {
-        if (phoneBook.hasOwnProperty(str)) {
-            var element = phoneBook[str];
-            if (element.phone.indexOf(phone) !== -1) {
-                return false;
-            }
+        if (!phoneBook.hasOwnProperty(str)) {
+            continue;
         }
+        var element = phoneBook[str];
+        if (element.phone.indexOf(phone) !== -1) {
+            return false;
+        }
+
     }
 
     return true;
@@ -81,13 +81,14 @@ exports.update = function (phone, name, email) {
         return false;
     }
     for (var str in phoneBook) {
-        if (phoneBook.hasOwnProperty(str)) {
-            var element = phoneBook[str];
-            if (element.phone.indexOf(phone) !== -1) {
-                element.phone = phone;
-                element.name = name;
-                element.email = email;
-            }
+        if (!phoneBook.hasOwnProperty(str)) {
+            continue;
+        }
+        var element = phoneBook[str];
+        if (element.phone.indexOf(phone) !== -1) {
+            element.phone = phone;
+            element.name = name;
+            element.email = email;
         }
     }
 
@@ -110,7 +111,7 @@ exports.findAndRemove = function (query) {
 
         return i;
     }
-    arr = testValues();
+    arr = testValues(query);
     arr.reverse();
     arr.forEach(function (indexOfElem) {
         phoneBook.splice(indexOfElem, 1);
@@ -119,7 +120,7 @@ exports.findAndRemove = function (query) {
     return arr.length;
 };
 
-function testValues() {
+function testValues(query) {
     let index = 0;
     let arr = [];
     for (var str in phoneBook) {
@@ -155,10 +156,10 @@ exports.find = function (query) {
     if (query === '*') {
         answer = find1();
     }
-    if (typeof (query) === null || typeof (query) === 'undefined') {
+    if (typeof (query) === 'null' || typeof (query) === 'undefined') {
         return null;
     }
-    answer = find2();
+    answer = find2(query);
     return answer.sort();
 };
 
@@ -177,7 +178,7 @@ function find1() {
     return answer;
 }
 
-function find2() {
+function find2(query) {
     let answer = [];
     for (var str in phoneBook) {
         if (!phoneBook.hasOwnProperty(str)) {
