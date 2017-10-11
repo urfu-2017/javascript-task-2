@@ -124,7 +124,7 @@ function updateOrAdd(phone, name, email) {
 
         return 1;
     }
-    if (phone.length === 10 || !/[^0-9]/.test(phone)) {
+    if (phone.length === 10 && !/[^0-9]/.test(phone)) {
         var arr = [name, email];
         phoneBook[phone] = arr;
 
