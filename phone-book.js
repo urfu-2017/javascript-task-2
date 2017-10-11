@@ -47,7 +47,7 @@ exports.add = function (phone, name, email) {
         email = '';
     }
     for (var i = 0; i < phoneBook.length; i++) {
-        if (exports.adhelpen(phone, name, phoneBook[i].name,
+        if (exports.addhelpen(phone, name, phoneBook[i].name,
             phoneBook[i].phone)) {
             return false;
         }
