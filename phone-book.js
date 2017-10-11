@@ -126,7 +126,7 @@ function validatePhone(phone) {
  * @returns {Boolean} true если имя прошло проверку, иначе false
  */
 function validateName(name) {
-    return typeof(name) === 'string' && !name.startsWith(' ') && !name.endsWith(' ');
+    return typeof(name) === 'string' && name !== '';
 }
 
 /**
