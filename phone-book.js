@@ -21,6 +21,9 @@ var phoneBook = [];
 exports.add = function (phone, name, email) {
     var regexp = /^\d{10}$/;
     if (regexp.test(phone) && typeof name === 'string' && name !== '' && !isRecordExists(phone)) {
+        if (typeof email !== 'string') {
+            email = '';
+        }
         var entry = { phone, name, email };
         phoneBook.push(entry);
 
