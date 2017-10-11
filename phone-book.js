@@ -14,22 +14,25 @@ function checkPhone(phone) {
     if (phone.match(/\d/g).length === 10) {
         return true;
     }
-    
+
     return false;
 }
 function checkName(name) {
     if (typeof(name) === 'string' && name !== '') {
         return true;
     }
-    
+
     return false;
 }
 function normalizePhone(phone) {
     var firstPart = phone[0] + phone[1] + phone[2];
     var secondPart = phone[3] + phone[4] + phone[5] + '-' + phone[6];
-    secondPart = secondPart  + phone[7] + '-' + phone[8] + phone[9];
-    
-    return '+7 ' + '(' + firstPart + ') ' + secondPart;       
+    secondPart = secondPart + phone[7] + '-' + phone[8] + phone[9];
+    var result = '+7 (';
+    result += firstPart;
+    result += ') ';
+    result += secondPart;
+    return result;
 }    
 function getNotesStruct(foundNames, foundNotes, result) {
     var anotherName;
@@ -41,7 +44,7 @@ function getNotesStruct(foundNames, foundNotes, result) {
         anotherMail = foundNotes[anotherName][1];
         result.push([anotherName + ', ' + anotherPhone + ', ' + anotherMail]);
     }
-    
+
     return result;
 }
 function getNotes(query) {
@@ -54,14 +57,17 @@ function getNotes(query) {
     for(var i = 0; i < allNumbers.length; i++) {
         foundName = phoneBook[allNumbers[i]][0];
         foundMail = phoneBook[allNumbers[i]][1];
-        if (query === '*' || allNumbers[i].includes(query) || foundName.includes(query) || foundMail.includes(query)) {
+        if (foundName.includes(query) || foundMail.includes(query)) {
+            foundNames.push(foundName);
+            foundNotes[foundName] = [allNumbers[i],foundMail];
+        } else if (query === '*' || allNumbers[i].includes(query)) {
             foundNames.push(foundName);
             foundNotes[foundName] = [allNumbers[i],foundMail];
         }
     }
     foundNames.sort();
     result = getNotesStruct(foundNames, foundNotes, result);
-    
+
     return result;
 }
 /**
@@ -71,14 +77,14 @@ function getNotes(query) {
  * @param {String} email
  */
 exports.add = function (phone, name, email) {
-    if(checkPhone(phone) && checkName(name)) {
-        if(!Object.keys(phoneBook).includes(phone)) {
+    if (checkPhone(phone) && checkName(name)) {
+        if (!Object.keys(phoneBook).includes(phone)) {
             phoneBook[phone] = [name, email];
         }
-        
+
         return true;
     }
-    
+
     return false;
 };
 
@@ -89,14 +95,14 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
-    if(checkPhone(phone) && checkName(name)) {
-            if(phoneBook[phone] != undefined) {
+    if (checkPhone(phone) && checkName(name)) {
+            if(phoneBook[phone] !== undefined) {
             phoneBook[phone] = [name, email];
-                
+
             return true;
         }
     }
-    
+
     return false;
 };
 
@@ -109,7 +115,7 @@ exports.findAndRemove = function (query) {
     for(var i = 0; i < foundNotes.length; i++) {
         delete phoneBook[foundNotes[i][1]];
     }
-    
+
     return foundNotes.length;
 };
 
@@ -118,10 +124,10 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
-    if(typeof(query) === 'string') {
+    if (typeof(query) === 'string') {
         return getNotes(query);
     }
-    
+
     return [];
 };
 
