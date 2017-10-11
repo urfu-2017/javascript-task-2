@@ -88,7 +88,7 @@ exports.find = function (query) {
     for (let phone of phoneNumbers) {
         let contacts = [];
         contacts.push(records[phone].name);
-        contacts.push(transformPhoneAndEmail(number, records[phone].email));
+        contacts.push(transformPhoneAndEmail(phone, records[phone].email));
         result.push(contacts.join(', '));
     }
 
