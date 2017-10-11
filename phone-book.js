@@ -53,7 +53,11 @@ exports.update = function (phone, name, email) {
     if (entry === null) {
         return false;
     }
-    entry.email = email;
+    if (email !== '' && email !== undefined) {
+        entry.email = email;
+    } else {
+        entry.email = '';
+    }
     if (name !== undefined && name !== '') {
         entry.name = name;
     }
@@ -83,7 +87,7 @@ exports.findAndRemove = function (query) {
     for (let entry of phoneBook) {
         var record = conversionToFormat(entry).join(', ');
         if (record.indexOf(query) === -1) {
-            newPhoneBook.push(record);
+            newPhoneBook.push(entry);
         }
     }
 
