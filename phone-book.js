@@ -69,7 +69,7 @@ exports.findAndRemove = function (query) {
     } else {
         let linesToDelete = searchLines(query);
         countDeleted = Object.keys(linesToDelete).length;
-        for (let phone of Object.keys(phoneBook)) {
+        for (let phone of Object.keys(linesToDelete)) {
             delete phoneBook[phone];
         }
     }
@@ -104,7 +104,8 @@ function makeResultList(inputObject) {
         let finalCurrentString = '';
         finalCurrentString += inputObject[phone].name + ', ';
         finalCurrentString += createPhoneView(phone);
-        if (inputObject[phone].email !== undefined && inputObject[phone].email !== null) {
+        if (inputObject[phone].email !== undefined && inputObject[phone].email !== null &&
+            inputObject[phone].email !== '') {
             finalCurrentString += ', ' + inputObject[phone].email;
         }
         finalResults.push(finalCurrentString);
