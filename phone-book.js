@@ -218,5 +218,13 @@ function isContainsPattern(phoneBookEntry, pattern) {
 }
 
 function compareName(firstPhoneBookEntry, secondfirstPhoneBookEntry) {
-    return firstPhoneBookEntry.name > secondfirstPhoneBookEntry.name;
+    if (firstPhoneBookEntry.name < secondfirstPhoneBookEntry.name) {
+        return -1;
+    }
+    if (firstPhoneBookEntry.name > secondfirstPhoneBookEntry.name) {
+        return 1;
+    }
+    if (firstPhoneBookEntry.name === secondfirstPhoneBookEntry.name) {
+        return 0;
+    }
 }
