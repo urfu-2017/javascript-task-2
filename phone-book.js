@@ -99,7 +99,7 @@ exports.findAndRemove = function (query) {
     var schet = 0;
     for (var i = phoneBook.length - 1; i >= 0; i--) {
         if (exports.findhelp(phoneBook[i].name.indexOf(query), 
-            phoneBook[i].phone.indexOf(query), phoneBook[i].email.indexOf(query)) {
+            phoneBook[i].phone.indexOf(query), phoneBook[i].email.indexOf(query))) {
             phoneBook.splice(i, i + 1);
             schet += 1;
         }
