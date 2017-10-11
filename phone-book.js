@@ -14,6 +14,7 @@ var phoneBook;
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @return {boolean} 
  */
 exports.addhel = function(phone, name) {
     if (name === '' || phone.length !== 10) { return true; }
