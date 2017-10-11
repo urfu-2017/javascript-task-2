@@ -31,7 +31,7 @@ class Person {
 
 exports.add = function (phone, name, email) {
     let newPersonCard;
-    if (isValidFormat(phone, name)) {
+    if (isValidFormat(phone, name, email)) {
         newPersonCard = new Person(phone.toString(), name, email);
     } else {
         return false;
@@ -45,6 +45,14 @@ exports.add = function (phone, name, email) {
     return false;
 };
 
+function checkEmail(email) {
+    if (email === undefined) {
+        return true;
+    }
+
+    return typeof(email) === 'string';
+}
+
 function havePerson(phone) {
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
@@ -54,8 +62,9 @@ function havePerson(phone) {
 
     return false;
 }
-function isValidFormat(phone, name) {
-    if (!name || typeof name !== 'string' || isNaN(phone) || phone === undefined) {
+function isValidFormat(phone, name, email) {
+    if (!name || typeof name !== 'string' || isNaN(phone) ||
+    phone === undefined || checkEmail(email)) {
         return false;
     }
 
