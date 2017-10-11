@@ -19,7 +19,7 @@ let phoneBook = {};
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!/\d{10}/.test(phone) || phone in phoneBook || !isString(name) || name === '') {
+    if (!/[0-9]{10}/.test(phone) || phone in phoneBook || !isString(name) || name === '') {
         return false;
     }
     phoneBook[phone] = {
