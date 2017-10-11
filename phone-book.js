@@ -115,22 +115,20 @@ exports.update = function (phone, name, email) {
 //     }
 
 //     return false;
-    // try {
-    //     if (!isValidFormat(phone, name) || isCorrectPhone(phone)) {
-    //         return false;
-    //     }
-    //     var personToUpdate = exports.findAndRemove(phone);
-    //     if (personToUpdate === 0) {
-    //         return false;
-    //     }
-    //     phoneBook.push(new Person(phone, name, email));
+// try {
+//     if (!isValidFormat(phone, name) || isCorrectPhone(phone)) {
+//         return false;
+//     }
+//     var personToUpdate = exports.findAndRemove(phone);
+//     if (personToUpdate === 0) {
+//         return false;
+//     }
+//     phoneBook.push(new Person(phone, name, email));
+//     return true;
+// } catch (e) {
+//     return false;
+// }
 
-    //     return true;
-    // } catch (e) {
-    //     return false;
-    // }
-
-}
 
 /**
  * Удаление записей по запросу из телефонной книги
