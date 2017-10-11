@@ -19,7 +19,7 @@ const EMAIL_RE = /[\w_\-.]+@[\w_\-.]+\.[\w_\-.]+/;
 function makeEntry(phone, name, email) {
     if (typeof phone !== 'string' || typeof name !== 'string' ||
         !PHONE_RE.test(phone) || !NAME_RE.test(name) ||
-        (email !== undefined && !EMAIL_RE.test(email))) {
+        (email !== undefined && typeof email === 'string' && !EMAIL_RE.test(email))) {
         return false;
     }
     const entry = { phone, name, email };
@@ -33,12 +33,9 @@ function getEntryStringRepr(entry) {
     let comps = PHONE_COMPS_RE.exec(entry.phone)
         .slice(1, 5);
     const formattedPhone = `+7 (${comps[0]}) ${comps[1]}-${comps[2]}-${comps[3]}`;
-    let result = `${entry.name}, ${formattedPhone}`;
-    if (entry.email !== undefined) {
-        result += `, ${entry.email}`;
-    }
 
-    return result;
+    return [entry.name, formattedPhone, entry.email].filter(x => x)
+        .join(', ');
 }
 
 
@@ -120,11 +117,9 @@ exports.findAndRemove = function (query) {
  * @returns {Array}
  */
 exports.find = function (query) {
-    const entries = [...findMatching(query)]
-        .map(e => getEntryStringRepr(e));
-    entries.sort();
-
-    return entries;
+    return [...findMatching(query)]
+        .map(e => getEntryStringRepr(e))
+        .sort();
 };
 
 
