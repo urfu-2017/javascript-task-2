@@ -49,18 +49,19 @@ phoneBook.print();
 if (phoneBook.isStar) {
     // Импортируем из csv
     var csv = [
-        'Борис;5552220022;boris@example.com',
-        'Григорий;5554440044;grisha@example.com',
-        'Алексей;5551110011;alex@example.com',
-        'Валерий;5553330033;valera@example.com',
-        'Неизвестный;3330033;unknown@example.com',
-        'Name;+123456789;email',
-        'Namename;1234567890;',
-        'Namename;1234567891',
-        '1234567890;Wrong',
-        ';1234567899'
+        // 'Борис;5552220022;boris@example.com',
+        // 'Григорий;5554440044;grisha@example.com',
+        // 'Алексей;5551110011;alex@example.com',
+        // 'Валерий;5553330033;valera@example.com',
+        // 'Неизвестный;3330033;unknown@example.com',
+        // 'Name;+123456789;email',
+        // 'Namename;1234567890;',
+        // 'Namename;1234567891',
+        // '1234567890;Wrong',
+        // ';1234567899'
+        ''
     ].join('\n');
-    phoneBook.importFromCsv(csv); // returns 4
+    console.info(phoneBook.importFromCsv(csv)); // returns 4
 }
 phoneBook.print();
 console.info(phoneBook.find('*'));

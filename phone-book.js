@@ -173,6 +173,9 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    if (!stringIsValid(csv)) {
+        return 0;
+    }
     let reg = /^(.+);(\d{10});?(.+?)?$/;
     let values = csv.split('\n');
     let counter = 0;
