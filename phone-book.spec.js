@@ -17,6 +17,8 @@ describe('phone-book', function () {
         assert.ok(!phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com'));
         assert.ok(!phoneBook.add('5551110011', 'Алексей'));
         assert.ok(!phoneBook.add('5555550055'));
+        assert.ok(!phoneBook.add('f553330033', 'Валерий', 'valera@example.com'));
+        assert.ok(!phoneBook.add('5555550055', ''));
     });
 
     it('должен обновлять существующие записи', function () {
@@ -33,11 +35,23 @@ describe('phone-book', function () {
         ]);
     });
 
+    it('ничего не выводит по пустому запросу', function () {
+        assert.deepStrictEqual(phoneBook.find(), [
+        ]);
+    });
+
     it('должен искать все записи по запросу "555"', function () {
         assert.deepStrictEqual(phoneBook.find('555'), [
             'Алексей, +7 (555) 111-00-11, alex@example.com',
             'Борис, +7 (555) 222-00-22, boris@example.com',
             'Валерий, +7 (555) 333-00-33',
+            'Григорий, +7 (555) 444-00-44, grisha@example.com'
+        ]);
+    });
+
+    it('должен искать следующие записи по запросу "о"', function () {
+        assert.deepStrictEqual(phoneBook.find('о'), [
+            'Борис, +7 (555) 222-00-22, boris@example.com',
             'Григорий, +7 (555) 444-00-44, grisha@example.com'
         ]);
     });

@@ -20,7 +20,8 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     var regexp = /^\d{10}$/;
-    if (regexp.test(phone) && name !== undefined && isRecordExists(phone) === false) {
+    if (regexp.test(phone) && name !== undefined && name !== '' &&
+    isRecordExists(phone) === false) {
         var entry = { phone, name, email };
         phoneBook.push(entry);
 
@@ -31,8 +32,8 @@ exports.add = function (phone, name, email) {
 };
 
 function isRecordExists(phone) {
-    for (var i = 0; i < phoneBook.length; i++) {
-        if (phone === phoneBook[i].phone) {
+    for (var entry of phoneBook) {
+        if (phone === entry.phone) {
             return true;
         }
     }
@@ -73,7 +74,7 @@ function getEntry(phone) {
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
- * @returns {String}
+ * @returns {Number}
  */
 exports.findAndRemove = function (query) {
     let entries = exports.find(query);

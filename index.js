@@ -12,6 +12,8 @@ phoneBook.add('5553330033', 'Валерий', 'valera@example.com');
 phoneBook.add('3330033', 'Неизвестный', 'unknown@example.com');
 phoneBook.add('5551110011', 'Алексей');
 phoneBook.add('5555550055');
+phoneBook.add('f553330033', 'Валерий', 'valera@example.com');
+phoneBook.add('5555550055', '');
 
 // Обновление
 phoneBook.update('5551110011', 'Алексей', 'alex@example.com');
