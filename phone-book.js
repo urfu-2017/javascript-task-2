@@ -96,10 +96,11 @@ exports.add = function (phone, name, email) {
     if (checkPhone(phone) && checkName(name)) {
         if (!Object.keys(phoneBook).includes(phone)) {
             phoneBook[phone] = [name, email];
+            
             return true;
-        } else {
-            return false;
         }
+        
+        return false;
     }
 
     return false;
