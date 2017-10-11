@@ -31,28 +31,6 @@ exports.add = function (phone, name, email) {
     return true;
 };
 
-function recordIsValid(record) {
-    return phoneIsvalid(record.phone) && stringIsValid(record.name);
-}
-
-function phoneIsvalid(phone) {
-    let reg = /^\d{10}$/;
-
-    return Boolean(reg.exec(phone));
-}
-function bookContainsRecord(record) {
-    return phoneBook.filter(x => x.phone === record.phone).length !== 0;
-}
-
-function extractRecordByPhone(phone) {
-    let values = phoneBook.filter(x => x.phone === phone);
-    if (values.length !== 1) {
-        throw new RangeError('Record is not in the phonebook');
-    }
-
-    return values[0];
-}
-
 /**
  * Обновление записи в телефонной книге
  * @param {String} phone
@@ -62,7 +40,7 @@ function extractRecordByPhone(phone) {
  */
 exports.update = function (phone, name, email) {
     let record = { phone, name, email };
-    if (!bookContainsRecord(record) || !stringIsValid(name)) {
+    if (!bookContainsRecord(record) || !recordIsValid(record)) {
         return false;
     }
     let oldRecord = extractRecordByPhone(phone);
@@ -80,26 +58,17 @@ exports.update = function (phone, name, email) {
 exports.find = function (query) {
     let extractedValues = extractValuesByQuery(query).slice();
     if (extractedValues.length === 0) {
-        return extractedValues;
+        return [];
     }
 
     return transformPhoneNumber(extractedValues).sort(compareRecords)
         .map(transformRecordToString);
 };
 
-function deleteElement(value) {
-    for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === value.phone) {
-            phoneBook.splice(i, 1);
-            break;
-        }
-    }
-}
-
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
- * @returns {Number} nubmer of deleted elements
+ * @returns {Number} number of deleted elements
  */
 exports.findAndRemove = function (query) {
     let values = extractValuesByQuery(query).slice();
@@ -109,6 +78,38 @@ exports.findAndRemove = function (query) {
 
     return values.length;
 };
+
+function recordIsValid(record) {
+    return phoneIsvalid(record.phone) && stringIsValid(record.name);
+}
+
+function phoneIsvalid(phone) {
+    let reg = /^\d{10}$/;
+
+    return reg.test(phone);
+}
+
+function bookContainsRecord(record) {
+    return phoneBook.filter(x => x.phone === record.phone).length !== 0;
+}
+
+function extractRecordByPhone(phone) {
+    let values = phoneBook.filter(x => x.phone === phone);
+    if (values.length !== 1) {
+        throw new RangeError('Record is not in the phonebook');
+    }
+
+    return values[0];
+}
+
+function deleteElement(value) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === value.phone) {
+            phoneBook.splice(i, 1);
+            break;
+        }
+    }
+}
 
 function extractValuesByQuery(query) {
     if (!stringIsValid(query)) {
@@ -124,7 +125,7 @@ function extractValuesByQuery(query) {
 }
 
 function stringIsValid(string) {
-    return string !== null && string !== undefined && string !== '';
+    return string !== null && string !== undefined && string.toString() !== '';
 }
 
 function transformPhoneNumber(values) {
@@ -172,7 +173,7 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
-    let reg = /^([\wа-яА-Я ]+);(\d{10});?(.+?)?$/;
+    let reg = /^(.+);(\d{10});?(.+?)?$/;
     let values = csv.split('\n');
     let counter = 0;
     for (let value of values) {
@@ -181,13 +182,10 @@ exports.importFromCsv = function (csv) {
             continue;
         }
         let record = { name: match[1], phone: match[2], email: match[3] };
-        let added = false;
-        if (bookContainsRecord(record)) {
-            added = this.update(record.phone, record.name, record.email);
-        } else {
-            added = this.add(record.phone, record.name, record.email);
+        if (this.add(record.phone, record.name, record.email) ||
+            this.update(record.phone, record.name, record.email)) {
+            counter++;
         }
-        counter += added ? 1 : 0;
     }
 
     return counter;
