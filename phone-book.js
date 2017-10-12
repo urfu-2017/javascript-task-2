@@ -37,7 +37,7 @@ function isItGood(phone, name, email) {
 
     return (((regExpPhone.test(phone) === true &&
         ((regExpEmail.test(email) === true) || email === undefined) &&
-        name !== undefined)) && !alreadyAdd(phone));
+        name !== undefined)) && !alreadyAdd(phone)) && !isNaN(Number(phone));
     // Object.keys(phoneBook).indexOf(phone) === -1);
 }
 function correctPhone(phone) {
@@ -48,7 +48,7 @@ function correctPhone(phone) {
 function isItGood2(phone, name, email) {
     return ((regExpPhone.test(phone) === true &&
         ((regExpEmail.test(email) === true) || email === undefined) &&
-        name !== undefined));
+        name !== undefined)) && !isNaN(Number(phone));
 }
 
 /**
