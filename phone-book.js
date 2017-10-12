@@ -4,15 +4,29 @@ exports.isStar = false;
 var phoneBook = [];
 // функции для add + update
 function validName(name) {
-    if (name !== undefined && name !== null && typeof(name) === 'string') {
+    if (typeof(name) !== 'string') {
+        return false;
+    }
+    if (name === undefined) {
+        return false;
+    }
+    if (name === null) {
+        return false;
+    }
+    if (name.length === 0) {
         return false;
     }
 
     return true;
 }
 function validPhone(phone) {
-    let phoneRegExp = /^[0-9]{10}$/;
-    if (typeof(phone) === 'string' && phoneRegExp.test(phone) && phone.length === 10) {
+    if (!/^\d{10}$/.test(phone)) {
+        return false;
+    }
+    if (phone === undefined) {
+        return false;
+    }
+    if (phone === null) {
         return false;
     }
 
@@ -20,23 +34,13 @@ function validPhone(phone) {
 }
 function validEmail(email) {
     if (email === undefined) {
-        return false;
+        return true;
     }
     if (typeof(email) === 'string') {
-        return false;
+        return true;
     }
 
-    return true;
-}
-function checkPhone(phone) {
-    for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
-
-            return false;
-        }
-    }
-
-    return true;
+    return false;
 }
 // функции для find + findAndRemove
 function validQuery(query) {
@@ -81,45 +85,51 @@ function outNote(i) {
 
     return out;
 }
+
 function search(query) {
     validQuery(query);
     phoneBook.sort(sortName);
     let x = [];
     for (let i = 0; i < phoneBook.length; i++) {
-        if ((phoneBook[i].name.indexOf(query) !== -1 &&
-        phoneBook[i].name.indexOf(query) !== undefined) ||
-        (phoneBook[i].phone.indexOf(query) !== -1 &&
-        phoneBook[i].phone.indexOf(query) !== undefined) ||
-        (phoneBook[i].email !== undefined &&
-        phoneBook[i].email.indexOf(query) !== -1)) {
+        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
+            (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1)) {
             x.push(outNote(i));
         }
     }
 
     return x;
 }
+
+
 exports.add = function (phone, name, email) {
+    let mas = [];
+    if (validPhone(phone) && validName(name) && validEmail(email)) {
+        mas.name = name;
+        mas.phone = phone.toString();
+        mas.email = email;
 
-    if (validPhone(phone) || validName(name) || validEmail(email)) {
-        return false;
-    }
-
-    if (checkPhone(phone)) {
-        phoneBook.push({ name: name, phone: phone, email: email });
-
-        return true;
-    }
-
-    return false;
-};
-exports.update = function (phone, name, email) {
-    if (validName(name)) {
+    } else {
 
         return false;
     }
     for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
-            phoneBook[i] = { name: name, phone: phone, email: email };
+        if (phone === phoneBook[i].phone) {
+
+            return false;
+        }
+    }
+    phoneBook.push(mas);
+
+    return true;
+};
+exports.update = function (phone, name, email) {
+    if (!validName(name) || !(validEmail(email) || !(validPhone(phone)))) {
+
+        return false;
+    }
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phone === phoneBook[i].phone) {
+            phoneBook[i] = { name: name, phone: phone.toString(), email: email };
 
             return true;
         }
