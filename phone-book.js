@@ -125,7 +125,8 @@ exports.findAndRemove = function findAndRemove(query) {
 
         newIndexes = deleter(allIndexes, j);
         for (let i = 0; newIndexes.length > i; i++) {
-            newPhoneBook[i] = (`${phoneBook[newIndexes[i]].name}, ${correctPhone(phoneBook[newIndexes[i]].phone)}${phoneBook[newIndexes[i]].email ? ', ' + phoneBook[newIndexes[i]].email : ''}`);
+            let card = (`${phoneBook[newIndexes[i]].name}, ${correctPhone(phoneBook[newIndexes[i]].phone)}${phoneBook[newIndexes[i]].email ? ', ' + phoneBook[newIndexes[i]].email : ''}`);
+            newPhoneBook.push(card);
         }
         phoneBook = newPhoneBook;
 
