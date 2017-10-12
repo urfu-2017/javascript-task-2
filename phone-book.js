@@ -42,7 +42,7 @@ const formatPhone = function (phone) {
 
 let formatRecord = function (record) {
     let fields = [record.name, formatPhone(record.phone)];
-    if (record.email !== undefined) {
+    if (typeof(record.email) === 'string' && record.email.length > 0) {
         fields.push(record.email);
     }
 
