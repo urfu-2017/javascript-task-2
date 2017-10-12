@@ -14,7 +14,7 @@ const phoneIsCorrect = function (phone) {
 };
 
 const nameIsCorrect = function (name) {
-    return name !== undefined && typeof(name) === 'string' && name.length > 0;
+    return typeof(name) === 'string' && name.length > 0;
 };
 
 const isCorrect = function (name, phone) {
@@ -29,11 +29,6 @@ const findIndexByProperty = function (propertyName, propertyValue) {
     }
 
     return -1;
-};
-
-const findIndex = function (name, phone) {
-    return Math.max(findIndexByProperty('name', name),
-        findIndexByProperty('phone', phone));
 };
 
 const getFields = function (record) {
@@ -72,7 +67,7 @@ const findIndexesByQuery = function (query) {
 };
 
 exports.add = function (phone, name, email) {
-    if (!isCorrect(name, phone) || findIndex(name, phone) !== -1) {
+    if (!isCorrect(name, phone) || findIndexByProperty('phone', phone) !== -1) {
         return false;
     }
     phoneBook.push(createRecord(phone, name, email));
@@ -81,7 +76,7 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
-    let indexFound = findIndex(name, phone);
+    let indexFound = findIndexByProperty('phone', phone);
     if (!isCorrect(name, phone) || indexFound === -1) {
         return false;
     }
