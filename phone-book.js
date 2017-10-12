@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -68,10 +68,10 @@ exports.update = function (phone, name, email) {
         delete phoneBook[contactIndex].email;
     } else if (REG_EMAIL.test(email)) {
         phoneBook[contactIndex].email = email;
-        phoneBook[contactIndex].name = name;
     } else {
         return false;
     }
+    phoneBook[contactIndex].name = name;
 
     return true;
 };
