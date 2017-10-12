@@ -202,7 +202,7 @@ exports.importFromCsv = function (csv) {
     var count = 0;
     var inf;
     for (var info of csvArray) {
-        nInfo = info.split(';');
+        inf = info.split(';');
         if (exports.update(inf[1], inf[0], inf[2]) || exports.add(inf[1], inf[0], inf[2])) {
             count++;
         }
