@@ -102,9 +102,10 @@ exports.find = function (query) {
             phoneBook[i].phone.slice(8, 10) + ', ' + phoneBook[i].email);
         }
         else {
-            arrFindSort.push(phoneBook[i].name + ',' + ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') '
-            + phoneBook[i].phone.slice(3, 6) + '-' +
-            + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10));
+            arrFindSort.push(phoneBook[i].name + ',' +
+            ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
+            phoneBook[i].phone.slice(3, 6) + '-' +
+            phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10));
         }
 }
 
@@ -114,9 +115,9 @@ exports.find = function (query) {
 function some(phone, name, email, query) {
     if (phone !== undefined && (phone.indexOf(query) !== -1 ||
     name.indexOf(query) !== -1 ||
-    (email !== undefined && email.indexOf(query) !== -1))){
+    (email !== undefined && email.indexOf(query) !== -1))) {
 
-    return true;
+        return true;
     }
 
     return false;
