@@ -107,9 +107,6 @@ exports.update = function (phone, name, email) {
     if (isEmpty(name)) {
         return false;
     }
-    if (phone.match(regexp) === null) {
-        return false;
-    }
     for (let index in phoneBook) {
         if (phoneBook[index].phone === phone) {
             phoneBook[index].name = name;
@@ -191,10 +188,18 @@ function checkEntry(str, query) {
  * @returns {Array<String>} result
  */
 exports.find = function (query) {
-    let result = [];
     if (query === '*') {
         return getAllContacts();
     }
+    if (isEmpty(query)) {
+        return [];
+    }
+
+    return findByQuery(query).sort();
+};
+
+function findByQuery(query) {
+    let result = [];
     for (let contact in phoneBook) {
         if (checkEntry(phoneBook[contact].name, query)) {
             result.push(phoneBook[contact].toString());
@@ -205,8 +210,8 @@ exports.find = function (query) {
         }
     }
 
-    return result.sort();
-};
+    return result;
+}
 
 /**
  * @returns {Arrayy<String>} of all contacts
