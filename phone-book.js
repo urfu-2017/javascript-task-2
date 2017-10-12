@@ -15,9 +15,6 @@ let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[^@;]+/;
 let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
-let onlyPhoneTemp = /^[0-9]{10}$/;
-let onlyNameTemp = /^[^@;]+$/;
-let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
@@ -37,10 +34,10 @@ let findEntry = function (item) {
  */
 let isCorrect = function (phone, name, email) {
     if (email === undefined) {
-        return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name);
+        return phoneTemp.test(phone) && nameTemp.test(name);
     }
 
-    return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name) && onlyEmailTemp.test(email);
+    return phoneTemp.test(phone) && nameTemp.test(name) && emailTemp.test(email);
 };
 
 /**
@@ -81,7 +78,7 @@ exports.update = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
-    let toUpdate = findEntry(new RegExp(';' + phone + ';?'));
+    let toUpdate = findEntry(new RegExp(';' + phone + '(?:;|$)'));
     if (toUpdate) {
         if (email === undefined) {
             email = '';
