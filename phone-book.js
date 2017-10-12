@@ -16,7 +16,7 @@ let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[^0-9;]+/;
 let emailTemp = /[\w]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
-let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
+let onlyEmailTemp = /^[\w]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
