@@ -79,7 +79,7 @@ exports.update = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
-    let toUpdate = findEntry(phone);
+    let toUpdate = findEntry(new RegExp(';' + phone + ';?'));
     if (toUpdate) {
         if (email === undefined) {
             email = '';
