@@ -112,8 +112,9 @@ exports.importFromCsv = function (csv) {
         if (split.length === 2) {
             split.push(undefined);
         }
-        if (exports.add(split[1], split[0], split[2]) ||
-            exports.update(split[1], split[0], split[2])) {
+        if (split.length >= 3 && (
+            exports.add(split[1], split[0], split[2]) ||
+            exports.update(split[1], split[0], split[2]))) {
             countAddedOrUpdated++;
         }
     }
