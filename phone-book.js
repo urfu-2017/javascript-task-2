@@ -18,11 +18,11 @@ let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
- * @param {RegExp} item
- * @returns {String}
+ * @param {String} item
+ * @returns {Array}
  */
 let findEntry = function (item) {
-    return phoneBook.find(entry => entry.match(item));
+    return phoneBook.find(entry => entry.find(detail => detail === item));
 };
 
 /**
@@ -51,18 +51,18 @@ exports.add = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
-    if (findEntry(new RegExp(';' + phone + '(?:;|$)')) || findEntry(new RegExp(name))) {
+    if (findEntry(phone) || findEntry(name)) {
         return false;
     }
     if (email === undefined) {
-        phoneBook.push(name + ';' + phone);
+        phoneBook.push([name, phone]);
 
         return true;
     }
-    if (findEntry(new RegExp(email))) {
+    if (findEntry(email)) {
         return false;
     }
-    phoneBook.push([name, phone, email].join(';'));
+    phoneBook.push([name, phone, email]);
 
     return true;
 };
@@ -78,23 +78,19 @@ exports.update = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
-    let toUpdate = findEntry(new RegExp(';' + phone + '(?:;|$)'));
+    let toUpdate = findEntry(phone);
     if (toUpdate) {
         if (email === undefined) {
-            email = '';
-        }
-        let index = phoneBook.indexOf(toUpdate);
-        if (!emailTemp.test(toUpdate) && email !== '') {
-            phoneBook[index] = phoneBook[index].replace(nameTemp, name) + ';' + email;
+            toUpdate.splice(2, 1);
+            toUpdate.splice(0, 1);
+            toUpdate.unshift(name);
 
             return true;
         }
-        if (email === '') {
-            // При удалении email-a хотим также убрать и разделитель
-            emailTemp = /;[\w-.]+@[\w]+\.+[a-zA-Z]+/;
-        }
-        phoneBook[index] = phoneBook[index].replace(nameTemp, name).replace(emailTemp, email);
-        emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
+        toUpdate.splice(2, 1);
+        toUpdate.splice(0, 1);
+        toUpdate.unshift(name);
+        toUpdate.push(email);
 
         return true;
     }
@@ -119,18 +115,18 @@ let show = function (phone) {
 exports.find = function (query) {
     if (query === '*') {
         return phoneBook.map(entry => {
-            let phone = entry.match(phoneTemp)[0];
+            let mod = entry.slice();
+            mod[1] = show(entry[1]);
 
-            return entry.replace(phoneTemp, show(phone)).replace(/;/g, ', ');
+            return mod.join(', ');
         }).sort();
     }
 
-    return phoneBook.filter(entry => {
-        return entry.match(query);
-    }).map(entry => {
-        let phone = entry.match(phoneTemp)[0];
+    return phoneBook.filter(entry => entry.find(detail => detail.match(query))).map(entry => {
+        let mod = entry.slice();
+        mod[1] = show(entry[1]);
 
-        return entry.replace(phoneTemp, show(phone)).replace(/;/g, ', ');
+        return mod.join(', ');
     })
         .sort();
 };
@@ -147,7 +143,7 @@ exports.findAndRemove = function (query) {
 
         return count;
     }
-    let processed = phoneBook.filter(entry => entry.search(query) === -1);
+    let processed = phoneBook.filter(entry => !entry.find(detail => detail.match(query)));
     phoneBook = processed;
 
     return count - processed.length;
