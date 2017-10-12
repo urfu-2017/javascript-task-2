@@ -24,14 +24,23 @@ function isIncluded(phone) {
         if (phoneBook[i].phone === phone) {
             a = false;
         }
+
     }
 
     return a;
 }
+function emailIsTrue(query) {
+    return /^[a-z0-9-]+@[a-z0-9]+\.[a-z0-9]+$/i.test(query);
+}
+
 exports.add = function (phone, name, email) {
     if (name !== '' && name !== undefined && name !== null && isIncluded(phone) &&
-    /^\d{10}$/.test(phone) && typeof(email) === 'string') {
-        phoneBook.push({ phone: phone, name: name, email: email });
+    /^\d{10}$/.test(phone)) {
+        if (emailIsTrue(email)) {
+            phoneBook.push({ phone: phone, name: name, email: email });
+        } else {
+            phoneBook.push({ phone: phone, name: name });
+        }
 
         return true;
     }
