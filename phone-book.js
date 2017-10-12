@@ -30,16 +30,15 @@ let findEntry = function (item) {
 /**
  * Проверка на корректность введенных данных
  * @param {String} phone
- * @param {String} name
  * @param {String} email
  * @returns {boolean}
  */
-let isCorrect = function (phone, name, email) {
+let isCorrect = function (phone, email) {
     if (email === undefined) {
-        return onlyPhoneTemp.test(phone) && !onlyEmailTemp.test(name);
+        return onlyPhoneTemp.test(phone);
     }
 
-    return onlyPhoneTemp.test(phone) && !onlyEmailTemp.test(name) && onlyEmailTemp.test(email);
+    return onlyPhoneTemp.test(phone) && onlyEmailTemp.test(email);
 };
 
 /**
@@ -50,7 +49,7 @@ let isCorrect = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, name, email)) {
+    if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
     if (findEntry(phone)) {
@@ -77,7 +76,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, name, email)) {
+    if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
     let toUpdate = findEntry(phone);
@@ -93,10 +92,10 @@ exports.update = function (phone, name, email) {
         }
         if (email === '') {
             // При удалении email-a хотим также убрать и разделитель
-            emailTemp = /;[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
+            emailTemp = /;[\w-.]+@[\w]+\.+[a-zA-Z]+/;
         }
         phoneBook[index] = phoneBook[index].replace(nameTemp, name).replace(emailTemp, email);
-        emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
+        emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 
         return true;
     }
