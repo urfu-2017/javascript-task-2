@@ -67,8 +67,9 @@ function outputInfopmation(newPhone) {
 }
 function testIndex(query, newPhone) {
 
-    return newPhone.phone.indexOf(query) !== -1 ||
-    newPhone.name.indexOf(query) !== -1 || newPhone.email.indexOf(query) !== -1;
+    return newPhone.phone !== undefined && newPhone.phone.indexOf(query) !== -1 ||
+    newPhone.name !== undefined && newPhone.name.indexOf(query) !== -1 ||
+    newPhone.email !== undefined && newPhone.email.indexOf(query) !== -1;
 }
 function nameSort(firstName, secondName) {
     if (firstName.name > secondName.name) {
