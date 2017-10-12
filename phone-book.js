@@ -45,6 +45,9 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
+    if (typeof name !== 'string' || name === '') {
+        return false;
+    }
     for (var i = 0; i < phoneBook.length; i++) {
         if
         (phoneBook[i].phone === phone) {
