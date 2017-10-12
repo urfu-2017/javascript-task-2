@@ -55,7 +55,7 @@ exports.update = function (phone, name, email) {
  * @returns {Integer}
  */
 exports.findAndRemove = function (query) {
-    if (query === '') {
+    if (!(query)) {
         return 0;
     }
     var oldLength = phoneBook.length;
@@ -119,7 +119,7 @@ exports.importFromCsv = function (csv) {
     var count = 0;
     notes.forEach(function (element) {
         var [name, phone, email] = element.split(';');
-        var isValid = name !== '' && phone.length === 10 && validPhone.test(phone);
+        var isValid = phone.length === 10 && validPhone.test(phone) && (name);
         if (isValid) {
             var index = phoneBook.findIndex(elem => elem.phone === phone);
             count++;
