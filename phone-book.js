@@ -96,7 +96,7 @@ function parametrs(query, name, phone, email) {
 exports.add = function (phone, name, email) {
     var newPhone = {};
     if (verifEmail(email) && verifName(name) && verifPhone(phone)) {
-        newPhone.phone = phone;
+        newPhone.phone = phone.toString();
         newPhone.name = name;
         newPhone.email = email;
     } else {
@@ -125,7 +125,7 @@ exports.update = function (phone, name, email) {
         return false;
     }
     for (let newPhone of phoneBook) {
-        if (newPhone.phone === phone) {
+        if (newPhone.phone === phone.toString()) {
             newPhone.name = name;
             newPhone.email = email;
 
