@@ -16,7 +16,7 @@ let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[^0-9;@]+/;
 let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
-let onlyNameTemp = /^[^0-9@;]+$/;
+let onlyNameTemp = /^[^@]+$/;
 let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
