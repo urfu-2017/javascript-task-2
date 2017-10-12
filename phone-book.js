@@ -136,10 +136,10 @@ exports.findAndRemove = function (query) {
 
         return count;
     }
-    let processed = phoneBook.filter(entry => !entry.find(detail => detail.match(query)));
+    let processed = phoneBook.filter(entry => entry.find(detail => detail.match(query)));
     phoneBook = processed;
 
-    return count - processed.length;
+    return processed.length;
 };
 
 /**
