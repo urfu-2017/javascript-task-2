@@ -42,6 +42,10 @@ describe('phone-book', function () {
         ]);
     });
 
+    it('пустой запрос ничего не находит', function () {
+        assert.deepStrictEqual(phoneBook.find(''), []);
+    });
+
     it('должен удалять элементы из телефонной книги', function () {
         assert.strictEqual(phoneBook.findAndRemove('@'), 3);
     });
