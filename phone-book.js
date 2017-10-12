@@ -29,7 +29,7 @@ exports.add = function (phone, name, email) {
     }
     let flag = checkArguments(phone, name);
     if (flag) {
-        if (!reapitEntry(this.phoneBook, phone, email)) {
+        if (!reapitEntry(this.phoneBook, phone)) {
 
             return false;
         }
@@ -39,9 +39,9 @@ exports.add = function (phone, name, email) {
     return flag;
 };
 
-function reapitEntry(book, phone, email) {
+function reapitEntry(book, phone) {
     for (var elem in book) {
-        if (phone === book[elem][0] || email === book[elem][2]) {
+        if (phone === book[elem][0]) {
 
             return false;
         }
