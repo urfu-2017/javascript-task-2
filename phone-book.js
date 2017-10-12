@@ -1,4 +1,3 @@
-/* eslint complexity: ["error", 9] */
 /* eslint max-statements: ["error", 16] */
 'use strict';
 
@@ -6,6 +5,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -47,19 +47,16 @@ let isCorrect = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!phoneTemp.test(phone) || name === undefined || !nameTemp.test(name)) {
+    if (isCorrect(phone, name, email) || name === undefined) {
         return false;
     }
-    if (findEntry(phone) || findEntry(name)) {
+    if (findEntry(phone)) {
         return false;
     }
     if (email === undefined) {
         phoneBook.push([name, phone].join(';'));
 
         return true;
-    }
-    if (!emailTemp.test(email)) {
-        return false;
     }
     if (findEntry(email)) {
         return false;
