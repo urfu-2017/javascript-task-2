@@ -11,7 +11,7 @@ exports.isStar = true;
  */
 let phoneBook = [];
 
-const REG_EMAIL = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
+const REG_EMAIL = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i;
 const REG_PHONE = /^\d{10}$/;
 
 /**
@@ -58,20 +58,20 @@ exports.update = function (phone, name, email) {
     if (!name || !REG_PHONE.test(phone)) {
         return false;
     }
-    phoneBook.forEach(function (contact) {
-        if (contact.phone === phone) {
-            contact.name = name;
-            if (!email) {
-                delete contact.email;
-            } else if (REG_EMAIL.test(email)) {
-                contact.email = email;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+    var contactIndex = phoneBook.findIndex(contact => {
+        return contact.phone === phone;
     });
+    if (contactIndex === -1) {
+        return false;
+    }
+    if (!email) {
+        delete phoneBook[contactIndex].email;
+    } else if (REG_EMAIL.test(email)) {
+        phoneBook[contactIndex].email = email;
+        phoneBook[contactIndex].name = name;
+    } else {
+        return false;
+    }
 
     return true;
 };
@@ -93,10 +93,10 @@ exports.findAndRemove = function (query) {
         return deleteCount;
     }
     for (let i = 0; i < phoneBook.length; ++i) {
-        const contact = phoneBook[i];
-        if (containsQuery(contact, query)) {
+        if (containsQuery(phoneBook[i], query)) {
+            phoneBook.splice(i, 1);
             ++deleteCount;
-            phoneBook.slice(i, 1);
+            --i;
         }
     }
 
