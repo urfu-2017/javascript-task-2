@@ -148,11 +148,14 @@ function removeAll() {
 
 function removeByKey(query) {
     let deleted = 0;
+    for (let i = phoneBook.length - 1; i >= 0; i--) {
+        deleted += checkAndDelete(i, query);
+    }/*
     phoneBook.forEach(function (element, index) {
         if (index < phoneBook.length) {
             deleted += checkAndDelete(index, query);
         }
-    });
+    });*/
 
     return deleted;
 }
@@ -164,15 +167,16 @@ function removeByKey(query) {
  * @returns {Integer} numOfDeleted
  */
 function checkAndDelete(contact, query) {
-    let deleted = 0;
     if (checkEntry(phoneBook[contact].name, query) || checkEntry(phoneBook[contact].phone, query) ||
     checkEntry(phoneBook[contact].email, query)) {
-        phoneBook.splice(contact, 1);
+        phoneBook.splice(contact, 1);/*
         deleted = contact === phoneBook.length ? deleted + 1
-            : deleted + 1 + checkAndDelete(contact, query);
+            : deleted + 1 + checkAndDelete(contact, query);*/
+
+        return 1;
     }
 
-    return deleted;
+    return 0;
 }
 
 /**
