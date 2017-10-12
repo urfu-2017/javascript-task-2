@@ -102,7 +102,7 @@ exports.findAndRemove = function (query) {
     let result = exports.find(query);
     let newPhone = '';
     for (var i = 0; i < result.length; i++) {
-        let index = result[i].indexOf('+');
+        let index = result[i].indexOf('+7');
         newPhone = transfomPhone(result[i].slice(index, index + 19));
         delete this.phoneBook[newPhone];
     }
