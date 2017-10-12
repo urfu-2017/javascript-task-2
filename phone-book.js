@@ -119,19 +119,22 @@ function isNoteMatch(query, note) {
     return inPhone || inEmail || inName;
 }
 
-function noteToStr(n) {
-    let phone = '+7 (' + subf(n, 0, 3) + ') ' +
-     subf(n, 3, 3) + '-' + subf(n, 6, 2) + '-' + subf(n, 8, 2);
-    if (n.email === '') {
-        return n.name + ', ' + phone;
+function noteToStr(note) {
+    let rawPhone = note.phone;
+    let phone = `+7 (${rawPhone.substr(0, 3)}) ${
+        rawPhone.substr(3, 3)}-${rawPhone.substr(6, 2)}-${rawPhone.substr(8, 2)}`;
+    // let phone = '+7 (' + subf(note, 0, 3) + ') ' +
+    //  subf(note, 3, 3) + '-' + subf(note, 6, 2) + '-' + subf(note, 8, 2);
+    if (note.email === '') {
+        return `${note.name}, ${phone}`;
     }
 
-    return n.name + ', ' + phone + ', ' + n.email;
+    return `${note.name}, ${phone}, ${note.email}`;
 }
 
-function subf(note, start, count) {
-    return note.phone.substr(start, count);
-}
+// function subf(note, start, count) {
+//     return note.phone.substr(start, count);
+// }
 
 function getNote(phone, name, email) {
     if (! (isValidStr(phone) && isValidNumber(phone) && isValidStr(name) && name.length !== 0)) {
@@ -166,7 +169,7 @@ function isValidStr(str) {
 }
 
 function isValidEmail(email) {
-    let re = /([a-z0-9]+@[a-z0-9]+\.[a-z0-9]{2,4})/i;
+    let re = /([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]{2,4})/i;
     let result = re.exec(email);
     if (result) {
         return result[0] === email;

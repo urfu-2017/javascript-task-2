@@ -59,3 +59,11 @@ describe('phone-book', function () {
         });
     }
 });
+
+
+describe('My own tests', function () {
+    it('Пробный тест', function () {
+        phoneBook.findAndRemove('*');
+        assert.ok(phoneBook.add('1234567890', 'Name'));
+    });
+});
