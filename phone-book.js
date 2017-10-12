@@ -24,8 +24,10 @@ class Contact {
         if (isEmpty(name)) {
             throw TypeError;
         }
-        if (phone.match(regexp) === null) {
-            throw Error('2');
+        if (!isEmpty(phone)) {
+            if (phone.match(regexp) === null) {
+                throw TypeError;
+            }
         }
         this.phone = phone;
         this.name = name;
@@ -61,7 +63,7 @@ function isEmpty(str) {
  */
 exports.add = function (phone, name, email) {
     if (phoneBook.length > 0) {
-        if (!checkContact(phone, name, email)) {
+        if (checkExistence(phone, name, email)) {
             return false;
         }
     }
@@ -82,16 +84,16 @@ exports.add = function (phone, name, email) {
  * @param {String} email 
  * @returns {Boolean} exist ? true : false
  */
-function checkContact(phone, name, email) {
+function checkExistence(phone, name, email) {
     for (let contact in phoneBook) {
         if (phoneBook[contact].name === name ||
             phoneBook[contact].phone === phone ||
             phoneBook[contact].email === email) {
-            return false;
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 /**
