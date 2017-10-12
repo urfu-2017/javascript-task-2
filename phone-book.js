@@ -1,5 +1,5 @@
 'use strict';
-exports.isStar = false;
+exports.isStar = true;
 
 var phoneBook = [];
 // функции для add + update
@@ -175,4 +175,17 @@ exports.findAndRemove = function (query) {
     }
 
     return ind;
+};
+
+exports.importFromCsv = function (csv) {
+    let x = csv.split('\n');
+    let countRecords = 0;
+    for (let i of x) {
+        let [name, phone, email] = i.split(';');
+        if (exports.add(phone, name, email) || exports.update(phone, name, email)) {
+            countRecords++;
+        }
+    }
+
+    return countRecords;
 };
