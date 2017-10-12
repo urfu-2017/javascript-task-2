@@ -98,8 +98,11 @@ function search(query) {
 
     return x;
 }
-
-
+function checkQuery(query, name, phone, email) {
+    return (name !== undefined && name.indexOf(query) !== -1 ||
+    phone !== undefined && phone.indexOf(query) !== -1 ||
+    email !== undefined && email.indexOf(query) !== -1);
+}
 exports.add = function (phone, name, email) {
     let mas = [];
     if (validPhone(phone) && validName(name) && validEmail(email)) {
@@ -154,17 +157,24 @@ exports.find = function (query) {
 };
 exports.findAndRemove = function (query) {
     let ind = 0;
-    let delPhoneBook = exports.find(query);
+    // let delPhoneBook = exports.find(query);
     if (!validQuery(query)) {
 
         return ind;
     }
-    let count = 0;
-    for (let i = 0; i < delPhoneBook.length; i++) {
-        delPhoneBook.splice(i, 1);
-        i--;
-        count++;
+    if (query === '*') {
+        ind = phoneBook.length;
+        phoneBook.splice(0, ind);
+
+        return ind;
+    }
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (checkQuery(query, phoneBook[i].name, phoneBook[i].phone, phoneBook[i].email)) {
+            phoneBook.splice(i, 1);
+            i--;
+            ind++;
+        }
     }
 
-    return count;
+    return ind;
 };
