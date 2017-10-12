@@ -1,171 +1,141 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = true;
+var phoneBook = [];
 
-/**
- * Телефонная книга
- */
-var phoneBook = {};
-
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
-
-const correctNumber = /\d{10}/;
-
-
-function allOrNot(query) {
-
-    if (query === '*') {
-        return '';
-    }
-
-    return query;
-}
-
-
-function isDataCorrect(number, name) {
-    return correctNumber.test(number) && name !== undefined;
-}
-
-function checkEmail(email) {
-    if (email === undefined) {
-        email = '';
-    }
-
-    return email;
-}
-
-// Преобразует телеонный номер в нужный вид
-function transfomrNumber(number) {
-
-    return '+7 (' + number.slice(0, 3) +
-        ') ' + number.slice(3, 6) + '-' +
-        number.slice(6, 8) + '-' + number.slice(8, 10);
-}
-
-function correctInfo(key) {
-    let email;
-
-    if (phoneBook[key].email === '') {
-        email = '';
-    } else {
-        email = ', ' + phoneBook[key].email;
-    }
-
-    return phoneBook[key].name + ', ' + transfomrNumber(key) + email;
-}
 
 exports.add = function (phone, name, email) {
-    if (!isDataCorrect(phone, name)) {
-        return false;
+    if (isPhoneCorrect(phone) && isNameCorrect(name) && isAllInfoCorrect(phone)) {
+        let obj = {
+            phone: phone,
+            name: name
+        };
+        if (email) {
+            obj.email = email;
+        }
+        phoneBook.push(obj);
+
+        return true;
     }
 
-    // Существует ли запись
-    if (typeof phoneBook[phone] === 'object') {
-        return false;
-    }
-    email = checkEmail(email);
-
-    phoneBook[phone] = { name: name, email: email };
-
-    return true;
+    return false;
 };
 
-/*
- * Обновление записи в телефонной книге
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- */
+function isPhoneCorrect(phone) {
+    return (phone && /^(\d){10}$/.test(phone));
+}
+
+function isNameCorrect(name) {
+
+    return (name !== '' && typeof name === 'string');
+}
+
+function isAllInfoCorrect(phone) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
 exports.update = function (phone, name, email) {
-    if (!isDataCorrect(phone, name) || phoneBook[phone !== 'object']) {
+    if (!isNameCorrect(name)) {
         return false;
     }
-    email = checkEmail(email);
-    phoneBook[phone] = { name: name, email: email };
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone) {
+            phoneBook[i].name = name;
+            phoneBook[i].email = email;
 
-    return true;
+            return true;
+        }
+    }
+
+    return false;
 };
 
-/*
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- */
 exports.findAndRemove = function (query) {
-
-    let keys = Object.keys(phoneBook);
-    let del = exports.find(query);
-    let delStr = del.join();
-
+    let count = 0;
     if (typeof query !== 'string' || query === '') {
         return 0;
     }
-
     if (query === '*') {
-        phoneBook = {};
+        count = phoneBook.length;
+        phoneBook = [];
 
-        return keys.length;
+        return count;
     }
-
-
-    for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        if (delStr.indexOf(phoneBook[key].name) + 1) {
-            delete phoneBook[key];
+    let i = 0;
+    while (i < phoneBook.length) {
+        if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
+            phoneBook.splice(i, 1);
+            count++;
+        } else {
+            i++;
         }
     }
 
-
-    return del.length;
+    return count;
 };
 
-/*
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- */
 exports.find = function (query) {
-    let keys = Object.keys(phoneBook);
     let result = [];
-
-    if (query === '') {
-        return 0;
+    if (typeof query !== 'string' || query === '') {
+        return result;
     }
-
-    query = allOrNot(query);
-
-
-    for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        if (key.indexOf(query) + 1 || phoneBook[key].name.indexOf(query) + 1 ||
-            phoneBook[key].email.indexOf(query) + 1) {
-            result[i] = correctInfo(key);
-        }
-    }
+    result = findTwo(query);
 
     return result.sort();
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
+function findTwo(query) {
+    let result = [];
+    if (query === '*') {
+        query = '';
+    }
+
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (findInfo(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
+            result.push(toFormat(phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email));
+        }
+    }
+
+    return result;
+}
+
+function findInfo(query, phone, name, email) {
+    if (name.indexOf(query) + 1 || phone.indexOf(query) + 1) {
+
+        return true;
+    }
+
+    return Boolean(email && email.indexOf(query) + 1);
+}
+
+function toFormat(phone, name, email) {
+    let format = '';
+    let correctFormOfNumber = '+7 (' + phone.slice(0, 3) + ') ' +
+        phone.slice(3, 6) + '-' +
+        phone.slice(6, 8) + '-' + phone.slice(8, 10);
+    if (email) {
+        format = name + ', ' + correctFormOfNumber + ', ' + email;
+    } else {
+        format = name + ', ' + correctFormOfNumber;
+    }
+
+    return format;
+}
+
 exports.importFromCsv = function (csv) {
-    let persons = csv.split('\n');
+    let contacts = csv.split('\n');
     let count = 0;
-    for (let i = 0; i < persons.length; i++) {
-        let person = persons[i].split(';');
-        if (exports.update(person[1], person[0], person[2]) ||
-            exports.add(person[1], person[0], person[2])) {
+    for (let i = 0; i < contacts.length; i++) {
+        let contact = contacts[i].split(';');
+        if (exports.update(contact[1], contact[0], contact[2]) ||
+            exports.add(contact[1], contact[0], contact[2])) {
             count ++;
         }
     }
