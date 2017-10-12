@@ -177,9 +177,8 @@ exports.importFromCsv = function (csv) {
     let parts = [];
     for (var i = 0; i < persons.length; i++) {
         parts = persons[i].split(';');
-        if (exports.add(parts[1], parts[0], parts[2]) === false) {
-            exports.update(parts[1], parts[0], parts[2]);
-        }
+        exports.add(parts[1], parts[0], parts[2]);
+        exports.update(parts[1], parts[0], parts[2]);
     }
 
     return Object.keys(this.phoneBook).length;
