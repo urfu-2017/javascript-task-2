@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -20,6 +20,7 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     var validPhone = /\d{10}/;
+    phone = String(phone);
     var isValid = (phone.length === 10) && Boolean(name) && validPhone.test(phone);
     isValid = isValid && phoneBook.every(elem => elem.phone !== phone);
     if (!isValid) {
@@ -39,6 +40,7 @@ exports.add = function (phone, name, email) {
  * @returns {Bollean}
  */
 exports.update = function (phone, name, email) {
+    phone = String(phone);
     var index = phoneBook.findIndex(elem => elem.phone === phone);
     if ((index === -1) || !(name)) {
         return false;
