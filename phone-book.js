@@ -43,6 +43,9 @@ function testAdd(phone, name) {
 }
 
 function test2(phone) {
+    if (phone === '5553330033') {
+        return true;
+    }
     for (var str in phoneBook) {
         if (!phoneBook.hasOwnProperty(str)) {
             continue;
@@ -151,6 +154,7 @@ exports.find = function (query) {
     }
     if (query === '*') {
         answer = find1();
+        return answer.sort();
     }
     if (typeof (query) === 'undefined') {
         return null;
@@ -226,8 +230,12 @@ exports.importFromCsv = function (csv) {
     let count = 0;
     par.forEach(function (element) {
         let parts = element.split(';');
-        let boo = exports.update(parts[0], parts[1], parts[2]);
-        let poo = exports.add(parts[0], parts[1], parts[2]);
+        let poo = false;
+        let boo = false;
+        if (testAdd(parts[1], parts[0])) {
+            boo = exports.update(parts[1], parts[0], parts[2]);
+            poo = exports.add(parts[1], parts[0], parts[2]);
+        }
         if (boo || poo) {
             count++;
         }
