@@ -31,7 +31,7 @@ exports.add = function (phone, name, email) {
 // наличие имени 
 // чтобы не было совпадений номеров телефонов
 // костыльная проверка формата номера телефона 
-function testAdd1(phone, name) {
+function testAdd(phone, name) {
     if (typeof (phone) !== 'undefined' && phone.length !== 10 || phone.match(/[^\d]/g, '')) {
         return false;
     }
