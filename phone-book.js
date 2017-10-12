@@ -107,6 +107,9 @@ exports.update = function (phone, name, email) {
     if (isEmpty(name)) {
         return false;
     }
+    if (phone.match(regexp) === null) {
+        return false;
+    }
     for (let index in phoneBook) {
         if (phoneBook[index].phone === phone) {
             phoneBook[index].name = name;
