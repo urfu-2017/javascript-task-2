@@ -204,6 +204,9 @@ exports.importFromCsv = function (csv) {
     var count = 0;
     for (var i = 0; i < csvArray.length; i++) {
         anotherInfo = csvArray[i].split(';');
+        if (anotherInfo.length < 2) {
+            continue;
+        }
         if (anotherInfo.length > 2) {
             mail = anotherInfo[2];
         }
