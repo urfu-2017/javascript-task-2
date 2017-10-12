@@ -24,15 +24,14 @@ function isIncluded(phone) {
         if (phoneBook[i].phone === phone) {
             a = false;
         }
-
     }
 
     return a;
 }
 exports.add = function (phone, name, email) {
     if (name !== '' && name !== undefined && name !== null && isIncluded(phone) &&
-    /^\d{10}$/.test(phone)) {
-        phoneBook.push({ phone: phone, name: name, email: email === '' ? undefined : email });
+    /^\d{10}$/.test(phone) && typeof(email) === 'string') {
+        phoneBook.push({ phone: phone, name: name, email: email });
 
         return true;
     }
