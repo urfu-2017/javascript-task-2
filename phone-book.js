@@ -66,7 +66,7 @@ exports.add = function add(phone, name, email) {
         let phoneCard = {
             phone,
             name,
-            email: email === '' ? null : email
+            email: email === '' ? undefined : email
         };
         phoneBook.push(phoneCard);
 
@@ -88,7 +88,7 @@ exports.update = function update(phone, name, email) {
         for (let inf of phoneBook) {
             if (inf.phone === phone) {
                 inf.name = name;
-                inf.email = email === '' ? null : email;
+                inf.email = email === '' ? undefined : email;
 
                 return true;
             }
