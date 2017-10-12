@@ -112,12 +112,11 @@ exports.findAndRemove = function (query) {
 };
 
 function transfomPhone(phone) {
-    let nums = undefined;
     if (phoneBook !== undefined) {
         phone.slice(4, 7);
     }
     if (phone !== undefined) {
-        nums = phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 19);
+    let nums = phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 19);
     }
 
     return nums;
