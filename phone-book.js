@@ -35,13 +35,17 @@ class Contact {
     }
 
     toString() {
-        let phone = '+7 (' + this.phone.substr(0, 3) + ') ' + this.phone.substr(3, 3) + '-' +
+        let result = this.name;
+        if (!isEmpty(this.phone)) {
+            let phone = '+7 (' + this.phone.substr(0, 3) + ') ' + this.phone.substr(3, 3) + '-' +
             this.phone.substr(6, 2) + '-' + this.phone.substr(8, 2);
-        if (this.email === undefined) {
-            return this.name + ', ' + phone;
+            result += ', ' + phone;
+        }
+        if (!isEmpty(this.email)) {
+            result += ', ' + this.email;
         }
 
-        return this.name + ', ' + phone + ', ' + this.email;
+        return result;
     }
 }
 
