@@ -128,6 +128,9 @@ exports.findAndRemove = function (query) {
     if (query === '*') {
         return removeAll();
     }
+    if (isEmpty(query)) {
+        return 0;
+    }
 
     return removeByKey(query);
 };
