@@ -140,7 +140,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     let counter = 0;
-    if (query.length === '') {
+    if (query.length === 0 || typeof query !== 'string') {
         return counter;
     }
     if (query === '*') {
