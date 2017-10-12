@@ -64,6 +64,13 @@ exports.update = function (phone, name, email) {
     return false;
 };
 
+function isStr(query) {
+    if (typeof (query) !== 'string' || query === '') {
+        return false;
+    }
+
+    return true;
+}
 
 /**
  * Удаление записей по запросу из телефонной книги
@@ -71,11 +78,13 @@ exports.update = function (phone, name, email) {
  * @returns {int}
  */
 exports.findAndRemove = function (query) {
-    let count = 0;
-    if (!query || typeof query !== 'string') {
+    var count = 0;
+    if (!isStr(query)) {
         return 0;
     }
-
+    if (query === '*') {
+        query = '';
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (toCheck(query, phoneBook[i].phone, phoneBook[i].name, phoneBook[i].email)) {
             phoneBook.splice(i, 1);
@@ -128,9 +137,14 @@ exports.find = function (query) {
 };
 
 function toCheck(query, phone, name, email) {
-    return name.indexOf(query) !== -1 ||
-        phone.indexOf(query) !== -1 ||
-        (email !== undefined && email.indexOf(query) !== -1);
+    if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1) {
+        return true;
+    }
+    if (email !== undefined && email.indexOf(query) !== -1) {
+        return true;
+    }
+
+    return false;
 }
 
 /**
