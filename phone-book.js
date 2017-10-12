@@ -83,13 +83,11 @@ exports.update = function (phone, name, email) {
 
         return false;
     }
-    for (var elem in this.phoneBook) {
-        if (phone === this.phoneBook[elem][0]) {
-            this.phoneBook[elem][1] = name;
-            this.phoneBook[elem][2] = email;
+    if (phone === this.phoneBook[phone][0]) {
+        this.phoneBook[phone][1] = name;
+        this.phoneBook[phone][2] = email;
 
-            return true;
-        }
+        return true;
     }
 
     return false;
