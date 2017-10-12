@@ -197,16 +197,17 @@ function find2(query) {
 }
 
 function sortAndExport(obj) {
+    let o;
     let name = obj.name;
     let phone = '+7 (' + obj.phone.slice(0, 3) + ') ' + obj.phone.slice(3, 6) + '-' +
         obj.phone.slice(6, 8) + '-' + obj.phone.slice(8, 10);
     let email;
     if (typeof (obj.email) === 'undefined') {
-        email = '';
+        o = name + ', ' + phone;
     } else {
         email = obj.email;
+        o = name + ', ' + phone + ', ' + email;
     }
-    let o = name + ', ' + phone + ', ' + email;
 
     return o;
 }
@@ -221,6 +222,16 @@ exports.importFromCsv = function (csv) {
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
+    let par = csv.split('\n');
+    let count = 0;
+    par.forEach(function (element) {
+        let parts = element.split(';');
+        let boo = exports.update(parts[0], parts[1], parts[2]);
+        let poo = exports.add(parts[0], parts[1], parts[2]);
+        if (boo || poo) {
+            count++;
+        }
+    }, this);
 
-    return csv.split('\n').length;
+    return count;
 };
