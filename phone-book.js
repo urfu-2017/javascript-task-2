@@ -198,7 +198,7 @@ exports.find = function (query) {
     if (strAnswer.length !== 0) {
         strAnswer.splice(strAnswer.length - 1, 1);
 
-        return strAnswer.join('').split('ж');
+        return strAnswer.join('').split('\n');
     }
 
     return [];
@@ -221,7 +221,7 @@ function transformation(answer) {
         if (answer[i].email !== undefined) {
             strAnswer.push(', ' + answer[i].email);
         }
-        strAnswer.push('ж');
+        strAnswer.push('\n');
     }
 
     return strAnswer;
