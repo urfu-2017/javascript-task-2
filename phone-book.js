@@ -20,27 +20,18 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     const regForPhone = /^\d{10}$/;
-    if (regForPhone.test(phone) && typeof name === 'string' && name !== '' && !isExist(phone)) {
-        if (typeof email !== 'string') {
-            email = '';
-        }
-        phoneBook.push({ name, phone, email });
-
-        return true;
+    if (!regForPhone.test(phone) || !name) {
+        return false;
     }
-
-    return false;
-};
-
-function isExist(phone) {
     for (let element of phoneBook) {
-        if (phone === element.phone) {
-            return true;
+        if (element.phone === phone) {
+            return false;
         }
     }
+    phoneBook.push({ name, phone, email });
 
-    return false;
-}
+    return true;
+};
 
 /**
  * Обновление записи в телефонной книге
@@ -106,6 +97,15 @@ function toDoABeautifulPhone(phone, name, email) {
 
 }
 
+function forQuery(query) {
+    if (!query) {
+        return [];
+    }
+    if (typeof query !== 'string') {
+        return 0;
+    }
+}
+
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -113,9 +113,7 @@ function toDoABeautifulPhone(phone, name, email) {
  */
 exports.find = function (query) {
     let result = [];
-    if (!query) {
-        return result;
-    }
+    forQuery(query);
     if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             result.push(toDoABeautifulPhone(
@@ -136,8 +134,8 @@ exports.find = function (query) {
 
 function toCheck(query, phone, name, email) {
     return name.indexOf(query) !== -1 ||
-           phone.indexOf(query) !== -1 ||
-           (email !== undefined && email.indexOf(query) !== -1);
+        phone.indexOf(query) !== -1 ||
+        (email !== undefined && email.indexOf(query) !== -1);
 }
 
 /**
