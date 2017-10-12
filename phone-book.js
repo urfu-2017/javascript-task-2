@@ -24,7 +24,7 @@ let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
  * @returns {String}
  */
 let findEntry = function (item) {
-    return phoneBook.find(entry => entry.indexOf(item) !== -1);
+    return phoneBook.find(entry => entry.match(item));
 };
 
 /**
@@ -57,7 +57,7 @@ exports.add = function (phone, name, email) {
         return false;
     }
     if (email === undefined) {
-        phoneBook.push([name, phone].join(';'));
+        phoneBook.push(name + ';' + phone);
 
         return true;
     }
@@ -128,7 +128,7 @@ exports.find = function (query) {
     }
 
     return phoneBook.filter(entry => {
-        return entry.search(query) !== -1;
+        return entry.match(query);
     }).map(entry => {
         let phone = entry.match(phoneTemp)[0];
 
