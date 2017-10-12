@@ -123,18 +123,12 @@ function noteToStr(note) {
     let rawPhone = note.phone;
     let phone = `+7 (${rawPhone.substr(0, 3)}) ${
         rawPhone.substr(3, 3)}-${rawPhone.substr(6, 2)}-${rawPhone.substr(8, 2)}`;
-    // let phone = '+7 (' + subf(note, 0, 3) + ') ' +
-    //  subf(note, 3, 3) + '-' + subf(note, 6, 2) + '-' + subf(note, 8, 2);
     if (note.email === '') {
         return `${note.name}, ${phone}`;
     }
 
     return `${note.name}, ${phone}, ${note.email}`;
 }
-
-// function subf(note, start, count) {
-//     return note.phone.substr(start, count);
-// }
 
 function getNote(phone, name, email) {
     if (! (isValidStr(phone) && isValidNumber(phone) && isValidStr(name) && name.length !== 0)) {
@@ -189,26 +183,3 @@ function isValidNumber(str) {
 
     return false;
 }
-
-
-// function addCorrect() {
-//     exports.add('5554440044', 'Григорий', 'grisha@example.com');
-//     exports.add('5552220022', 'Борис', 'boris@example.com');
-//     exports.add('5551110011', 'Алекс');
-//     exports.add('5553330033', 'Валерий', 'valera@example.com');
-// }
-
-// function addIncorrect() {
-//     exports.add('3330033', 'Неизвестный', 'unknown@example.com');
-//     exports.add('5551110011', 'Алексей');
-//     exports.add('5555550055');
-// }
-// function update() {
-//     exports.update('5551110011', 'Алексей', 'alex@example.com');
-//     exports.update('5553330033', 'Валерий');
-// }
-// addCorrect();
-// addIncorrect();
-// update();
-// let a = exports.find('555');
-// console.log(a);
