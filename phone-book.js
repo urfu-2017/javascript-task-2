@@ -81,14 +81,17 @@ function outNote(i) {
 
     return out;
 }
-
 function search(query) {
     validQuery(query);
     phoneBook.sort(sortName);
     let x = [];
     for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
-         (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1)) {
+        if ((phoneBook[i].name.indexOf(query) !== -1 &&
+        phoneBook[i].name.indexOf(query) !== undefined) ||
+        (phoneBook[i].phone.indexOf(query) !== -1 &&
+        phoneBook[i].phone.indexOf(query) !== undefined) ||
+        (phoneBook[i].email !== undefined &&
+        phoneBook[i].email.indexOf(query) !== -1)) {
             x.push(outNote(i));
         }
     }
@@ -151,4 +154,3 @@ exports.findAndRemove = function (query) {
 
     return count;
 };
-
