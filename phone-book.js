@@ -55,7 +55,7 @@ function checkArguments(phone, name) {
 
         return false;
     }
-    if (name === 'Неизвестный') {
+    if (name === 'Неизвестный' || name === undefined) {
         return false;
     }
 
