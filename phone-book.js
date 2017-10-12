@@ -127,6 +127,9 @@ exports.find = function (query) {
  * @returns {Number}
  */
 exports.findAndRemove = function (query) {
+    if (!query) {
+        return 0;
+    }
     let count = phoneBook.length;
     if (query === '*') {
         phoneBook = [];
