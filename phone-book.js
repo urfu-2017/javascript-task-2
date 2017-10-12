@@ -34,7 +34,7 @@ exports.add = function (phone, name, email) {
 
 function isExist(phone) {
     for (let element of phoneBook) {
-        if (element.phone === phone) {
+        if (phone === element.phone) {
             return true;
         }
     }
