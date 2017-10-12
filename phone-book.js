@@ -12,7 +12,7 @@ function validName(name) {
 }
 function validPhone(phone) {
     let phoneRegExp = /^[0-9]{10}$/;
-    if (typeof(phone) === 'string' && phoneRegExp.test(phone)) {
+    if (typeof(phone) === 'string' && phoneRegExp.test(phone) && phone.length === 10) {
         return false;
     }
 
@@ -83,6 +83,7 @@ function outNote(i) {
 }
 
 function search(query) {
+    validQuery(query);
     phoneBook.sort(sortName);
     let x = [];
     for (let i = 0; i < phoneBook.length; i++) {
@@ -124,8 +125,10 @@ exports.update = function (phone, name, email) {
     return false;
 };
 exports.find = function (query) {
-    validQuery(query);
-    if (query === '*') {
+    if (typeof(query) !== 'string' || query === '' || query === undefined) {
+
+        return '';
+    } else if (query === '*') {
         phoneBook.sort(sortName);
 
         return outRecord();
@@ -138,7 +141,6 @@ exports.find = function (query) {
     }
 };
 exports.findAndRemove = function (query) {
-    validQuery(query);
     let delPhoneBook = exports.find(query);
     let count = 0;
     for (let i = 0; i < delPhoneBook.length; i++) {
@@ -150,16 +152,3 @@ exports.findAndRemove = function (query) {
     return count;
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
-exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
-
-    return csv.split('\n').length;
-};
