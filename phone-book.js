@@ -6,7 +6,6 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -14,7 +13,7 @@ exports.isStar = true;
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[a-zA-Zа-яА-Я]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
+let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
