@@ -207,9 +207,9 @@ exports.importFromCsv = function (csv) {
         if (anotherInfo.length === 3) {
             mail = anotherInfo[2];
         }
-        if (self.add(anotherInfo[1], anotherInfo[0], mail)) {
+        if (this.add(anotherInfo[1], anotherInfo[0], mail)) {
             count += 1;
-        } else if (self.update(anotherInfo[1], anotherInfo[0], mail)) {
+        } else if (this.update(anotherInfo[1], anotherInfo[0], mail)) {
             count += 1;
         }
     }
