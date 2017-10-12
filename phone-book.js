@@ -103,6 +103,11 @@ function checkQuery(query, name, phone, email) {
     phone !== undefined && phone.indexOf(query) !== -1 ||
     email !== undefined && email.indexOf(query) !== -1);
 }
+function checkQuery1(query, mas) {
+    return (mas.name !== undefined && mas.name.indexOf(query) !== -1 ||
+    mas.phone !== undefined && mas.phone.indexOf(query) !== -1 ||
+    mas.email !== undefined && mas.email.indexOf(query) !== -1);
+}
 exports.add = function (phone, name, email) {
     let mas = [];
     if (validPhone(phone) && validName(name) && validEmail(email)) {
@@ -140,6 +145,7 @@ exports.update = function (phone, name, email) {
     return false;
 };
 exports.find = function (query) {
+    let mas = [];
     if (!validQuery(query)) {
 
         return [];
@@ -148,8 +154,8 @@ exports.find = function (query) {
 
         return outRecord();
     } else if (query !== '*') {
+        checkQuery1(query, mas);
         let sortPhoneBook = [];
-        sortPhoneBook.sort(sortName);
         sortPhoneBook = search(query);
 
         return sortPhoneBook;
@@ -157,7 +163,6 @@ exports.find = function (query) {
 };
 exports.findAndRemove = function (query) {
     let ind = 0;
-    // let delPhoneBook = exports.find(query);
     if (!validQuery(query)) {
 
         return ind;
