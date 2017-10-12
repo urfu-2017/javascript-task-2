@@ -1,4 +1,5 @@
 /* eslint max-statements: ["error", 16] */
+/* eslint complexity: ["error", 7] */
 'use strict';
 
 /**
@@ -75,7 +76,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isCorrect(phone, email)) {
+    if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
     let toUpdate = findEntry(phone);
