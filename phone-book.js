@@ -5,7 +5,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 const { save, load } = require('./import');
 
@@ -177,14 +177,13 @@ function deleter(ai, j) {
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
  */
-/* exports.importFromCsv = function (csv) {
+exports.importFromCsv = function importFromCsv(csv) {
     // Парсим csv
-    csv = [] || load();
     let count = 0;
     let lines = csv.split('\n');
-    for (let i = 0; i < lines.length - 1; i++) {
+    for (let i = 0; i < lines.length; i++) {
         let contact = lines[i].split(';');
-        if (this.add(contact[0], contact[1], contact[2])) {
+        if (this.add(contact[1], contact[0], contact[2]) || this.update(contact[1], contact[0], contact[2])) {
             count++;
         }
     }
@@ -196,4 +195,4 @@ function deleter(ai, j) {
 
     return count;
 };
-*/
+
