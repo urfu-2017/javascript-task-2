@@ -44,7 +44,7 @@ function validEmail(email) {
 }
 // функции для find + findAndRemove
 function validQuery(query) {
-    return (typeof(query) !== 'string' || query === '');
+    return (typeof(query) === 'string' || query !== '');
 }
 function outPhone(i) {
     return '+7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
@@ -87,8 +87,9 @@ function search(query) {
     phoneBook.sort(sortName);
     let x = [];
     for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].name.indexOf(query) !== -1 || phoneBook[i].phone.indexOf(query) !== -1 ||
-            (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1)) {
+        if (phoneBook[i].name !== undefined && phoneBook[i].name.indexOf(query) !== -1 ||
+        phoneBook[i].phone !== undefined && phoneBook[i].phone.indexOf(query) !== -1 ||
+        phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1) {
             x.push(outNote(i));
         }
     }
