@@ -23,6 +23,9 @@ var phoneBook;
 exports.add = function (phone, name, email) {
     if (this.phoneBook === undefined) {
         this.phoneBook = {};
+        if (!checkArguments(phone, name)) {
+            return false;
+        }
         this.phoneBook[phone] = [phone, name, email];
 
         return true;
@@ -102,15 +105,13 @@ exports.findAndRemove = function (query) {
     let result = exports.find(query);
     let newPhone = '';
     let index = 0;
-    let count = 0;
     for (var i = 0; i < result.length; i++) {
         index = result[i].indexOf('+7');
         newPhone = transfomPhone(result[i].slice(index, index + 19));
-        count += 1;
         delete this.phoneBook[newPhone];
     }
 
-    return count;
+    return result.length;
 };
 
 function transfomPhone(phone) {
