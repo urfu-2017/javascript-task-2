@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -135,16 +135,28 @@ function searchLines(query) {
     return results;
 }
 
-// /**
-//  * Импорт записей из csv-формата
-//  * @star
-//  * @param {String} csv
-//  * @returns {Number} – количество добавленных и обновленных записей
-//  */
-// exports.importFromCsv = function (csv) {
-//     // Парсим csv
-//     // Добавляем в телефонную книгу
-//     // Либо обновляем, если запись с таким телефоном уже существует
+/**
+ * Импорт записей из csv-формата
+ * @star
+ * @param {String} csv
+ * @returns {Number} – количество добавленных и обновленных записей
+ */
+exports.importFromCsv = function (csv) {
+    // Парсим csv
+    // Добавляем в телефонную книгу
+    // Либо обновляем, если запись с таким телефоном уже существует
+    let lines = csv.split('\n');
+    let count = 0;
+    for (let line of lines) {
+        let lineElements = line.split(';');
+        let result = this.add(lineElements[1], lineElements[0], lineElements[2]);
+        if (!result) {
+            result = this.update(lineElements[1], lineElements[0], lineElements[2]);
+        }
+        if (result) {
+            count += 1;
+        }
+    }
 
-//     return csv.split('\n').length;
-// };
+    return count;
+};
