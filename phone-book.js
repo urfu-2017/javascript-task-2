@@ -199,17 +199,14 @@ exports.importFromCsv = function (csv) {
         return 0;
     }
     var csvArray = csv.split('\n');
-    var anotherInfo;
     var count = 0;
-    for (var i = 0; i < csvArray.length; i++) {
-        anotherInfo = csvArray[i].split(';');
-        if (anotherInfo.length < 2) {
-            continue;
-        }
-        if (this.add(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
-            count += 1;
+    var anotherInfo;
+    for (var info of csvArray) {
+        anotherInfo = info.split(';');
+        if(this.add(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
+            count++;
         } else if (this.update(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
-            count += 1;
+            count++;
         }
     }
 
