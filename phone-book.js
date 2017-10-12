@@ -12,15 +12,15 @@ exports.isStar = false;
  * Телефонная книга
  */
 let phoneBook = [];
-let phoneTemp = /^[0-9]{10}/;
+let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[^0-9;]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
+let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
 let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
- * @param {String} item
+ * @param {RegExp} item
  * @returns {String}
  */
 let findEntry = function (item) {
@@ -52,7 +52,7 @@ exports.add = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
-    if (findEntry(phone)) {
+    if (findEntry(new RegExp(';' + phone + ';?'))) {
         return false;
     }
     if (email === undefined) {
