@@ -83,7 +83,6 @@ exports.update = function (phone, name, email) {
 
         return false;
     }
-    let flag = true;
     for (var elem in this.phoneBook) {
         if (phone === this.phoneBook[elem][0]) {
             this.phoneBook[elem][1] = name;
@@ -91,10 +90,6 @@ exports.update = function (phone, name, email) {
 
             return true;
         }
-        flag = false;
-    }
-    if (!flag) {
-        return exports.add(phone, name, email);
     }
 
     return false;
