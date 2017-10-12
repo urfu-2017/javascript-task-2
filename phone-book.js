@@ -58,6 +58,9 @@ function checkArguments(phone, name) {
 
         return false;
     }
+    if (isNaN(Number(phone))) {
+        return false;
+    }
     if (name === 'Неизвестный' || name === undefined) {
         return false;
     }
