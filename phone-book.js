@@ -45,21 +45,24 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
-    if (typeof name !== 'string' || name === '') {
+    if (typeof name !== 'string' || !name) {
         return false;
     }
-    for (var i = 0; i < phoneBook.length; i++) {
-        if
-        (phoneBook[i].phone === phone && name) {
-            phoneBook[i].name = name;
-            phoneBook[i].email = email;
+    let indexPhoned = -1;
+    let findPhoned = phoneBook.some(function (record, index) {
+        indexPhoned = index;
 
-            return true;
+        return record.phone === phone;
+    });
+    if (findPhoned && name) {
+        phoneBook[indexPhoned].name = name;
+        phoneBook[indexPhoned].phone = phone;
+        phoneBook[indexPhoned].email = email;
 
-        }
+        return true;
     }
 
-
+    return false;
 };
 
 exports.findAndRemove = function (query) {
