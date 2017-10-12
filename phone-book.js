@@ -107,6 +107,9 @@ exports.update = function (phone, name, email) {
     if (isEmpty(name)) {
         return false;
     }
+    if (phoneBook.length === 0) {
+        return false;
+    }
     for (let index in phoneBook) {
         if (phoneBook[index].phone === phone) {
             phoneBook[index].name = name;
@@ -125,6 +128,9 @@ exports.update = function (phone, name, email) {
  * @returns {Integer} number of deleted elements
  */
 exports.findAndRemove = function (query) {
+    if (phoneBook.length === 0) {
+        return 0;
+    }
     if (query === '*') {
         return removeAll();
     }
@@ -150,12 +156,7 @@ function removeByKey(query) {
     let deleted = 0;
     for (let i = phoneBook.length - 1; i >= 0; i--) {
         deleted += checkAndDelete(i, query);
-    }/*
-    phoneBook.forEach(function (element, index) {
-        if (index < phoneBook.length) {
-            deleted += checkAndDelete(index, query);
-        }
-    });*/
+    }
 
     return deleted;
 }
@@ -169,9 +170,7 @@ function removeByKey(query) {
 function checkAndDelete(contact, query) {
     if (checkEntry(phoneBook[contact].name, query) || checkEntry(phoneBook[contact].phone, query) ||
     checkEntry(phoneBook[contact].email, query)) {
-        phoneBook.splice(contact, 1);/*
-        deleted = contact === phoneBook.length ? deleted + 1
-            : deleted + 1 + checkAndDelete(contact, query);*/
+        phoneBook.splice(contact, 1);
 
         return 1;
     }
@@ -195,6 +194,9 @@ function checkEntry(str, query) {
  * @returns {Array<String>} result
  */
 exports.find = function (query) {
+    if (phoneBook.length === 0) {
+        return [];
+    }
     if (query === '*') {
         return getAllContacts();
     }
