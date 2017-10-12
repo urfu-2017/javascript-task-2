@@ -109,7 +109,11 @@ exports.findAndRemove = function findAndRemove(query) {
     let allIndexes = [];
     let newIndexes = [];
     let newPhoneBook = [];
+    if (query === '') {
+        return newPhoneBook.length;
+    }
     if (isString(query)) {
+        query = query.replace('*', '');
         for (let i = 0; phoneBook.length > i; i++) {
             allIndexes.push(i);
             if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) !== -1) {
@@ -129,7 +133,9 @@ exports.findAndRemove = function findAndRemove(query) {
     }
 
     return false;
+
 };
+
 
 /**
  * Поиск записей по запросу в телефонной книге
@@ -138,15 +144,18 @@ exports.findAndRemove = function findAndRemove(query) {
 exports.find = function find(query) {
     let founded = [];
     if (query === '') {
-        return false;
+        return founded;/* false*/
     }
-    query = query.replace('*', '');
     if (isString(query)) {
+        query = query.replace('*', '');
         for (let i = 0; phoneBook.length > i; i++) {
-            if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) !== -1 || query === '') {
+            if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) !== -1 || query === '*') {
                 let phoneCardFounded =
                     (`${phoneBook[i].name}, ${correctPhone(phoneBook[i].phone)}${phoneBook[i].email ? ', ' + phoneBook[i].email : ''}`);
                 founded.push(phoneCardFounded);
+
+            } else if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) === -1) {
+                return false;
             }
         }
 
@@ -154,6 +163,8 @@ exports.find = function find(query) {
     }
 
     return false;
+
+
 };
 
 
