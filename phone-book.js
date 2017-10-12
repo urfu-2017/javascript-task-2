@@ -46,7 +46,6 @@ exports.update = function (phone, name, email) {
     if (!regForPhone.test(phone) || !name) {
         return false;
     }
-
     let i = 0;
     for (;i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
@@ -98,6 +97,15 @@ function toDoABeautifulPhone(phone, name, email) {
 
 }
 
+function forQuery(something) {
+    if (typeof something !== 'string') {
+        return false;
+    }
+    if (!something) {
+        return [];
+    }
+}
+
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -105,9 +113,7 @@ function toDoABeautifulPhone(phone, name, email) {
  */
 exports.find = function (query) {
     let result = [];
-    if (!query) {
-        return result;
-    }
+    forQuery(query);
     if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             result.push(toDoABeautifulPhone(
@@ -129,7 +135,7 @@ exports.find = function (query) {
 function toCheck(query, phone, name, email) {
     return name.indexOf(query) !== -1 ||
            phone.indexOf(query) !== -1 ||
-           (email !== undefined && email.indexOf(query) !== -1);
+           (email && email.indexOf(query) !== -1);
 }
 
 /**
