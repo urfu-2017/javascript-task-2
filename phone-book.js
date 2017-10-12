@@ -51,6 +51,9 @@ function reapitEntry(book, phone, email) {
 }
 
 function checkArguments(phone, name) {
+    if (phone === undefined) {
+        return false;
+    }
     if (phone.length !== 10) {
 
         return false;
