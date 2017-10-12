@@ -197,24 +197,20 @@ exports.importFromCsv = function (csv) {
     // Либо обновляем, если запись с таким телефоном уже существует
     var csvArray = csv.split('\n');
     var anotherInfo;
-    var name;
-    var phone;
     var mail;
     var count = 0;
-    for(var i = 0; i < csvArray.length; i++) {
-        if (anotherInfo.Length < 2) {
+    for (var i = 0; i < csvArray.length; i++) {
+        anotherInfo = csvArray[i].split(';');
+        if (anotherInfo.length < 2) {
             continue;
         }
-        anotherInfo = csvArray[i].split(';');
-        name = anotherInfo[0];
-        phone = anotherInfo[1];
-        if (anotherInfo.length == 3) {
+        if (anotherInfo.length === 3) {
             mail = anotherInfo[2];
         }
-        if (this.add(phone, name, mail)) {
+        if (this.add(anotherInfo[1], anotherInfo[0], mail)) {
             count += 1;
         }
     }
 
-    return csv.split('\n').length;
+    return count;
 };
