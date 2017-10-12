@@ -49,25 +49,19 @@ exports.add = function (phone, name, email) {
  * @returns {boolean}
  */
 exports.update = function (phone, name, email) {
-    const regForPhone = /^\d{10}$/;
-    let changed = false;
-    if (!regForPhone.test(phone) || !name) {
+    if (!isValid(phone, name, email)) {
         return false;
     }
-    let i = 0;
-    for (;i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === phone.toString()) {
             phoneBook[i].name = name;
             phoneBook[i].email = email;
-            changed = true;
-            break;
+
+            return true;
         }
     }
-    if (changed && phoneBook[1].email === undefined) {
-        delete phoneBook[1].email;
-    }
 
-    return changed;
+    return false;
 };
 
 
