@@ -72,17 +72,12 @@ exports.update = function (phone, name, email) {
     }
     let toUpdate = findEntry(phone);
     if (toUpdate) {
-        if (email === undefined) {
-            toUpdate.splice(2, 1);
-            toUpdate.splice(0, 1);
-            toUpdate.unshift(name);
-
-            return true;
-        }
         toUpdate.splice(2, 1);
         toUpdate.splice(0, 1);
         toUpdate.unshift(name);
-        toUpdate.push(email);
+        if (email !== undefined) {
+            toUpdate.push(email);
+        }
 
         return true;
     }
