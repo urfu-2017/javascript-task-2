@@ -12,7 +12,7 @@ exports.isStar = false;
  * Телефонная книга
  */
 let phoneBook = [];
-let phoneTemp = /[0-9]{10}/;
+let phoneTemp = /^[0-9]{10}$/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
