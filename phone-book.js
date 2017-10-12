@@ -13,10 +13,10 @@ exports.isStar = false;
  */
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
-let nameTemp = /[^0-9;@]+/;
+let nameTemp = /[^@;]+/;
 let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
-let onlyNameTemp = /^[^@]+$/;
+let onlyNameTemp = /^[^@;]+$/;
 let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
