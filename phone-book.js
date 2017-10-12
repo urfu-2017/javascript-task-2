@@ -200,10 +200,10 @@ exports.importFromCsv = function (csv) {
     }
     var csvArray = csv.split('\n');
     var count = 0;
-    var nInfo;
+    var inf;
     for (var info of csvArray) {
         nInfo = info.split(';');
-        if (exports.update(nInfo[1], nInfo[0], nInfo[2]) || exports.add(nInfo[1], nInfo[0], nInfo[2])) {
+        if (exports.update(inf[1], inf[0], inf[2]) || exports.add(inf[1], inf[0], inf[2])) {
             count++;
         }
     }
