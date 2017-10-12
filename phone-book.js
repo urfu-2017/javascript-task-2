@@ -84,7 +84,7 @@ function specTest(phone) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!moreTest(name) || !moreTest(phone) || !specTest(phone)) {
+    if (!testUp(phone, name)) {
         return false;
     }
     for (var str in phoneBook) {
@@ -101,6 +101,14 @@ exports.update = function (phone, name, email) {
 
     return true;
 };
+
+function testUp(phone, name) {
+    if (!moreTest(name) || !moreTest(phone) || !specTest(phone)) {
+        return false;
+    }
+
+    return true;
+}
 
 /**
  * Удаление записей по запросу из телефонной книги
