@@ -1,4 +1,4 @@
-'use strict';
+''use strict';
 
 /**
  * Сделано задание на звездочку
@@ -20,9 +20,11 @@ function validData(phone, name) {
     return true;
 }
 
-function searchData(phon) {
+function searchData(phon, nam, email) {
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phon) {
+        if
+        (phoneBook[i].phone === phon || phoneBook[i].name === nam || phoneBook[i].email === email) {
+
             return false;
 
         }
@@ -32,7 +34,7 @@ function searchData(phon) {
 
 }
 exports.add = function (phone, name, email) {
-    if (validData(phone, name) && searchData(phone)) {
+    if (validData(phone, name) && searchData(phone, name, email)) {
         var newContact = {
             phone: phone,
             name: name,
@@ -59,7 +61,7 @@ exports.update = function (phone, name, email) {
         }
     }
 
-    reutrn false;
+
 };
 
 exports.findAndRemove = function (query) {
@@ -161,3 +163,4 @@ exports.importFromCsv = function (csv) {
 
     return addRecord;
 };
+
