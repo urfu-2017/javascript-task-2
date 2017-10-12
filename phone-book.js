@@ -69,6 +69,9 @@ exports.findAndRemove = function (query) {
 
         return res1;
     }
+    if (query === '') {
+        return 0;
+    }
     var result = phoneBook.filter(function (record) {
         if (record.name.indexOf(query) !== -1 || record.phone.indexOf(query) !== -1) {
             return true;
