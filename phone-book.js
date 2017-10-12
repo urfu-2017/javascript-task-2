@@ -10,7 +10,7 @@ exports.isStar = false;
  * Телефонная книга
  */
 var phoneBook = {};
-const PHONE_REGEX = /^\d{10}$/;
+const PHONE_REGEX = /^(\d{3})(\d{3})(\d{2})(\d{2})$/;
 
 function isCorrect(phone, name) {
     return PHONE_REGEX.test(phone) && name;
@@ -104,12 +104,11 @@ function formatEntry(entry) {
     } else {
         entry.email = ', ' + entry.email;
     }
+    let parcedNumber = entry.number.match(PHONE_REGEX);
 
-    return entry.name + ', +7 (' +
-        entry.number.slice(0, 3) + ') ' +
-        entry.number.slice(3, 6) + '-' +
-        entry.number.slice(6, 8) + '-' +
-        entry.number.slice(8, 10) + entry.email;
+    return `${entry.name}, +7 (${parcedNumber[1]})\
+ ${parcedNumber[2]}-${parcedNumber[3]}-${parcedNumber[4]}${entry.email}`;
+
 }
 
 /**
