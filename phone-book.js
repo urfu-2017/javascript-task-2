@@ -65,7 +65,7 @@ exports.update = function (phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
         upd(phone, name, email, i);
     }
-    console.info(boolb);
+    // console.info(boolb);
 
     return boolb;
 
@@ -120,7 +120,8 @@ exports.find = function (query) {
         }
 
     }
-    console.info(list.sort());
+
+    return list.sort();
 
     // return boola;
 };
@@ -155,7 +156,7 @@ exports.findAndRemove = function (query) {
         count = phoneBook.length - phoneBook2.length;
     }
 
-    console.info(count);
+    return count;
 };
 
 /**
@@ -164,10 +165,10 @@ exports.findAndRemove = function (query) {
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
  */
-exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+// exports.importFromCsv = function (csv) {
+//     // Парсим csv
+//     // Добавляем в телефонную книгу
+//     // Либо обновляем, если запись с таким телефоном уже существует
 
-    return csv.split('\n').length;
-};
+//     return csv.split('\n').length;
+// };
