@@ -112,7 +112,7 @@ exports.update = function (phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
-    if (typeof query !== 'string') {
+    if (!query) {
         return 0;
     }
     let users = unique(findAll(query));
@@ -175,11 +175,10 @@ function unique(arr) {
 exports.find = function (query) {
     let answer = [];
     let strAnswer = [];
+    let key = true;
 
-    if (typeof query !== 'string') {
-
-        return [];
-
+    if (!query) {
+        key = false;
     } else if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             answer.push(phoneBook[i]);
@@ -192,13 +191,12 @@ exports.find = function (query) {
     }
     answer.sort(sortParams);
     strAnswer = transformation(answer);
-    if (strAnswer.length !== 0) {
+    if (strAnswer.length !== 0 && key) {
         delete strAnswer[strAnswer.length - 1];
 
         return strAnswer.join('').split('ж');
     }
 
-    return [];
 };
 
 function sortParams(nameA, nameB) {
