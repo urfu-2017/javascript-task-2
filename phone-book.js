@@ -9,7 +9,7 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+let phoneBook = [];
 
 /**
  * Добавление записи в телефонную книгу
@@ -17,8 +17,40 @@ var phoneBook;
  * @param {String} name
  * @param {String} email
  */
-exports.add = function (phone, name, email) {
 
+function repeatPhone(phone) {
+    let i = 0;
+    let answer = true;
+    while (phoneBook[i] !== undefined && answer) {
+        if (phoneBook[i].split(',')[1] === phone) {
+            answer = false;
+        }
+        i ++;
+    }
+
+    return answer;
+}
+function npe(phone, name, email) {
+    let a = '';
+    if (email !== undefined) {
+        a = name + ',' + phone + ',' + email;
+    } else {
+        a = name + ',' + phone;
+    }
+
+    return a;
+}
+
+exports.add = function (phone, name, email) {
+    let answer = false;
+    let Str = '';
+    if (repeatPhone(phone) && phone.length === 10 && name !== undefined) {
+        answer = true;
+        Str = npe(phone, name, email);
+        phoneBook.push(Str);
+    }
+
+    return answer;
 };
 
 /**
@@ -27,24 +59,90 @@ exports.add = function (phone, name, email) {
  * @param {String} name
  * @param {String} email
  */
+
 exports.update = function (phone, name, email) {
 
+    let i = 0;
+    let result = true;
+    let a = '';
+    while (phoneBook[i] !== undefined && result) {
+        if (phoneBook[i].split(',')[1] === phone) {
+            phoneBook.splice(i, 1);
+            a = npe(phone, name, email);
+            phoneBook.push(a);
+            result = false;
+        }
+        i++;
+    }
+
+    return !result;
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
  */
-exports.findAndRemove = function (query) {
 
+exports.findAndRemove = function (query) {
+    let leng = phoneBook.length;
+    let a = phoneBook.filter(entr => entr.search(query) === -1);
+    phoneBook = a;
+
+    return leng - a.length;
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
  */
-exports.find = function (query) {
 
+function creatCon(contact, query) {
+    let answer = '';
+    if (contact.indexOf(query) !== -1) {
+        let tempStr = contact.split(',');
+        if (tempStr[2] !== undefined) {
+            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+                tempStr[1].slice(8) + ', ' + tempStr[2];
+        } else {
+            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+                tempStr[1].slice(8);
+        }
+    }
+
+    return answer;
+}
+
+function conl(query) {
+    let i = 0;
+    let a = [];
+    let result = '';
+    while (phoneBook[i] !== undefined) {
+        result = creatCon(phoneBook[i], query);
+        if (result !== '') {
+            a.push(result);
+        }
+        i++;
+    }
+
+    return a.sort();
+}
+
+exports.find = function (query) {
+    let result = true;
+    if (query === '') {
+        result = false;
+    }
+    if (query === '*') {
+        result = false;
+
+        return conl('');
+    }
+    if (result) {
+
+        return conl(query);
+    }
 };
 
 /**
@@ -53,10 +151,38 @@ exports.find = function (query) {
  * @param {String} csv
  * @returns {Number} – количество добавленных и обновленных записей
  */
+
+function addAndUpdate(name, phone, email) {
+    let j = 0;
+    let answer = true;
+    while (phoneBook[j] !== undefined && answer) {
+        if (phoneBook[j].split(',')[1] === phone) {
+            answer = false;
+            phoneBook.splice(j, 1);
+        }
+        j ++;
+    }
+
+    return npe(phone, name, email);
+}
+
 exports.importFromCsv = function (csv) {
+    let i = 0;
+    let a = csv.slice('\n');
+    while (a[i] !== undefined) {
+        let mas = a.slice(';');
+        if (mas[1].length === 10 && mas[0].length !== 0) {
+            addAndUpdate(mas[0], mas[1], mas[2]);
+            i ++;
+        } else {
+            csv.splice(i, 1);
+        }
+    }
+    csv.join('\n');
     // Парсим csv
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
 
     return csv.split('\n').length;
+
 };
