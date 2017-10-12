@@ -19,12 +19,9 @@ const regExpEmail = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/;
 /**
  * @return {boolean}
  */
-/**
- * @return {boolean}
- */
-function alreadyAdd(phone1, name1, email1) {
+function alreadyAdd(phone1) {
     for (let i = 0; phoneBook.length > i; i++) {
-        if ((phoneBook[i].name === name1) || (phoneBook[i].phone === phone1) || (phoneBook[i].email === email1)) {
+        if ((phoneBook[i].phone === phone1)) {
             return true;
         }
     }
@@ -40,7 +37,7 @@ function isItGood(phone, name, email) {
 
     return (((regExpPhone.test(phone) === true &&
         ((regExpEmail.test(email) === true) || email === undefined) &&
-        name !== undefined)) && !alreadyAdd(phone, name, email));
+        name !== undefined)) && !alreadyAdd(phone));
     // Object.keys(phoneBook).indexOf(phone) === -1);
 }
 function correctPhone(phone) {
@@ -88,7 +85,7 @@ exports.update = function update(phone, name, email) {
         for (let inf of phoneBook) {
             if (inf.phone === phone) {
                 inf.name = name;
-                inf.email = email === '' ? undefined : email;
+                inf.email = email === '' ? email.replace(undefined, '') : email;
 
                 return true;
             }
