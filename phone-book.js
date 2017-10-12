@@ -24,6 +24,8 @@ exports.add = function (phone, name, email) {
     if (this.phoneBook === undefined) {
         this.phoneBook = {};
         this.phoneBook[phone] = [phone, name, email];
+
+        return true;
     }
     let flag = checkArguments(phone, name);
     if (flag) {
@@ -118,30 +120,19 @@ function transfomPhone(phone) {
  */
 exports.find = function (query) {
     if (query === '') {
-        return '';
+        return [];
     }
     let result = [];
-    result = (query === '*') ? pushTwo(this.phoneBook) : pushTree(this.phoneBook, query);
+    result = (query === '*') ? allPersons(this.phoneBook) : allMath(this.phoneBook, query);
 
     return result.sort();
 };
 
-function pushTwo(book) {
-    let result = [];
-    for (var elem in book) {
-        if (book.hasOwnProperty(elem)) {
-            result.push(createLine(book, elem));
-        }
-    }
-
-    return result;
-}
-
-function pushTree(book, query) {
+function allPersons(book) {
     let result = [];
     for (var number in book) {
         if (book.hasOwnProperty(number)) {
-            result.push(createComplexLine(book, number, query));
+            result.push(createLine(book, number));
         }
     }
 
@@ -149,33 +140,19 @@ function pushTree(book, query) {
 }
 
 function createLine(book, number) {
-    return (book[number][2] !== undefined) ? book[number][1] + ' ' +
-    translatePhone(number) + ' ' + book[number][2] : book[number][1] + ' ' +
-    translatePhone(number);
+    return (book[number][2] === undefined) ? book[number][1] +
+    ', ' + translatePhone(number) : book[number][1] + ', ' + translatePhone(number) +
+    ', ' + book[number][2];
 }
 
-function createComplexLine(book, number, query) {
-    return (book[number][2] === undefined) ? withoutEmail(book,
-        number, query) : withEmail(book, number, query);
-}
-
-function withoutEmail(book, number, query) {
-    let result = '';
-    if (book[number][0].indexOf(query) !== -1 ||
-    book[number][1].indexOf(query) !== -1) {
-        result = book[number][1] + ' ' + translatePhone(number);
-    }
-
-    return result;
-}
-
-function withEmail(book, number, query) {
-    let result = '';
-    if (book[number][0].indexOf(query) !== -1 ||
-    book[number][1].indexOf(query) !== -1 ||
-    book[number][2].indexOf(query) !== -1) {
-        result = book[number][1] + ' ' + translatePhone(number) +
-        ' ' + book[number][2];
+function allMath(book, query) {
+    let result = [];
+    for (var number in book) {
+        if (book[number][0].indexOf(query) !== -1 ||
+        book[number][1].indexOf(query) !== -1 ||
+        (book[number][2] !== undefined && book[number][2].indexOf(query) !== -1)) {
+            result.push(createLine(book, number));
+        }
     }
 
     return result;
@@ -205,5 +182,5 @@ exports.importFromCsv = function (csv) {
         }
     }
 
-    return csv.split('\n').length;
+    return Object.keys(this.phoneBook).length;
 };
