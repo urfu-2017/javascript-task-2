@@ -13,11 +13,20 @@ exports.isStar = true;
 var phoneBook = [];
 
 function validData(phone, name) {
-    if (!/^\d{10}$/.test(String(phone)) || name === '') {
+    if ((!/^\d{10}$/.test(String(phone)) || isNaN(Number(phone))) && validName(name)) {
         return false;
     }
 
     return true;
+}
+
+function validName(name) {
+    if (name === '' || typeof name !== 'string') {
+        return false;
+    }
+
+    return true;
+
 }
 
 function searchData(phon, nam, email) {
