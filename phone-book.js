@@ -1,15 +1,17 @@
 'use strict';
-
+function isValidPhone(phone) {
+        return /^([0-9]){10}$/.test(phone);
+    }
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = true;
+exports.isStar = false;
 
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook=[];
 
 /**
  * Добавление записи в телефонную книгу
@@ -18,7 +20,20 @@ var phoneBook;
  * @param {String} email
  */
 exports.add = function (phone, name, email) {
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phone === phoneBook[i].phone ||
+        phoneBook[i].email === email) return false;
 
+    }
+    if (!isValidPhone(phone)) return false;
+    if (name === undefined) return false;
+    phoneBook.push({
+        phone: phone,
+        name: name,
+        email: email
+    });
+
+    return true;
 };
 
 /**
@@ -28,7 +43,13 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
-
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phone === phoneBook[i].phone) {
+           phoneBook[i].name = name;
+           phoneBook[i].email = email;
+        }
+    }
+   return true;
 };
 
 /**
@@ -36,7 +57,17 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 exports.findAndRemove = function (query) {
-
+    var numberOfDelete=0;
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone.indexOf(query)!==-1 ||
+        phoneBook[i].name.indexOf(query)!==-1 ||
+        (phoneBook[i].email!== undefined && phoneBook[i].email.indexOf(query)!==-1)) {
+            phoneBook.splice(i, 1);
+            i--;
+            numberOfDelete++;
+        }
+    }
+    return numberOfDelete;
 };
 
 /**
@@ -44,7 +75,32 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
+    if (query === '') {
+        return [];
+    }
+    if (query === '*') {
+        query = '';
+    }
+    var arrFindSort = [];
+    for (var i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone.indexOf(query)!==-1 ||
+        phoneBook[i].name.indexOf(query)!==-1 ||
+        (phoneBook[i].email!== undefined && phoneBook[i].email.indexOf(query)!==-1)
+    )
+       // console.log(phoneBook[i].phone + ' '+ phoneBook[i].name+ ' '+phoneBook[i].email);
 
+   if  (phoneBook[i].email!== undefined)
+   arrFindSort.push(phoneBook[i].name + ',' + ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') '
+   + phoneBook[i].phone.slice(3, 6) + '-' +
+   +        phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10)+ ', '+phoneBook[i].email);
+else
+arrFindSort.push(phoneBook[i].name + ',' + ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') '
++ phoneBook[i].phone.slice(3, 6) + '-' +
++        phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10));
+}
+
+
+    return arrFindSort.sort();
 };
 
 /**
