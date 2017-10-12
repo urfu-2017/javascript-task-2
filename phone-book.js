@@ -112,7 +112,7 @@ exports.find = function (query) {
 };
 
 function some(phone, name, email, query) {
-    if (phone !== undefined && (phone.indexOf(query) !== -1 ||
+    if (email !== undefined && (phone.indexOf(query) !== -1 ||
     name.indexOf(query) !== -1 ||
     (email !== undefined && email.indexOf(query) !== -1))) {
 
