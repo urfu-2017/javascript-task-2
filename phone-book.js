@@ -12,44 +12,30 @@ exports.isStar = true;
  */
 var phoneBook = [];
 
-function validData(phone, name) {
-    if ((!/^\d{10}$/.test(String(phone)) || isNaN(Number(phone))) && validName(name)) {
-        return false;
-    }
+function phoneIsValid(phone) {
 
-    return true;
+    return phone && phone.length === 10 && !phone.match(/[^0-9]/gi) && !isNaN(Number(phone));
 }
 
-function validName(name) {
-    if (name === '' || typeof name !== 'string') {
-        return false;
-    }
+/**
+      * Добавление записи в телефонную книгу
+      * @param {String} phone
+      * @param {String} name
+      * @param {String} email
+      */
 
-    return true;
-
-}
-
-function searchData(phon) {
-    for (var i = 0; i < phoneBook.length; i++) {
-        if
-        (phoneBook[i].phone === phon) {
-
-            return false;
-
-        }
-    }
-
-    return true;
-
-}
 exports.add = function (phone, name, email) {
-    if (validData(phone, name) && searchData(phone)) {
-        var newContact = {
-            phone: phone,
-            name: name,
-            email: email
-        };
-        phoneBook.push(newContact);
+    if (!phoneIsValid(phone) || !name || typeof name !== 'string') {
+        return false;
+    }
+
+    let checkPhoned = phoneBook.some(function (record) {
+
+        return record.phone === phone;
+    });
+
+    if (!checkPhoned) {
+        phoneBook.push({ 'name': name, 'phone': phone, 'email': email });
 
         return true;
     }
@@ -172,3 +158,4 @@ exports.importFromCsv = function (csv) {
 
     return addRecord;
 };
+
