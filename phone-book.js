@@ -83,6 +83,9 @@ exports.update = function (phone, name, email) {
         if (!phoneBook.hasOwnProperty(str)) {
             continue;
         }
+        if(typeof(email) === 'undefined'){
+            email = '';
+        }
         var element = phoneBook[str];
         if (element.phone.indexOf(phone) !== -1) {
             element.phone = phone;
