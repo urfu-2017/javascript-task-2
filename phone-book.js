@@ -83,6 +83,7 @@ exports.update = function (phone, name, email) {
 
         return false;
     }
+    let flag = true;
     for (var elem in this.phoneBook) {
         if (phone === this.phoneBook[elem][0]) {
             this.phoneBook[elem][1] = name;
@@ -90,6 +91,10 @@ exports.update = function (phone, name, email) {
 
             return true;
         }
+        flag = false;
+    }
+    if (!flag) {
+        return exports.add(phone, name, email);
     }
 
     return false;
@@ -187,8 +192,14 @@ exports.importFromCsv = function (csv) {
     let parts = [];
     for (var i = 0; i < persons.length; i++) {
         parts = persons[i].split(';');
-        exports.add(parts[1], parts[0], parts[2]);
-        exports.update(parts[1], parts[0], parts[2]);
+        if (parts.length === 3) {
+            exports.add(parts[1], parts[0], parts[2]);
+            exports.update(parts[1], parts[0], parts[2]);
+        }
+        if (parts.length === 2) {
+            exports.add(parts[1], parts[0]);
+            exports.update(parts[1], parts[0]);
+        }
     }
 
     return Object.keys(this.phoneBook).length;
