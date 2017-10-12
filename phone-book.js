@@ -32,7 +32,7 @@ function isIncluded(phone) {
 exports.add = function (phone, name, email) {
     if (name !== '' && name !== undefined && name !== null && isIncluded(phone) &&
     /^\d{10}$/.test(phone)) {
-        phoneBook.push({ phone: phone, name: name, email: email });
+        phoneBook.push({ phone: phone, name: name, email: email === '' ? undefined : email });
 
         return true;
     }
