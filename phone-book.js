@@ -1,4 +1,5 @@
 /* eslint complexity: ["error", 9] */
+/* eslint max-statements: ["error", 16] */
 'use strict';
 
 /**
@@ -22,6 +23,21 @@ let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
  */
 let findEntry = function (item) {
     return phoneBook.find(entry => entry.indexOf(item) !== -1);
+};
+
+/**
+ * Проверка на корректность введенных данных
+ * @param {String} phone
+ * @param {String} name
+ * @param {String} email
+ * @returns {boolean}
+ */
+let isCorrect = function (phone, name, email) {
+    if (email === undefined) {
+        return !phoneTemp.test(phone) || !nameTemp.test(name);
+    }
+
+    return !phoneTemp.test(phone) || !nameTemp.test(name) || !emailTemp.test(email);
 };
 
 /**
@@ -62,13 +78,26 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
+    if (isCorrect(phone, name, email)) {
+        return false;
+    }
     let toUpdate = findEntry(phone);
     if (toUpdate) {
         if (email === undefined) {
             email = '';
         }
         let index = phoneBook.indexOf(toUpdate);
+        if (!emailTemp.test(toUpdate) && email !== '') {
+            phoneBook[index] = phoneBook[index].replace(nameTemp, name) + ';' + email;
+
+            return true;
+        }
+        if (email === '') {
+            // При удалении email-a хотим также убрать и разделитель
+            emailTemp = /;[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
+        }
         phoneBook[index] = phoneBook[index].replace(nameTemp, name).replace(emailTemp, email);
+        emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
 
         return true;
     }
@@ -95,7 +124,7 @@ exports.find = function (query) {
         return phoneBook.map(entry => {
             let phone = entry.match(phoneTemp)[0];
 
-            return entry.replace(phoneTemp, show(phone)).replace(';', ', ');
+            return entry.replace(phoneTemp, show(phone)).replace(/;/g, ', ');
         }).sort();
     }
 
@@ -104,7 +133,7 @@ exports.find = function (query) {
     }).map(entry => {
         let phone = entry.match(phoneTemp)[0];
 
-        return entry.replace(phoneTemp, show(phone)).replace(';', ', ');
+        return entry.replace(phoneTemp, show(phone)).replace(/;/g, ', ');
     })
         .sort();
 };
@@ -134,9 +163,18 @@ exports.findAndRemove = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
+    let entries = csv.split('\n');
+    let counter = 0;
+    for (let entry of entries) {
+        let [name, phone, email] = entry.split(';');
+        if (exports.add(phone, name, email)) {
+            counter++;
+            continue;
+        }
+        if (exports.update(phone, name, email)) {
+            counter++;
+        }
+    }
 
-    return csv.split('\n').length;
+    return counter;
 };
