@@ -46,7 +46,7 @@ exports.add = function (phone, name, email) {
     if (findEntry(phone)) {
         return false;
     }
-    if (email === undefined) {
+    if (!email) {
         phoneBook.push([name, phone]);
 
         return true;
@@ -75,7 +75,7 @@ exports.update = function (phone, name, email) {
         toUpdate.splice(2, 1);
         toUpdate.splice(0, 1);
         toUpdate.unshift(name);
-        if (email !== undefined) {
+        if (email) {
             toUpdate.push(email);
         }
 
