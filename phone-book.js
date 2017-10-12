@@ -87,7 +87,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     let found = findIndexesByQuery(query);
-    for (let indexFound of found) {
+    for (let indexFound of found.reverse()) {
         phoneBook.splice(indexFound, 1);
     }
 
