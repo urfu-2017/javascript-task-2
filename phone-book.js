@@ -68,9 +68,9 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     var numberOfDelete = 0;
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone.indexOf(query) !==-1 ||
-        phoneBook[i].name.indexOf(query) !==-1 ||
-        (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !==-1)) {
+        if (phoneBook[i].phone.indexOf(query) !== -1 ||
+        phoneBook[i].name.indexOf(query) !== -1 ||
+        (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !== -1)) {
             phoneBook.splice(i, 1);
             i--;
             numberOfDelete++;
@@ -97,8 +97,7 @@ exports.find = function (query) {
         if (phoneBook[i].phone.indexOf(query)!==-1 ||
         phoneBook[i].name.indexOf(query)!==-1 ||
         (phoneBook[i].email!== undefined && phoneBook[i].email.indexOf(query)!==-1)
-    )
-       // console.log(phoneBook[i].phone + ' '+ phoneBook[i].name+ ' '+phoneBook[i].email);
+    ) {
 
    if  (phoneBook[i].email!== undefined)
    arrFindSort.push(phoneBook[i].name + ',' + ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') '
@@ -108,6 +107,7 @@ else
 arrFindSort.push(phoneBook[i].name + ',' + ' +7 (' + phoneBook[i].phone.slice(0, 3) + ') '
 + phoneBook[i].phone.slice(3, 6) + '-' +
 +        phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10));
+}
 }
 
 
