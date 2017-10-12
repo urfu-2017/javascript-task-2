@@ -14,7 +14,7 @@ const { save, load } = require('./import');
  */
 let phoneBook = []; // {};
 const regExpPhone = /^(\d{10}|\d{12})$/;
-const regExpEmail = true/* /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/*/;
+const regExpEmail = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/;
 
 /**
  * @return {boolean}
@@ -36,7 +36,7 @@ function isString(query) {
 function isItGood(phone, name, email) {
 
     return (((regExpPhone.test(phone) === true &&
-        ((regExpEmail/* .test(email)*/ === true) || email === undefined) &&
+        ((regExpEmail.test(email) === true) || email === undefined) &&
         name !== undefined)) && !alreadyAdd(phone)) && !isNaN(Number(phone)) && isString(name);
     // Object.keys(phoneBook).indexOf(phone) === -1);
 }
@@ -47,7 +47,7 @@ function correctPhone(phone) {
 
 function isItGood2(phone, name, email) {
     return ((regExpPhone.test(phone) === true &&
-        ((regExpEmail/* .test(email)*/ === true) || email === undefined) &&
+        ((regExpEmail.test(email) === true) || email === undefined) &&
         name !== undefined)) && !isNaN(Number(phone)) && isString(name);
 }
 
