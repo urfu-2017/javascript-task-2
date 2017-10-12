@@ -175,10 +175,11 @@ function unique(arr) {
 exports.find = function (query) {
     let answer = [];
     let strAnswer = [];
-    let key = true;
 
-    if (!query) {
-        key = false;
+    if (typeof query !== 'string') {
+
+        return [];
+
     } else if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             answer.push(phoneBook[i]);
@@ -191,12 +192,13 @@ exports.find = function (query) {
     }
     answer.sort(sortParams);
     strAnswer = transformation(answer);
-    if (strAnswer.length !== 0 && key) {
-        delete strAnswer[strAnswer.length - 1];
+    if (strAnswer.length !== 0) {
+        strAnswer.splice(strAnswer.length - 1, 1);
 
         return strAnswer.join('').split('ж');
     }
 
+    return [];
 };
 
 function sortParams(nameA, nameB) {
