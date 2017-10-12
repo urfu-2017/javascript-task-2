@@ -198,9 +198,8 @@ exports.importFromCsv = function (csv) {
     if (typeof(csv) !== 'string') {
         return 0;
     }
-    var csvArray = csv.split('\n').split(';');;
+    var csvArray = csv.split('\n');
     var anotherInfo;
-    var mail;
     var count = 0;
     for (var i = 0; i < csvArray.length; i++) {
         anotherInfo = csvArray[i].split(';');
