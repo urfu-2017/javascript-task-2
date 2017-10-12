@@ -63,6 +63,12 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
+    if (query === '*') {
+        var res1 = phoneBook.length;
+        phoneBook = [];
+
+        return res1;
+    }
     var result = phoneBook.filter(function (record) {
         if (record.name.indexOf(query) !== -1 || record.phone.indexOf(query) !== -1) {
             return true;
