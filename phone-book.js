@@ -80,10 +80,16 @@ exports.update = function (phone, name, email) {
 
         return false;
     }
-    this.phoneBook[phone][1] = name;
-    this.phoneBook[phone][2] = email;
+    for (var elem in this.phoneBook) {
+        if (phone === this.phoneBook[elem][0]) {
+            this.phoneBook[elem][1] = name;
+            this.phoneBook[elem][2] = email;
 
-    return true;
+            return true;
+        }
+    }
+
+    return false;
 
 };
 
@@ -95,8 +101,9 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     let result = exports.find(query);
     let newPhone = '';
+    let index = 0;
     for (var i = 0; i < result.length; i++) {
-        let index = result[i].indexOf('+7');
+        index = result[i].indexOf('+7');
         newPhone = transfomPhone(result[i].slice(index, index + 19));
         delete this.phoneBook[newPhone];
     }
@@ -105,10 +112,13 @@ exports.findAndRemove = function (query) {
 };
 
 function transfomPhone(phone) {
+    let nums = undefined;
     if (phoneBook !== undefined) {
         phone.slice(4, 7);
     }
-    let nums = phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 19);
+    if (phone !== undefined) {
+        nums = phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 19);
+    }
 
     return nums;
 }
