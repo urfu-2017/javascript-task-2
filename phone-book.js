@@ -24,7 +24,7 @@ exports.add = function (phone, name, email) {
     phone = String(phone);
     var isValid = (phone.length === 10) && Boolean(name) && validPhone.test(phone);
     isValid = isValid && phoneBook.every(elem => elem.phone !== phone);
-    isValid = isValid && (validEmail.test(email) || !(email));
+    isValid = isValid && (!(email) || validEmail.test(email));
     if (!isValid) {
         return false;
     }
@@ -44,8 +44,9 @@ exports.add = function (phone, name, email) {
 exports.update = function (phone, name, email) {
     phone = String(phone);
     var validEmail = /.*@.*/;
+    phone = String(phone);
     var index = phoneBook.findIndex(elem => elem.phone === phone);
-    if ((index === -1) || !(name) || !(validEmail.test(email) || !(email))) {
+    if ((index === -1) || !(name) || !(!(email) || validEmail.test(email))) {
         return false;
     }
     phoneBook[index].name = name;
@@ -63,6 +64,7 @@ exports.findAndRemove = function (query) {
     if (!(query)) {
         return 0;
     }
+    query = String(query);
     var oldLength = phoneBook.length;
     var result = phoneBook.filter(function (elem) {
         var isFind = (query === '*') || (elem.phone.indexOf(query) + 1);
@@ -86,6 +88,7 @@ exports.find = function (query) {
     if (!(query)) {
         return [];
     }
+    query = String(query);
     result = phoneBook.map(function (elem) {
         var isFind = (query === '*') || (elem.phone.indexOf(query) + 1);
         isFind = isFind || (elem.name.indexOf(query) + 1) || (elem.email.indexOf(query) + 1);
