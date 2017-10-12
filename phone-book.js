@@ -1,5 +1,6 @@
 'use strict';
 
+exports.isStar = true;
 
 const phoneBook = [];
 const phoneFormat = new RegExp('\\d{3}\\d{3}\\d{2}\\d{2}');
@@ -108,6 +109,9 @@ exports.importFromCsv = function (csv) {
     let countAddedOrUpdated = 0;
     for (let csvLine of csv.split('\n')) {
         let split = csvLine.split(';');
+        if (split.length === 2) {
+            split.push(undefined);
+        }
         if (exports.add(split[1], split[0], split[2]) ||
             exports.update(split[1], split[0], split[2])) {
             countAddedOrUpdated++;
