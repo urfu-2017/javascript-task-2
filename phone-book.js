@@ -154,9 +154,8 @@ exports.find = function find(query) {
                     (`${phoneBook[i].name}, ${correctPhone(phoneBook[i].phone)}${phoneBook[i].email ? ', ' + phoneBook[i].email : ''}`);
                 founded.push(phoneCardFounded);
 
-            } else if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) === -1) {
-                return founded;
-            }
+            } /* else if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) === -1) {
+            }*/
         }
 
         return founded.sort();
