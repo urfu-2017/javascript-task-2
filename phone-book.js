@@ -46,24 +46,29 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @param {Integer} i
  */
+var boolb = false;
 function upd(phone, name, email, i) {
     if (phoneBook[i].phone === phone && name !== undefined && name !== null && name !== '') {
         phoneBook[i].name = name;
-        if (email !== undefined) {
+        if (email !== undefined && name !== null && name !== '') {
             phoneBook[i].email = email;
         } else {
             phoneBook[i].email = null;
         }
+        boolb = true;
     }
 }
 
 exports.update = function (phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
-        if (upd(phone, name, email, i)) {
-            return true;
-        }
+        upd(phone, name, email, i);
     }
+    console.info(boolb);
+
+    return boolb;
+
 };
 
 /**
@@ -76,7 +81,11 @@ function strPhone(i) {
     strphone = '+7 (' + phoneBook[i].phone.slice(0, 3) + ') ' +
     phoneBook[i].phone.slice(3, 6) + '-' + phoneBook[i].phone.slice(6, 8) +
     '-' + phoneBook[i].phone.slice(8, 10);
-    strl = phoneBook[i].name + ',' + strphone + ',' + phoneBook[i].email;
+    if (!phoneBook[i].email) {
+        strl = phoneBook[i].name + ', ' + strphone;
+    } else {
+        strl = phoneBook[i].name + ', ' + strphone + ', ' + phoneBook[i].email;
+    }
 }
 
 function funRegExp(query, list) {
@@ -84,7 +93,7 @@ function funRegExp(query, list) {
         var re = new RegExp(query);
         if (re.test(phoneBook[i].name) ||
         re.test(phoneBook[i].phone) ||
-        re.test(phoneBook[i].eamil)) {
+        re.test(phoneBook[i].email)) {
             strPhone(i);
             list.push(strl);
         }
@@ -92,60 +101,61 @@ function funRegExp(query, list) {
 }
 
 exports.find = function (query) {
-    var boola = false;
+    // var boola = false;
     var list = [];
     if (!query || query === '') {
         list = [];
-        boola = false;
+        // boola = false;
     }
     if (query === '*') {
         for (var i = 0; i < phoneBook.length; i++) {
             strPhone(i);
             list.push(strl);
         }
-        boola = true;
+        // boola = true;
     } else {
         funRegExp(query, list);
         if (list !== []) {
-            boola = true;
+            // boola = true;
         }
 
     }
+    console.info(list.sort());
 
-    return boola;
+    // return boola;
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
  */
-var count2 = 0;
+var phoneBook2 = phoneBook;
+var count = 0;
 function findToDel(query) {
     for (var i = 0; i < phoneBook.length; i++) {
         var re = new RegExp(query);
         if (re.test(phoneBook[i].name) ||
         re.test(phoneBook[i].phone) ||
-        re.test(phoneBook[i].eamil)) {
-            phoneBook = phoneBook.splice(i, 1);
-            count2 += 1;
+        re.test(phoneBook[i].email)) {
+            phoneBook2 = phoneBook2.splice(i, 1);
+            // count += 1;
+            // console.info(count);
         }
     }
-
-    return count2;
 }
+
 exports.findAndRemove = function (query) {
-    var count = 0;
     if (!query || query === '') {
         count = 0;
     } else if (query === '*') {
         count = phoneBook.length;
         phoneBook = phoneBook.splice(0, count);
     } else {
-        findToDel(query);
-        count = count2;
+        findToDel(query, phoneBook2);
+        count = phoneBook.length - phoneBook2.length;
     }
 
-    return count;
+    console.info(count);
 };
 
 /**
