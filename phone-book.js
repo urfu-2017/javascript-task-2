@@ -209,7 +209,7 @@ exports.importFromCsv = function (csv) {
         }
         if (this.add(anotherInfo[1], anotherInfo[0], mail)) {
             count += 1;
-        } else if (this.update(anotherInfo[1], anotherInfo[0], mail))  {
+        } else if (this.update(anotherInfo[1], anotherInfo[0], mail)) {
             count += 1;
         }
     }
