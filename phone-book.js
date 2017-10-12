@@ -141,7 +141,7 @@ exports.update = function (phone, name, email) {
 };
 exports.find = function (query) {
     let sortPhoneBook = [];
-    if (!validQuery(query)) {
+    if (!validQuery(query) || query === '') {
 
         return [];
     } else if (query === '*') {
@@ -156,7 +156,7 @@ exports.find = function (query) {
 };
 exports.findAndRemove = function (query) {
     let ind = 0;
-    if (!validQuery(query)) {
+    if (!validQuery(query) || query === '') {
 
         return ind;
     }
