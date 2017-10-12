@@ -9,7 +9,7 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook = [];
 
 /**
  * Добавление записи в телефонную книгу
@@ -17,8 +17,48 @@ var phoneBook;
  * @param {String} name
  * @param {String} email
  */
-exports.add = function (phone, name, email) {
 
+/* phoneBook.add('5554440044', 'Григорий', 'grisha@example.com');
+phoneBook.add('5552220022', 'Борис', 'boris@example.com');
+phoneBook.add('5551110011', 'Алекс');
+phoneBook.add('5553330033', 'Валерий', 'valera@example.com'); */
+
+function checkData(phone, name, email) {
+    if (phone.match(/^\d{10}$/) &&
+        name !== undefined &&
+        (email === undefined ||
+        email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))) {
+
+        return true;
+    }
+
+    return false;
+}
+
+function checkTwin(phone, pBook) {
+    let length = pBook.length;
+    var boolOne = true;
+    var boolTwo = true;
+    for (let i = 0; i < length; i++) {
+        if (pBook[i].phone === phone) {
+            boolOne = false;
+        }
+
+        boolTwo = true;
+    }
+
+    return boolOne && boolTwo;
+}
+
+exports.add = function (phone, name, email) {
+    // console.log(phone.length);
+    if (checkData(phone, name, email) && checkTwin(phone, phoneBook)) {
+        phoneBook.push({ phone, name, email });
+
+        return true;
+    }
+
+    return false;
 };
 
 /**
@@ -27,24 +67,92 @@ exports.add = function (phone, name, email) {
  * @param {String} name
  * @param {String} email
  */
-exports.update = function (phone, name, email) {
 
+function updateSupport(i, name, email) {
+    if (name !== undefined) {
+        phoneBook[i].name = name;
+    }
+    if (email !== undefined) {
+        phoneBook[i].email = email;
+    }
+    if (email === undefined) {
+        phoneBook[i].email = undefined;
+    }
+}
+
+exports.update = function (phone, name, email) {
+    var state = false;
+    let length = phoneBook.length;
+    for (let i = 0; i < length; i++) {
+        if (phoneBook[i].phone === phone) {
+            updateSupport(i, name, email);
+            state = true;
+        }
+    }
+
+    return state;
 };
+
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
  */
-exports.findAndRemove = function (query) {
 
+exports.findAndRemove = function (query) {
+    var countSplice = 0;
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone.indexOf(query) !== -1 ||
+        phoneBook[i].name.indexOf(query) !== -1 || (phoneBook[i].email &&
+        phoneBook[i].email.indexOf(query) !== -1)) {
+            countSplice++;
+            phoneBook.splice(i, 1);
+            i --;
+        }
+    }
+
+    return countSplice;
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
  */
-exports.find = function (query) {
 
+function sortData(i) {
+    var listOfData = '';
+    var newPhone = '';
+    if (phoneBook[i].email !== undefined) {
+        newPhone = '+7 (' + phoneBook[i].phone.slice(0, 3) + ') ' + phoneBook[i].phone.slice(3, 6) +
+        '-' + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10);
+        listOfData += phoneBook[i].name + ', ' + newPhone + ', ' + phoneBook[i].email;
+    } else {
+        newPhone = '+7 (' + phoneBook[i].phone.slice(0, 3) + ') ' + phoneBook[i].phone.slice(3, 6) +
+        '-' + phoneBook[i].phone.slice(6, 8) + '-' + phoneBook[i].phone.slice(8, 10);
+        listOfData += phoneBook[i].name + ', ' + newPhone;
+    }
+
+    return listOfData;
+}
+function findHelp(query) {
+    var endData = [];
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (query === '*') {
+            endData.push(sortData(i));
+        }
+        if (phoneBook[i].phone.indexOf(query) !== -1 ||
+        phoneBook[i].name.indexOf(query) !== -1) {
+            endData.push(sortData(i));
+        }
+    }
+
+    return endData.sort();
+}
+exports.find = function (query) {
+    if (query !== '') {
+
+        return findHelp(query);
+    }
 };
 
 /**
