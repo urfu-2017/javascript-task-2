@@ -1,7 +1,7 @@
 'use strict';
 function isValidPhone(phone) {
-        return /^([0-9]){10}$/.test(phone);
-    }
+    return /^([0-9]){10}$/.test(phone);
+}
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
@@ -11,19 +11,20 @@ exports.isStar = false;
 /**
  * Телефонная книга
  */
-var phoneBook=[];
+var phoneBook = [];
 
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Bool} result
  */
 exports.add = function (phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phone === phoneBook[i].phone ||
-        phoneBook[i].email === email) return false;
-
+        if (phone === phoneBook[i].phone || phoneBook[i].email === email){
+            return false;
+        }
     }
     if (!isValidPhone(phone)) return false;
     if (name === undefined) return false;
