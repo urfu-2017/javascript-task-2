@@ -115,9 +115,7 @@ function transfomPhone(phone) {
     if (phoneBook !== undefined) {
         phone.slice(4, 7);
     }
-    if (phone !== undefined) {
     let nums = phone.slice(4, 7) + phone.slice(9, 12) + phone.slice(13, 15) + phone.slice(16, 19);
-    }
 
     return nums;
 }
