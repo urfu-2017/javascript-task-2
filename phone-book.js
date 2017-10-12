@@ -18,9 +18,17 @@ var phoneBook = [];
  * @param {String} email
  * @returns {boolean}
  */
-exports.add = function (phone, name, email) {
+
+function isValid(phone, name) {
     const regForPhone = /^\d{10}$/;
-    if (!regForPhone.test(phone) || !name) {
+    if (Boolean(phone) && Boolean(name) && regForPhone.test(phone)) {
+        return true;
+    }
+
+    return false;
+}
+exports.add = function (phone, name, email) {
+    if (!isValid(phone, name, email)) {
         return false;
     }
     for (let element of phoneBook) {
@@ -97,15 +105,6 @@ function toDoABeautifulPhone(phone, name, email) {
 
 }
 
-function forQuery(query) {
-    if (!query) {
-        return [];
-    }
-    if (typeof query !== 'string') {
-        return 0;
-    }
-}
-
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -113,7 +112,9 @@ function forQuery(query) {
  */
 exports.find = function (query) {
     let result = [];
-    forQuery(query);
+    if (!query) {
+        return [];
+    }
     if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             result.push(toDoABeautifulPhone(
