@@ -106,8 +106,7 @@ exports.update = function (phone, name, email) {
         return false;
     }
     for (let index in phoneBook) {
-        if (!isEmpty(phoneBook[index].phone) &&
-            phoneBook[index].phone === phone) {
+        if (phoneBook[index].phone === phone) {
             phoneBook[index].name = name;
             phoneBook[index].email = email;
 
@@ -161,15 +160,24 @@ function removeByKey(query) {
  */
 function checkAndDelete(contact, query) {
     let deleted = 0;
-    if (phoneBook[contact].name.match(query) !== null ||
-    (!isEmpty(phoneBook[contact].phone) && phoneBook[contact].phone.search(query) !== -1) ||
-    (!isEmpty(phoneBook[contact].email) && phoneBook[contact].email.search(query) !== -1)) {
+    if (checkEntry(phoneBook[contact].name, query) || checkEntry(phoneBook[contact].phone, query) ||
+    checkEntry(phoneBook[contact].email, query)) {
         phoneBook.splice(contact, 1);
         deleted = contact === phoneBook.length ? deleted + 1
             : deleted + 1 + checkAndDelete(contact, query);
     }
 
     return deleted;
+}
+
+/**
+ * Проверяет строку на наличие в ней подстроки.
+ * @param {*} str
+ * @param {*} query
+ * @returns {Boolean} result
+ */
+function checkEntry(str, query) {
+    return !isEmpty(str) && str.indexOf(query) !== -1;
 }
 
 /**
@@ -183,13 +191,13 @@ exports.find = function (query) {
         return getAllContacts();
     }
     for (let contact in phoneBook) {
-        if (phoneBook[contact].name.search(query) !== -1) {
+        if (phoneBook[contact].name.indexOf(query) !== -1) {
             result.push(phoneBook[contact].toString());
         } else if (!isEmpty(phoneBook[contact].phone) &&
-            phoneBook[contact].phone.search(query) !== -1) {
+            phoneBook[contact].phone.indexOf(query) !== -1) {
             result.push(phoneBook[contact].toString());
         } else if (!isEmpty(phoneBook[contact].email) &&
-            phoneBook[contact].email.search(query) !== -1) {
+            phoneBook[contact].email.indexOf(query) !== -1) {
             result.push(phoneBook[contact].toString());
         }
     }
