@@ -29,10 +29,10 @@ function validName(name) {
 
 }
 
-function searchData(phon, nam, email) {
+function searchData(phon) {
     for (var i = 0; i < phoneBook.length; i++) {
         if
-        (phoneBook[i].phone === phon || phoneBook[i].name === nam || phoneBook[i].email === email) {
+        (phoneBook[i].phone === phon) {
 
             return false;
 
@@ -43,7 +43,7 @@ function searchData(phon, nam, email) {
 
 }
 exports.add = function (phone, name, email) {
-    if (validData(phone, name) && searchData(phone, name, email)) {
+    if (validData(phone, name) && searchData(phone)) {
         var newContact = {
             phone: phone,
             name: name,
