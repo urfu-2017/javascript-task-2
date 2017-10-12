@@ -13,6 +13,9 @@ var phoneBook = [];
 
 
 function sameCheck(phone) {
+    if (!phone) {
+        return false;
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === phone) {
 
@@ -94,7 +97,7 @@ exports.update = function (phone, name, email) {
         } else {
             return false;
         }
-        if (typeof email !== 'string') {
+        if (!email) {
             phoneBook[userPos].email = undefined;
         } else {
             phoneBook[userPos].email = email;
