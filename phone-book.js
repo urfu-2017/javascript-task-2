@@ -178,7 +178,7 @@ exports.find = function (query) {
         if (query === '') {
             return [];
         }
-        
+
         return getNotes(query);
     }
 
