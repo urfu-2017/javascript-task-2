@@ -125,9 +125,6 @@ function transfomPhone(phone) {
  * @returns {[String]}
  */
 exports.find = function (query) {
-    if (query === '') {
-        return [];
-    }
     let result = [];
     result = (query === '*') ? allPersons(this.phoneBook) : allMath(this.phoneBook, query);
 
