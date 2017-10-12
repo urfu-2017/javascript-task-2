@@ -155,10 +155,13 @@ exports.update = function (phone, name, email) {
 exports.findAndRemove = function (query) {
     if (typeof(query) !== 'string') {
         return 0;
-    }
-    var foundNotes = getNotes(query);
-    for (var i = 0; i < foundNotes.length; i++) {
-        delete phoneBook[reversePhone(foundNotes[i].split(', ')[1])];
+    } else if (query !== '') {
+        var foundNotes = getNotes(query);
+        for (var i = 0; i < foundNotes.length; i++) {
+            delete phoneBook[reversePhone(foundNotes[i].split(', ')[1])];
+        }
+    } else {
+        return 0;
     }
 
     return foundNotes.length;
@@ -171,6 +174,9 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
+        if(query === '') {
+            return [];
+        }
         return getNotes(query);
     }
 
