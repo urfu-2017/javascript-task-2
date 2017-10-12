@@ -61,7 +61,7 @@ function test2(phone) {
 }
 
 function moreTest(value) {
-    if (typeof (value) === 'undefined' || value === '' || !value) {
+    if (typeof (value) === 'undefined' || value === '') {
         return false;
     }
 
