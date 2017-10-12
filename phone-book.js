@@ -31,22 +31,18 @@ exports.add = function (phone, name, email) {
 // наличие имени 
 // чтобы не было совпадений номеров телефонов
 // костыльная проверка формата номера телефона 
-function testAdd(phone, name) {
-    if (typeof (name) === 'undefined' || !test2()) {
-        return false;
-    }
-
+function testAdd1(phone, name) {
     if (typeof (phone) !== 'undefined' && phone.length !== 10 || phone.match(/[^\d]/g, '')) {
         return false;
     }
-    if (!moreTest(phone) || !moreTest(name)) {
+    if (!moreTest(phone) || !moreTest(name) || !test2(phone)) {
         return false;
     }
 
     return true;
 }
 
-function test2() {
+function test2(phone) {
     for (var str in phoneBook) {
         if (!phoneBook.hasOwnProperty(str)) {
             continue;
@@ -102,7 +98,6 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let arr = [];
-    let index = 0;
     if (query === '*') {
         let i = 0;
         for (i = 0; i <= phoneBook.length; i++) {
@@ -139,6 +134,7 @@ function testValues(query) {
         }
         index++;
     }
+
     return arr;
 }
 
@@ -156,10 +152,11 @@ exports.find = function (query) {
     if (query === '*') {
         answer = find1();
     }
-    if (typeof (query) === 'null' || typeof (query) === 'undefined') {
+    if (typeof (query) === 'undefined') {
         return null;
     }
     answer = find2(query);
+
     return answer.sort();
 };
 
@@ -206,8 +203,7 @@ function sortAndExport(obj) {
     let email;
     if (typeof (obj.email) === 'undefined') {
         email = '';
-    }
-    else {
+    } else {
         email = obj.email;
     }
     let o = name + ', ' + phone + ', ' + email;
