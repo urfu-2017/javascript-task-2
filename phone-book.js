@@ -61,7 +61,15 @@ function test2(phone) {
 }
 
 function moreTest(value) {
-    if (typeof (value) === 'undefined' || value === '' || typeof(value) === 'null') {
+    if (typeof (value) === 'undefined' || value === '') {
+        return false;
+    }
+
+    return true;
+}
+
+function specTest(phone) {
+    if (typeof (phone) !== 'undefined' && phone.length !== 10 || phone.match(/[^\d]/g, '')) {
         return false;
     }
 
@@ -76,7 +84,7 @@ function moreTest(value) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!moreTest(name) || !moreTest(phone)) { // если имя задано, то обрабатывать
+    if (!moreTest(name) || !moreTest(phone) || !specTest(phone)) {
         return false;
     }
     for (var str in phoneBook) {
