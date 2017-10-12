@@ -150,7 +150,7 @@ function removeByKey(query) {
     let deleted = 0;
     phoneBook.forEach(function (element, index) {
         if (index < phoneBook.length) {
-            deleted = checkAndDelete(index, query);
+            deleted += checkAndDelete(index, query);
         }
     });
 
