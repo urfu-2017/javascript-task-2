@@ -13,8 +13,6 @@ exports.isStar = false;
  */
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
-let nameTemp = /[^@;]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
@@ -28,16 +26,10 @@ let findEntry = function (item) {
 /**
  * Проверка на корректность введенных данных
  * @param {String} phone
- * @param {String} name
- * @param {String} email
  * @returns {boolean}
  */
-let isCorrect = function (phone, name, email) {
-    if (email === undefined) {
-        return phoneTemp.test(phone) && nameTemp.test(name);
-    }
-
-    return phoneTemp.test(phone) && nameTemp.test(name) && emailTemp.test(email);
+let isCorrect = function (phone) {
+    return phoneTemp.test(phone);
 };
 
 /**
@@ -48,10 +40,10 @@ let isCorrect = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, name, email)) {
+    if (name === undefined || !isCorrect(phone)) {
         return false;
     }
-    if (findEntry(phone) || findEntry(name)) {
+    if (findEntry(phone)) {
         return false;
     }
     if (email === undefined) {
@@ -75,7 +67,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, name, email)) {
+    if (name === undefined || !isCorrect(phone)) {
         return false;
     }
     let toUpdate = findEntry(phone);
