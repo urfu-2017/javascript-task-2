@@ -203,9 +203,9 @@ exports.importFromCsv = function (csv) {
     var anotherInfo;
     for (var info of csvArray) {
         anotherInfo = info.split(';');
-        if (this.add(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
+        if (this.update(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
             count++;
-        } else if (this.update(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
+        } else if (this.add(anotherInfo[1], anotherInfo[0], anotherInfo[2])) {
             count++;
         }
     }
