@@ -20,18 +20,27 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     const regForPhone = /^\d{10}$/;
-    if (!regForPhone.test(phone) || !name) {
-        return false;
+    if (regForPhone.test(phone) && typeof name === 'string' && name !== '' && !isExist(phone)) {
+        if (typeof email !== 'string') {
+            email = '';
+        }
+        phoneBook.push({ name, phone, email });
+
+        return true;
     }
+
+    return false;
+};
+
+function isExist(phone) {
     for (let element of phoneBook) {
         if (element.phone === phone) {
-            return false;
+            return true;
         }
     }
-    phoneBook.push({ name, phone, email });
 
-    return true;
-};
+    return false;
+}
 
 /**
  * Обновление записи в телефонной книге
