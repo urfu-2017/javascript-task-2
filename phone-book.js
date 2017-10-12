@@ -1,4 +1,4 @@
-''use strict';
+'use strict';
 
 /**
  * Сделано задание на звездочку
@@ -163,4 +163,3 @@ exports.importFromCsv = function (csv) {
 
     return addRecord;
 };
-
