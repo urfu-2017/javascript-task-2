@@ -154,6 +154,7 @@ exports.find = function (query) {
     }
     if (query === '*') {
         answer = find1();
+
         return answer.sort();
     }
     if (typeof (query) === 'undefined') {
