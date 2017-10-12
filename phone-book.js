@@ -29,14 +29,10 @@ function isIncluded(phone) {
 
     return a;
 }
-function emailIsTrue(query) {
-    return /^[a-z0-9-]+@[a-z0-9]+\.[a-z0-9]+$/i.test(query);
-}
-
 exports.add = function (phone, name, email) {
     if (name !== '' && name !== undefined && name !== null && isIncluded(phone) &&
     /^\d{10}$/.test(phone)) {
-        if (emailIsTrue(email)) {
+        if (/^[a-z0-9-]+@[a-z0-9-]+\.[a-z0-9-]+$/i.test(email)) {
             phoneBook.push({ phone: phone, name: name, email: email });
         } else {
             phoneBook.push({ phone: phone, name: name });
