@@ -2,6 +2,7 @@
 function isValidPhone(phone) {
     return /^([0-9]){10}$/.test(phone);
 }
+
 /**
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
@@ -22,12 +23,16 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phone === phoneBook[i].phone || phoneBook[i].email === email){
+        if (phone === phoneBook[i].phone || phoneBook[i].email === email) {
             return false;
         }
     }
-    if (!isValidPhone(phone)) return false;
-    if (name === undefined) return false;
+    if (!isValidPhone(phone)) {
+        return false;
+    }
+    if (name === undefined) {
+        return false;
+    }
     phoneBook.push({
         phone: phone,
         name: name,
@@ -42,38 +47,43 @@ exports.add = function (phone, name, email) {
  * @param {String} phone
  * @param {String} name
  * @param {String} email
+ * @returns {Bool} result
  */
 exports.update = function (phone, name, email) {
     for (var i = 0; i < phoneBook.length; i++) {
         if (phone === phoneBook[i].phone) {
-           phoneBook[i].name = name;
-           phoneBook[i].email = email;
+            phoneBook[i].name = name;
+            phoneBook[i].email = email;
         }
     }
-   return true;
+
+    return true;
 };
 
 /**
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
+ * @returns {Number} resultOfOperation
  */
 exports.findAndRemove = function (query) {
-    var numberOfDelete=0;
+    var numberOfDelete = 0;
     for (var i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone.indexOf(query)!==-1 ||
-        phoneBook[i].name.indexOf(query)!==-1 ||
-        (phoneBook[i].email!== undefined && phoneBook[i].email.indexOf(query)!==-1)) {
+        if (phoneBook[i].phone.indexOf(query) !==-1 ||
+        phoneBook[i].name.indexOf(query) !==-1 ||
+        (phoneBook[i].email !== undefined && phoneBook[i].email.indexOf(query) !==-1)) {
             phoneBook.splice(i, 1);
             i--;
             numberOfDelete++;
         }
     }
+
     return numberOfDelete;
 };
 
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
+ * @returns {Array} result
  */
 exports.find = function (query) {
     if (query === '') {
