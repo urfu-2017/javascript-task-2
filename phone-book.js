@@ -40,7 +40,7 @@ let isCorrect = function (phone) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone)) {
+    if (!name || !isCorrect(phone)) {
         return false;
     }
     if (findEntry(phone)) {
@@ -67,7 +67,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone)) {
+    if (!name || !isCorrect(phone)) {
         return false;
     }
     let toUpdate = findEntry(phone);
@@ -100,6 +100,9 @@ let show = function (phone) {
  * @returns {Array}
  */
 exports.find = function (query) {
+    if (!query) {
+        return [];
+    }
     if (query === '*') {
         return phoneBook.map(entry => {
             let mod = entry.slice();
