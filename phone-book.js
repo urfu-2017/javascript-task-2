@@ -13,9 +13,10 @@ exports.isStar = false;
  */
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
-let nameTemp = /[^0-9;]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
+let nameTemp = /[^0-9;@]+/;
+let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
+let onlyNameTemp = /^[^0-9@;]+$/;
 let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
 /**
@@ -30,15 +31,16 @@ let findEntry = function (item) {
 /**
  * Проверка на корректность введенных данных
  * @param {String} phone
+ * @param {String} name
  * @param {String} email
  * @returns {boolean}
  */
-let isCorrect = function (phone, email) {
+let isCorrect = function (phone, name, email) {
     if (email === undefined) {
-        return onlyPhoneTemp.test(phone);
+        return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name);
     }
 
-    return onlyPhoneTemp.test(phone) && onlyEmailTemp.test(email);
+    return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name) && onlyEmailTemp.test(email);
 };
 
 /**
@@ -49,7 +51,7 @@ let isCorrect = function (phone, email) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, email)) {
+    if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
     if (findEntry(new RegExp(';' + phone + ';?'))) {
@@ -60,7 +62,7 @@ exports.add = function (phone, name, email) {
 
         return true;
     }
-    if (findEntry(email)) {
+    if (findEntry(new RegExp(email))) {
         return false;
     }
     phoneBook.push([name, phone, email].join(';'));
@@ -76,7 +78,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (name === undefined || !isCorrect(phone, email)) {
+    if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
     let toUpdate = findEntry(new RegExp(';' + phone + ';?'));
