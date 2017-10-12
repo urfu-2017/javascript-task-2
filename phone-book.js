@@ -14,7 +14,7 @@ exports.isStar = false;
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[^0-9;]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
+let emailTemp = /[\w]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /^[0-9]{10}$/;
 let onlyEmailTemp = /^[\w-.]+@[\w]+\.+[a-zA-Z]+$/;
 
