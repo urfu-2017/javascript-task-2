@@ -50,7 +50,7 @@ exports.update = function (phone, name, email) {
     }
     for (var i = 0; i < phoneBook.length; i++) {
         if
-        (phoneBook[i].phone === phone) {
+        (phoneBook[i].phone === phone && name) {
             phoneBook[i].name = name;
             phoneBook[i].email = email;
 
