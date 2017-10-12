@@ -46,12 +46,6 @@ function verifEmail(email) {
     if (typeof email === 'string') {
         return true;
     }
-    if (email.length === 0) {
-        return true;
-    }
-    if (email === null) {
-        return true;
-    }
 
     return false;
 }
@@ -134,10 +128,12 @@ exports.update = function (phone, name, email) {
         if (newPhone.phone === phone) {
             newPhone.name = name;
             newPhone.email = email;
+
+            return true;
         }
     }
 
-    return true;
+    return false;
 };
 
 /**
