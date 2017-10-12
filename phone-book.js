@@ -191,13 +191,11 @@ exports.find = function (query) {
         return getAllContacts();
     }
     for (let contact in phoneBook) {
-        if (phoneBook[contact].name.indexOf(query) !== -1) {
+        if (checkEntry(phoneBook[contact].name, query)) {
             result.push(phoneBook[contact].toString());
-        } else if (!isEmpty(phoneBook[contact].phone) &&
-            phoneBook[contact].phone.indexOf(query) !== -1) {
+        } else if (checkEntry(phoneBook[contact].phone, query)) {
             result.push(phoneBook[contact].toString());
-        } else if (!isEmpty(phoneBook[contact].email) &&
-            phoneBook[contact].email.indexOf(query) !== -1) {
+        } else if (checkEntry(phoneBook[contact].email, query)) {
             result.push(phoneBook[contact].toString());
         }
     }
