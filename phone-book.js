@@ -33,6 +33,11 @@ function sameCheck(phone) {
 
 exports.add = function (phone, name, email) {
     let newUser = { phone: phone, name: name, email: email };
+    if (typeof newUser.name !== 'string' || newUser.name.length === 0) {
+
+        return false;
+    }
+
     if (correctCheck(newUser)) {
         if (typeof newUser.email !== 'string') {
             newUser.email = undefined;
@@ -107,6 +112,9 @@ exports.update = function (phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
+    if (typeof query !== 'string') {
+        return 0;
+    }
     let users = unique(findAll(query));
     let i = 0;
     for (; i <= users.length; i++) {
