@@ -20,9 +20,11 @@ var phoneBook = [];
  */
 exports.add = function (phone, name, email) {
     var validPhone = /\d{10}/;
+    var validEmail = /.*@.*/;
     phone = String(phone);
     var isValid = (phone.length === 10) && Boolean(name) && validPhone.test(phone);
     isValid = isValid && phoneBook.every(elem => elem.phone !== phone);
+    isValid = isValid && (validEmail.test(email) || !(email));
     if (!isValid) {
         return false;
     }
@@ -41,8 +43,9 @@ exports.add = function (phone, name, email) {
  */
 exports.update = function (phone, name, email) {
     phone = String(phone);
+    var validEmail = /.*@.*/;
     var index = phoneBook.findIndex(elem => elem.phone === phone);
-    if ((index === -1) || !(name)) {
+    if ((index === -1) || !(name) || !(validEmail.test(email) || !(email))) {
         return false;
     }
     phoneBook[index].name = name;
