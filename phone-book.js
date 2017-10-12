@@ -15,7 +15,6 @@ let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[a-zA-Zа-яА-Я]+/;
 let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 let onlyPhoneTemp = /[0-9]{10}/;
-let onlyNameTemp = /^[-a-zA-Zа-яА-Я'_., ]+$/;
 let onlyEmailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]+/;
 
 /**
@@ -30,16 +29,15 @@ let findEntry = function (item) {
 /**
  * Проверка на корректность введенных данных
  * @param {String} phone
- * @param {String} name
  * @param {String} email
  * @returns {boolean}
  */
-let isCorrect = function (phone, name, email) {
+let isCorrect = function (phone, email) {
     if (email === undefined) {
-        return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name);
+        return onlyPhoneTemp.test(phone);
     }
 
-    return onlyPhoneTemp.test(phone) && onlyNameTemp.test(name) && onlyEmailTemp.test(email);
+    return onlyPhoneTemp.test(phone) && onlyEmailTemp.test(email);
 };
 
 /**
@@ -50,7 +48,7 @@ let isCorrect = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.add = function (phone, name, email) {
-    if (!isCorrect(phone, name, email) || name === undefined) {
+    if (name === undefined || !isCorrect(phone, email)) {
         return false;
     }
     if (findEntry(phone)) {
@@ -77,7 +75,7 @@ exports.add = function (phone, name, email) {
  * @returns {Boolean}
  */
 exports.update = function (phone, name, email) {
-    if (!isCorrect(phone, name, email)) {
+    if (!isCorrect(phone, email)) {
         return false;
     }
     let toUpdate = findEntry(phone);
