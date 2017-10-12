@@ -40,9 +40,16 @@ function verifName(name) {
     return true;
 }
 function verifEmail(email) {
-    if (email === undefined || typeof email === 'string' || email === '') {
-        email = '';
-
+    if (email === undefined) {
+        return true;
+    }
+    if (typeof email === 'string') {
+        return true;
+    }
+    if (email.length === 0) {
+        return true;
+    }
+    if (email === null) {
         return true;
     }
 
@@ -145,7 +152,7 @@ exports.findAndRemove = function (query) {
     }
     if (query === '*') {
         counter = phoneBook.length;
-        phoneBook.splice(0, counter);
+        phoneBook.splice(0, phoneBook.length);
 
         return counter;
     }
