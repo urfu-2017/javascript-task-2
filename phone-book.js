@@ -153,10 +153,11 @@ exports.update = function (phone, name, email) {
  * @returns {number} notes
  */
 exports.findAndRemove = function (query) {
+    var foundNotes = [];
     if (typeof(query) !== 'string') {
         return 0;
     } else if (query !== '') {
-        var foundNotes = getNotes(query);
+        foundNotes = getNotes(query);
         for (var i = 0; i < foundNotes.length; i++) {
             delete phoneBook[reversePhone(foundNotes[i].split(', ')[1])];
         }
@@ -174,9 +175,10 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     if (typeof(query) === 'string') {
-        if(query === '') {
+        if (query === '') {
             return [];
         }
+        
         return getNotes(query);
     }
 
