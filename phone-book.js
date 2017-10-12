@@ -24,6 +24,13 @@ function checkName(name) {
 
     return false;
 }
+function checkMail(mail) {
+    if (typeof(mail) === 'string' || mail === undefined) {
+        return true;
+    }
+
+    return false;
+}
 function normalizePhone(phone) {
     var firstPart = phone[0] + phone[1] + phone[2];
     var secondPart = phone[3] + phone[4] + phone[5] + '-' + phone[6];
@@ -106,7 +113,7 @@ function getNotes(query) {
  * @returns {boolean} operation result
  */
 exports.add = function (phone, name, email) {
-    if (checkPhone(phone) && checkName(name)) {
+    if (checkPhone(phone) && checkName(name) && checkMail(email)) {
         if (!Object.keys(phoneBook).includes(phone)) {
             phoneBook[phone] = [name, email];
 
@@ -127,7 +134,7 @@ exports.add = function (phone, name, email) {
  * @returns {boolean} operation result
  */
 exports.update = function (phone, name, email) {
-    if (checkPhone(phone) && checkName(name)) {
+    if (checkPhone(phone) && checkName(name) && checkMail(email)) {
         if (phoneBook[phone] !== undefined) {
             phoneBook[phone] = [name, email];
 
