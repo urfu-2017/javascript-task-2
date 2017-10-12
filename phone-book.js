@@ -135,7 +135,7 @@ exports.find = function (query) {
 function toCheck(query, phone, name, email) {
     return name.indexOf(query) !== -1 ||
            phone.indexOf(query) !== -1 ||
-           (email && email.indexOf(query) !== -1);
+           (email !== undefined && email.indexOf(query) !== -1);
 }
 
 /**
