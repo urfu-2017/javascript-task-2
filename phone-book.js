@@ -13,7 +13,7 @@ exports.isStar = true;
 let phoneBook = [];
 let phoneTemp = /[0-9]{10}/;
 let nameTemp = /[a-zA-Zа-яА-Я]+/;
-let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]/;
+let emailTemp = /[\w-.]+@[\w]+\.+[a-zA-Z]{2,4}/;
 
 /**
  * Поиск любого вхождения в телефонную книгу
