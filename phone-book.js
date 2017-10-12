@@ -204,13 +204,12 @@ exports.importFromCsv = function (csv) {
     var count = 0;
     for (var i = 0; i < csvArray.length; i++) {
         anotherInfo = csvArray[i].split(';');
-        if (anotherInfo.length < 2) {
-            continue;
-        }
         if (anotherInfo.length > 2) {
             mail = anotherInfo[2];
         }
-        if (this.add(anotherInfo[1], anotherInfo[0], mail) || this.update(anotherInfo[1], anotherInfo[0], mail)) {
+        if (this.add(anotherInfo[1], anotherInfo[0], mail)) {
+            count += 1;
+        } else if (this.update(anotherInfo[1], anotherInfo[0], mail))  {
             count += 1;
         }
     }
