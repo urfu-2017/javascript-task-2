@@ -31,7 +31,7 @@ const findIndexByProperty = function (propertyName, propertyValue) {
     return -1;
 };
 
-const findIndex = function(name, phone) {
+const findIndex = function (name, phone) {
     return Math.max(findIndexByProperty('name', name),
         findIndexByProperty('phone', phone));
 };
