@@ -131,7 +131,7 @@ function noteToStr(note) {
 }
 
 function getNote(phone, name, email) {
-    if (! (isValidStr(phone) && isValidNumber(phone) && isValidStr(name) && name.length !== 0)) {
+    if (! (isValidStr(phone) && isValidNumber(phone) && isValidStr(name) && name.length !== '')) {
         return null;
     }
     let note = {};
@@ -163,7 +163,7 @@ function isValidStr(str) {
 }
 
 function isValidEmail(email) {
-    let re = /([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]{2,4})/i;
+    let re = /^([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]{2,4})$/i;
     let result = re.exec(email);
     if (result) {
         return result[0] === email;
@@ -176,7 +176,7 @@ function isValidNumber(str) {
     if (str.length !== 10) {
         return false;
     }
-    let re = /\d{10}/;
+    let re = /^\d{10}$/;
     if (re.exec(str)) {
         return true;
     }
