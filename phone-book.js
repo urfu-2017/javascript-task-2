@@ -51,7 +51,7 @@ exports.add = function (phone, name, email) {
     if (name === undefined || !isCorrect(phone, name, email)) {
         return false;
     }
-    if (findEntry(new RegExp(';' + phone + '(?:;|$)'))) {
+    if (findEntry(new RegExp(';' + phone + '(?:;|$)')) || findEntry(new RegExp(name))) {
         return false;
     }
     if (email === undefined) {
