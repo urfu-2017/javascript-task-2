@@ -78,7 +78,7 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     var result = [];
-    if (query === '') {
+    if (!(query)) {
         return [];
     }
     result = phoneBook.map(function (elem) {
