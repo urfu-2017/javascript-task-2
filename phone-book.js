@@ -155,7 +155,7 @@ exports.find = function find(query) {
                 founded.push(phoneCardFounded);
 
             } else if ((phoneBook[i].phone + phoneBook[i].name + phoneBook[i].email).search(query) === -1) {
-                return false;
+                return founded;
             }
         }
 
