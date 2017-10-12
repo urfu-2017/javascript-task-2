@@ -204,7 +204,7 @@ exports.importFromCsv = function (csv) {
         if (anotherInfo.length < 2) {
             continue;
         }
-        if (anotherInfo.length === 3) {
+        if (anotherInfo.length > 2) {
             mail = anotherInfo[2];
         }
         if (this.add(anotherInfo[1], anotherInfo[0], mail)) {
