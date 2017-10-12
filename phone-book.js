@@ -27,15 +27,12 @@ exports.add = function (phone, name, email) {
             return false;
         }
     }
-    if (typeof(phone) !== 'string' || typeof(name) !== 'string' || typeof(email) !== 'string') {
-
-        return false;
-    }
     if (arguments.length > 3) {
 
         return false;
     }
     if (!isValidPhone(phone)) {
+
         return false;
     }
     if (name === undefined) {
@@ -58,20 +55,6 @@ exports.add = function (phone, name, email) {
  * @returns {Bool} result
  */
 exports.update = function (phone, name, email) {
-    if (typeof(phone) !== 'string' || typeof(name) !== 'string' || typeof(email) !== 'string') {
-
-        return false;
-    }
-    if (arguments.length > 3) {
-
-        return false;
-    }
-    if (!isValidPhone(phone)) {
-        return false;
-    }
-    if (name === undefined) {
-        return false;
-    }
     for (var i = 0; i < phoneBook.length; i++) {
         if (phone === phoneBook[i].phone) {
             phoneBook[i].name = name;
