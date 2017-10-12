@@ -97,15 +97,6 @@ function toDoABeautifulPhone(phone, name, email) {
 
 }
 
-function forQuery(something) {
-    if (typeof something !== 'string') {
-        return false;
-    }
-    if (!something) {
-        return [];
-    }
-}
-
 /**
  * Поиск записей по запросу в телефонной книге
  * @param {String} query
@@ -113,7 +104,9 @@ function forQuery(something) {
  */
 exports.find = function (query) {
     let result = [];
-    forQuery(query);
+    if (!query) {
+        return result;
+    }
     if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             result.push(toDoABeautifulPhone(
