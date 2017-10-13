@@ -13,8 +13,8 @@ const { save, load } = require('./import');
  * Телефонная книга
  */
 let phoneBook = []; // {};
-const regExpPhone = /^(\d{10}|\d{12})$/;
-const regExpEmail = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/;
+const regExpPhone = /^(\d{10})$/;
+// const regExpEmail = /^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$/;
 
 /**
  * @return {boolean}
@@ -35,21 +35,19 @@ function isString(query) {
 
 function isItGood(phone, name, email) {
 
-    return (((regExpPhone.test(phone) === true &&
-        ((regExpEmail.test(email) === true) || email === undefined) &&
-        name !== undefined)) && !alreadyAdd(phone)) && !isNaN(Number(phone)) && isString(name) && isNaN(Number(name)) && isNaN(Number(email));
-    // Object.keys(phoneBook).indexOf(phone) === -1);
+    return (((regExpPhone.test(phone) &&
+        (Boolean(email) || email === undefined) &&
+        name !== undefined))) && !isNaN(Number(phone)) && isString(name);
 }
 function correctPhone(phone) {
     return `+7 (${phone.slice(0, 3)}) ` +
         `${phone.slice(3, 6)}-${phone.slice(6, 8)}-${phone.slice(8, 10)}`;
 }
 
-function isItGood2(phone, name, email) {
-    return ((regExpPhone.test(phone) === true &&
-        ((regExpEmail.test(email) === true) || email === undefined) &&
-        name !== undefined)) && !isNaN(Number(phone)) && isString(name) && isNaN(Number(name)) && isNaN(Number(email));
-}
+/* function isItGood2(phone, name, email) {
+    return ((regExpPhone.test(phone) &&
+        (Boolean(email) || email === undefined))) && !isNaN(Number(phone)) && isString(name);
+}*/
 
 /**
  * Добавление записи в телефонную книгу
@@ -59,11 +57,11 @@ function isItGood2(phone, name, email) {
  */
 
 exports.add = function add(phone, name, email) {
-    if (isItGood(phone, name, email)) {
+    if (isItGood(phone, name, email) && !alreadyAdd(phone)) {
         let phoneCard = {
             phone,
             name,
-            email: email === '' ? undefined : email
+            email// : email === '' ? undefined : email
         };
         phoneBook.push(phoneCard);
 
@@ -81,11 +79,11 @@ exports.add = function add(phone, name, email) {
  * @param {String} email
  */
 exports.update = function update(phone, name, email) {
-    if (isItGood2(phone, name, email)) {
+    if (isItGood(phone, name, email)) {
         for (let inf of phoneBook) {
             if (inf.phone === phone) {
                 inf.name = name;
-                inf.email = email === '' ? email.replace(undefined, '') : email;
+                inf.email = email; // === '' ? email.replace(undefined, '') : email;
 
                 return true;
             }
@@ -195,4 +193,3 @@ exports.importFromCsv = function importFromCsv(csv) {
 
     return count;
 };
-
