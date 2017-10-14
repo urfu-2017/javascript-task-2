@@ -23,7 +23,7 @@ function repeatPhone(phone) {
     let i = 0;
     let answer = true;
     while (phoneBook[i] !== undefined && answer) {
-        if (phoneBook[i][1] === phone) {
+        if (phoneBook[i].split(',')[1] === phone) {
             answer = false;
         }
         i ++;
@@ -32,11 +32,11 @@ function repeatPhone(phone) {
     return answer;
 }
 function npe(phone, name, email) {
-    let a = [];
+    let a = '';
     if (email !== undefined) {
-        a = [name, phone, email];
+        a = name + ',' + phone + ',' + email;
     } else {
-        a = [name, phone];
+        a = name + ',' + phone;
     }
 
     return a;
@@ -60,18 +60,15 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
-
     let i = 0;
     let result = true;
-    let a = [];
-    if (name === undefined) {
+    if (!name) {
         return false;
     }
     while (phoneBook[i] !== undefined && result) {
-        if (phoneBook[i][1] === phone) {
+        if (phoneBook[i].split(',')[1] === phone) {
             phoneBook.splice(i, 1);
-            a = npe(phone, name, email);
-            phoneBook.push(a);
+            phoneBook.push(npe(phone, name, email));
             result = false;
         }
         i++;
@@ -85,41 +82,20 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 
-function exist(i, query) {
-    let a;
-    if (phoneBook[i][2] !== undefined) {
-        a = phoneBook[i][0].indexOf(query) !== -1 || phoneBook[i][1].indexOf(query) !== -1 ||
-            phoneBook[i][2].indexOf(query);
-    } else {
-        a = phoneBook[i][0].indexOf(query) !== -1 || phoneBook[i][1].indexOf(query) !== -1;
-    }
-
-    return a;
-}
-
-
 exports.findAndRemove = function (query) {
+    let leng = phoneBook.length;
     if (query === '') {
         return 0;
     }
     if (query === '*') {
         phoneBook = [];
 
-        return phoneBook.length;
+        return leng;
     }
-    let a = [];
-    let i = 0;
-    while (phoneBook[i] !== undefined) {
-        if (exist(i, query)) {
-            a.push(i);
-        }
-        i ++;
-    }
-    for (i = a.length - 1; i >= 0; i--) {
-        phoneBook.splice(i, 1);
-    }
+    let a = phoneBook.filter(ent => ent.search(query) === -1);
+    phoneBook = a;
 
-    return a.length;
+    return leng - a.length;
 };
 
 /**
@@ -129,16 +105,16 @@ exports.findAndRemove = function (query) {
 
 function creatCon(contact, query) {
     let answer = '';
-    if (contact[0].indexOf(query) !== -1 || contact[1].indexOf(query) !== -1 ||
-        contact[2].indexOf(query) !== -1) {
-        if (contact[2] !== undefined) {
-            answer = contact[0] + ', +7 (' + contact[1].slice(0, 3) + ') ' +
-                contact[1].slice(3, 6) + '-' + contact[1].slice(6, 8) + '-' +
-                contact[1].slice(8) + ', ' + contact[2];
+    if (contact.indexOf(query) !== -1) {
+        let tempStr = contact.split(',');
+        if (tempStr[2] !== undefined) {
+            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+                tempStr[1].slice(8) + ', ' + tempStr[2];
         } else {
-            answer = contact[0] + ', +7 (' + contact[1].slice(0, 3) + ') ' +
-                contact[1].slice(3, 6) + '-' + contact[1].slice(6, 8) + '-' +
-                contact[1].slice(8);
+            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+                tempStr[1].slice(8);
         }
     }
 
@@ -162,7 +138,7 @@ function conl(query) {
 
 exports.find = function (query) {
     let result = true;
-    if (query === '' || query.indexOf(',') !== -1) {
+    if (query === '') {
         result = false;
     }
     if (query === '*') {
