@@ -27,7 +27,7 @@ exports.update = function (phone, name, email) {
 };
 
 exports.findAndRemove = function (query) {
-    let founded = findNotes(query);
+    let founded = findNotesByQuery(query);
     let count = founded.length;
     for (let i = 0; i < count; i++) {
         let index = phoneBook.indexOf(founded[i]);
@@ -42,7 +42,7 @@ exports.find = function (query) {
     if (! isValidStr(query) || query.length === 0) {
         return null;
     }
-    let founded = findNotes(query);
+    let founded = findNotesByQuery(query);
     let res = [];
     for (let i = 0; i < founded.length; i++) {
         res[i] = noteToStr(founded[i]);
@@ -69,7 +69,7 @@ function findIndexByNote(note) {
     return index;
 }
 
-function findNotes(query) {
+function findNotesByQuery(query) {
     if (query === '*') {
         return phoneBook;
     }
@@ -103,7 +103,8 @@ function noteToStr(note) {
 }
 
 function getNote(phone, name, email) {
-    if (! (isValidStr(phone) && isValidNumber(phone) && isValidStr(name) && name.length !== '')) {
+    if (! (isValidStr(phone) && isValidNumber(phone) &&
+     isValidStr(name) && name.trim().length !== '')) {
         return null;
     }
     let note = {};
@@ -135,7 +136,7 @@ function isValidStr(str) {
 }
 
 function isValidEmail(email) {
-    let re = /^([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]{2,4})$/i;
+    let re = /^([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]+)$/i;
     let result = re.exec(email);
     if (result) {
         return result[0] === email;

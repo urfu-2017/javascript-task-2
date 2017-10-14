@@ -60,4 +60,17 @@ describe('phone-book', function () {
     }
 });
 
-
+describe('Мои дополнительные тесты', function () {
+    it('Очищение книги', function () {
+        phoneBook.findAndRemove('@');
+        assert.deepStrictEqual(phoneBook.find('@'), []);
+    });
+    it('Добавление корректных записей', function () {
+        assert.ok(phoneBook.add('5550002288', 'Name', ''));
+        assert.ok(phoneBook.add('5550002287', '1499', 'lalala@bla.ru'));
+        assert.ok(phoneBook.add('0000000000', ' ', ''));
+        assert.ok(phoneBook.add('5550002268', '\t', ''));
+        assert.ok(phoneBook.add('5550002218', 'Name'));
+        assert.ok(phoneBook.add('5550002282', 'Name', 213123214));
+    });
+});
