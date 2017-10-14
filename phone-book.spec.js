@@ -73,4 +73,7 @@ describe('Мои дополнительные тесты', function () {
         assert.ok(phoneBook.add('5550002218', 'Name'));
         assert.ok(phoneBook.add('5550002282', 'Name', 213123214));
     });
+    it('Стираем имя', function () {
+        assert.ok(! phoneBook.update('5550002288', '', ''));
+    });
 });

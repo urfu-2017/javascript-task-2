@@ -1,6 +1,6 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 
 var phoneBook = [];
 
@@ -104,7 +104,7 @@ function noteToStr(note) {
 
 function getNote(phone, name, email) {
     if (! (isValidStr(phone) && isValidNumber(phone) &&
-     isValidStr(name) && name.trim().length !== '')) {
+     isValidStr(name) && name !== '')) {
         return null;
     }
     let note = {};
