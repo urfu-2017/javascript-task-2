@@ -43,13 +43,8 @@ exports.find = function (query) {
         return null;
     }
     let founded = findNotesByQuery(query);
-    let res = [];
-    for (let i = 0; i < founded.length; i++) {
-        res[i] = noteToStr(founded[i]);
-    }
-    res.sort();
 
-    return res;
+    return founded;
 };
 
 exports.importFromCsv = function (csv) {
@@ -76,9 +71,11 @@ function findNotesByQuery(query) {
     let foundNotes = [];
     for (let i = 0; i < phoneBook.length; i++) {
         if (noteMatches(query, phoneBook[i])) {
-            foundNotes.push(phoneBook[i]);
+            let formatedNote = noteToStr(phoneBook[i]);
+            foundNotes.push(formatedNote);
         }
     }
+    foundNotes.sort();
 
     return foundNotes;
 }
