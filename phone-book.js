@@ -23,12 +23,10 @@ phoneBook.add('5552220022', 'Борис', 'boris@example.com');
 phoneBook.add('5551110011', 'Алекс');
 phoneBook.add('5553330033', 'Валерий', 'valera@example.com'); */
 
-function checkData(phone, name, email) {
+function checkData(phone, name) {
     if (phone !== undefined && (phone.match(/^\d{10}$/)) &&
-        name !== undefined&&
-        (email === undefined /* ||
-        email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))*/) {
-
+        name !== undefined && name.match(/^[а-яA-Z]+$/i)) {
+        // &&(email === undefined || email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))
         return true;
     }
 
