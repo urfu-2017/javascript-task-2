@@ -25,9 +25,9 @@ phoneBook.add('5553330033', 'Валерий', 'valera@example.com'); */
 
 function checkData(phone, name, email) {
     if (phone !== undefined && (phone.match(/^\d{10}$/)) &&
-        name !== undefined && name.match(/^[а-яA-Z]+$/i) &&
-        (email === undefined ||
-        email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))) {
+        name !== undefined&&
+        (email === undefined /* ||
+        email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))*/) {
 
         return true;
     }
