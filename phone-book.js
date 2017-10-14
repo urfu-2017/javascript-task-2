@@ -66,6 +66,9 @@ exports.update = function (phone, name, email) {
     let i = 0;
     let result = true;
     let a = '';
+    if (!name) {
+        return false;
+    }
     while (phoneBook[i] !== undefined && result) {
         if (phoneBook[i].split(',')[1] === phone) {
             phoneBook.splice(i, 1);
