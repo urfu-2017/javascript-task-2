@@ -135,7 +135,7 @@ function conl(query) {
 
 exports.find = function (query) {
     let result = true;
-    if (query === '') {
+    if (query === '' || query.indexOf(',') !== -1) {
         result = false;
     }
     if (query === '*') {
