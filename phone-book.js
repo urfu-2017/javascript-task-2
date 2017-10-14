@@ -10,6 +10,7 @@ exports.isStar = false;
  * Телефонная книга
  */
 let phoneBook = [];
+let phoneB = /[0-9]{10}/;
 
 /**
  * Добавление записи в телефонную книгу
@@ -44,7 +45,7 @@ function npe(phone, name, email) {
 exports.add = function (phone, name, email) {
     let answer = false;
     let Str = '';
-    if (repeatPhone(phone) && phone.length === 10 && name !== undefined) {
+    if (repeatPhone(phone) && phoneB.test(phone) && phone.length === 10 && name !== undefined) {
         answer = true;
         Str = npe(phone, name, email);
         phoneBook.push(Str);
@@ -85,7 +86,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     let leng = phoneBook.length;
-    let a = phoneBook.filter(entr => entr.search(query) === -1);
+    let a = phoneBook.filter(ent => ent.search(query) === -1);
     phoneBook = a;
 
     return leng - a.length;
