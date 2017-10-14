@@ -1,26 +1,12 @@
 'use strict';
 
-/**
- * Сделано задание на звездочку
- * Реализован метод importFromCsv
- */
 exports.isStar = false;
 
-/**
- * Телефонная книга
- */
 var phoneBook = [];
 
-/**
- * Добавление записи в телефонную книгу
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- * @returns {Boolean}
- */
 exports.add = function (phone, name, email) {
     let note = getNote(phone, name, email);
-    if (!note || tryFind(note) !== -1) {
+    if (!note || isExist(note)) {
         return false;
     }
     phoneBook.push(note);
@@ -28,32 +14,20 @@ exports.add = function (phone, name, email) {
     return true;
 };
 
-/**
- * Обновление записи в телефонной книгеs
- * @param {String} phone
- * @param {String} name
- * @param {String} email
- * @returns {Boleean}
- */
 exports.update = function (phone, name, email) {
     let note = getNote(phone, name, email);
-    let index = tryFind(note);
-    if (!note || index === -1) {
+    if (!note || !(isExist(note))) {
         return false;
     }
+    let index = phoneBook.indexOf(note);// warning
     phoneBook[index] = note;
 
     return true;
 
 };
 
-/**
- * Удаление записей по запросу из телефонной книги
- * @param {String} query
- * @returns {Int}
- */
 exports.findAndRemove = function (query) {
-    let founded = fingNotes(query);
+    let founded = findNotes(query);
     let count = founded.length;
     for (let i = 0; i < count; i++) {
         let index = phoneBook.indexOf(founded[i]);
@@ -64,16 +38,11 @@ exports.findAndRemove = function (query) {
     return count;
 };
 
-/**
- * Поиск записей по запросу в телефонной книге
- * @param {String} query
- * @returns {Array}
- */
 exports.find = function (query) {
     if (! isValidStr(query) || query.length === 0) {
         return null;
     }
-    let founded = fingNotes(query);
+    let founded = findNotes(query);
     let res = [];
     for (let i = 0; i < founded.length; i++) {
         res[i] = noteToStr(founded[i]);
@@ -83,27 +52,18 @@ exports.find = function (query) {
     return res;
 };
 
-/**
- * Импорт записей из csv-формата
- * @star
- * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
- */
 exports.importFromCsv = function (csv) {
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
 
     return csv.split('\n').length;
 };
 
-function fingNotes(query) {
+function findNotes(query) {
     if (query === '*') {
         return phoneBook;
     }
     let foundNotes = [];
     for (let i = 0; i < phoneBook.length; i++) {
-        if (isNoteMatch(query, phoneBook[i])) {
+        if (noteMatches(query, phoneBook[i])) {
             foundNotes.push(phoneBook[i]);
         }
     }
@@ -111,23 +71,23 @@ function fingNotes(query) {
     return foundNotes;
 }
 
-function isNoteMatch(query, note) {
-    let inPhone = note.phone.indexOf(query) !== -1;
-    let inEmail = note.email.indexOf(query) !== -1;
-    let inName = note.name.indexOf(query) !== -1;
+function noteMatches(query, note) {
+    let phoneMathes = note.phone.indexOf(query) !== -1;
+    let emailMatches = note.email.indexOf(query) !== -1;
+    let nameMatches = note.name.indexOf(query) !== -1;
 
-    return inPhone || inEmail || inName;
+    return phoneMathes || emailMatches || nameMatches;
 }
 
 function noteToStr(note) {
     let rawPhone = note.phone;
-    let phone = `+7 (${rawPhone.substr(0, 3)}) ${
+    let formatedPhone = `+7 (${rawPhone.substr(0, 3)}) ${
         rawPhone.substr(3, 3)}-${rawPhone.substr(6, 2)}-${rawPhone.substr(8, 2)}`;
     if (note.email === '') {
-        return `${note.name}, ${phone}`;
+        return `${note.name}, ${formatedPhone}`;
     }
 
-    return `${note.name}, ${phone}, ${note.email}`;
+    return `${note.name}, ${formatedPhone}, ${note.email}`;
 }
 
 function getNote(phone, name, email) {
@@ -146,7 +106,7 @@ function getNote(phone, name, email) {
     return note;
 }
 
-function tryFind(note) {
+function isExist(note) {
     let index = -1;
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].phone === note.phone) {
@@ -155,7 +115,7 @@ function tryFind(note) {
         }
     }
 
-    return index;
+    return index === -1;
 }
 
 function isValidStr(str) {
