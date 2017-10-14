@@ -89,6 +89,14 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     let leng = phoneBook.length;
+    if (query === '' || query.indexOf(',') !== -1) {
+        return 0;
+    }
+    if (query === '*') {
+        phoneBook = [];
+
+        return leng;
+    }
     let a = phoneBook.filter(ent => ent.search(query) === -1);
     phoneBook = a;
 
