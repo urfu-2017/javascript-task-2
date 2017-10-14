@@ -24,7 +24,7 @@ phoneBook.add('5551110011', 'Алекс');
 phoneBook.add('5553330033', 'Валерий', 'valera@example.com'); */
 
 function checkData(phone, name, email) {
-    if (phone.match(/^\d{10}$/) &&
+    if (phone !== undefined && (phone.match(/^\d{10}$/)) &&
         name !== undefined &&
         (email === undefined ||
         email.match(/^[\w.-_]+@[\w.-_]+\.\w{2,4}$/i))) {
@@ -149,12 +149,12 @@ function findHelp(query) {
     return endData.sort();
 }
 exports.find = function (query) {
-    if (query !== '') {
+    if (query !== '' && query !== undefined) {
 
         return findHelp(query);
     }
 };
-
+// console.log(phoneBook);
 /**
  * Импорт записей из csv-формата
  * @star
