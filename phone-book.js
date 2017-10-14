@@ -69,7 +69,7 @@ exports.add = function (phone, name, email) {
  */
 
 function updateSupport(i, name, email) {
-    if (name !== undefined) {
+    if (name !== undefined && !name.match(/@/i)) {
         phoneBook[i].name = name;
     }
     if (email !== undefined) {
@@ -78,13 +78,16 @@ function updateSupport(i, name, email) {
     if (email === undefined) {
         phoneBook[i].email = undefined;
     }
+    if (name.match(/@/i)) {
+        phoneBook[i].email = name;
+    }
 }
 
 exports.update = function (phone, name, email) {
     var state = false;
     let length = phoneBook.length;
     for (let i = 0; i < length; i++) {
-        if (phoneBook[i].phone === phone && name.match(/^[а-яA-Z]+$/i)) {
+        if (phoneBook[i].phone === phone) {
             updateSupport(i, name, email);
             state = true;
         }
