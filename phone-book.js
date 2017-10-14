@@ -176,18 +176,18 @@ function addAndUpdate(name, phone, email) {
 
 exports.importFromCsv = function (csv) {
     let i = 0;
+    let k = 0;
     let a = csv.split('\n');
     while (a[i] !== undefined) {
-        let mas = a.slice(';');
-        if (mas[1].length === 10 && phoneB.test(mas[1]) && mas[0].length !== 0) {
+        let mas = a[i].split(';');
+        if (mas[1].length === 10 && phoneB.test(mas[1]) && mas[0] !== undefined) {
             addAndUpdate(mas[0], mas[1], mas[2]);
+            k ++;
         }
         i++;
     }
-    // Парсим csv
-    // Добавляем в телефонную книгу
-    // Либо обновляем, если запись с таким телефоном уже существует
 
-    return a.length - 1;
+
+    return k;
 
 };
