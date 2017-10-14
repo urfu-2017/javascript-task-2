@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализован метод importFromCsv
  */
-exports.isStar = false;
+exports.isStar = true;
 
 /**
  * Телефонная книга
@@ -169,10 +169,10 @@ function addAndUpdate(name, phone, email) {
 
 exports.importFromCsv = function (csv) {
     let i = 0;
-    let a = csv.slice(',');
+    let a = csv.split('\n');
     while (a[i] !== undefined) {
         let mas = a.slice(';');
-        if (mas[1].length === 10 && mas[0].length !== 0) {
+        if (mas[1].length === 10 && phoneB.test(mas[1]) && mas[0].length !== 0) {
             addAndUpdate(mas[0], mas[1], mas[2]);
         }
         i++;
@@ -181,6 +181,6 @@ exports.importFromCsv = function (csv) {
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
 
-    return a.length;
+    return a.length - 1;
 
 };
