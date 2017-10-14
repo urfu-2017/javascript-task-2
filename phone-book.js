@@ -6,7 +6,7 @@ var phoneBook = [];
 
 exports.add = function (phone, name, email) {
     let note = getNote(phone, name, email);
-    if (!note || isExist(note)) {
+    if (!note || isExist(note.phone)) {
         return false;
     }
     phoneBook.push(note);
@@ -16,10 +16,10 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     let note = getNote(phone, name, email);
-    if (!note || !(isExist(note))) {
+    if (!note || !(isExist(note.phone))) {
         return false;
     }
-    let index = phoneBook.indexOf(note);// warning
+    let index = findIndexByNote(note);
     phoneBook[index] = note;
 
     return true;
@@ -56,6 +56,18 @@ exports.importFromCsv = function (csv) {
 
     return csv.split('\n').length;
 };
+
+function findIndexByNote(note) {
+    let index = -1;
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phoneBook[i].phone === note.phone) {
+            index = i;
+            break;
+        }
+    }
+
+    return index;
+}
 
 function findNotes(query) {
     if (query === '*') {
@@ -106,16 +118,16 @@ function getNote(phone, name, email) {
     return note;
 }
 
-function isExist(note) {
+function isExist(phone) {
     let index = -1;
     for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === note.phone) {
+        if (phoneBook[i].phone === phone) {
             index = i;
             break;
         }
     }
 
-    return index === -1;
+    return index !== -1;
 }
 
 function isValidStr(str) {
