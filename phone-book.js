@@ -1,12 +1,12 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 
 var phoneBook = [];
 
 exports.add = function (phone, name, email) {
-    let note = getNote(phone, name, email);
-    if (!note || isExist(note.phone)) {
+    let note = tryCreateNote(phone, name, email);
+    if (note === null || isPhoneAlreadyExist(note.phone)) {
         return false;
     }
     phoneBook.push(note);
@@ -15,141 +15,155 @@ exports.add = function (phone, name, email) {
 };
 
 exports.update = function (phone, name, email) {
-    let note = getNote(phone, name, email);
-    if (!note || !(isExist(note.phone))) {
+    let note = tryCreateNote(phone, name, email);
+    let index = tryFindIndexByPhone(phone);
+    if (note === null || index === -1) {
         return false;
     }
-    let index = findIndexByNote(note);
     phoneBook[index] = note;
 
     return true;
-
 };
 
 exports.findAndRemove = function (query) {
-    let founded = findNotesByQuery(query);
-    let count = founded.length;
-    for (let i = 0; i < count; i++) {
-        let index = phoneBook.indexOf(founded[i]);
-        let temp = phoneBook.slice(index, i);
-        phoneBook = temp;
+    let indexes = getNoteIndexesByQuery(query);
+    let newPhoneBook = [];
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (! indexes.includes(i)) {
+            newPhoneBook.push(phoneBook[i]);
+        }
     }
+    let count = phoneBook.length - newPhoneBook.length;
+    phoneBook = newPhoneBook;
 
     return count;
 };
 
 exports.find = function (query) {
-    if (! isValidStr(query) || query.length === 0) {
-        return null;
+    let indexes = getNoteIndexesByQuery(query);
+    let result = [];
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (indexes.includes(i)) {
+            result.push(noteToStr(phoneBook[i]));
+        }
     }
-    let founded = findNotesByQuery(query);
+    result.sort();
 
-    return founded;
+    return result;
 };
 
 exports.importFromCsv = function (csv) {
+    let notes = csv.split('\n');
+    let count = 0;
+    for (let i = 0; i < notes.length; i++) {
+        if (addOrUpdateFromCsv(notes[i])) {
+            count += 1;
+        }
+    }
 
-    return csv.split('\n').length;
+    return count;
 };
 
-function findIndexByNote(note) {
-    let index = -1;
-    for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === note.phone) {
-            index = i;
-            break;
-        }
-    }
-
-    return index;
-}
-
-function findNotesByQuery(query) {
-    if (query === '*') {
-        return phoneBook;
-    }
-    let foundNotes = [];
-    for (let i = 0; i < phoneBook.length; i++) {
-        if (noteMatches(query, phoneBook[i])) {
-            let formatedNote = noteToStr(phoneBook[i]);
-            foundNotes.push(formatedNote);
-        }
-    }
-    foundNotes.sort();
-
-    return foundNotes;
-}
-
-function noteMatches(query, note) {
-    let phoneMathes = note.phone.indexOf(query) !== -1;
-    let emailMatches = note.email.indexOf(query) !== -1;
-    let nameMatches = note.name.indexOf(query) !== -1;
-
-    return phoneMathes || emailMatches || nameMatches;
-}
-
-function noteToStr(note) {
-    let rawPhone = note.phone;
-    let formatedPhone = `+7 (${rawPhone.substr(0, 3)}) ${
-        rawPhone.substr(3, 3)}-${rawPhone.substr(6, 2)}-${rawPhone.substr(8, 2)}`;
-    if (note.email === '') {
-        return `${note.name}, ${formatedPhone}`;
-    }
-
-    return `${note.name}, ${formatedPhone}, ${note.email}`;
-}
-
-function getNote(phone, name, email) {
-    if (! (isValidStr(phone) && isValidNumber(phone) &&
-     isValidStr(name) && name !== '')) {
+function tryCreateNote(phone, name, email) {
+    if (!isCorrectName(name) || !isCorrectPhone(phone)) {
         return null;
     }
     let note = {};
     note.phone = phone;
     note.name = name;
-    if (isValidStr(email) && isValidEmail(email)) {
+    if (isCorrectEmail(email)) {
         note.email = email;
     } else {
-        note.email = '';
+        note.email = undefined;
     }
 
     return note;
 }
 
-function isExist(phone) {
-    let index = -1;
+function addOrUpdateFromCsv(csv) {
+    let values = csv.split(';');
+    let isAdded = exports.add(values[1], values[0], values[2]);
+    if (! isAdded) {
+        isAdded = exports.update(values[1], values[0], values[2]);
+    }
+
+    return isAdded;
+}
+
+function getNoteIndexesByQuery(query) {
+    let indexes = [];
     for (let i = 0; i < phoneBook.length; i++) {
-        if (phoneBook[i].phone === phone) {
-            index = i;
-            break;
+        if (isNoteMacthedByQuery(phoneBook[i], query)) {
+            indexes.push(i);
         }
     }
+
+    return indexes;
+}
+
+function isPhoneAlreadyExist(phone) {
+    let index = tryFindIndexByPhone(phone);
 
     return index !== -1;
 }
 
-function isValidStr(str) {
-    return typeof(str) === 'string';
-}
-
-function isValidEmail(email) {
-    let re = /^([a-z0-9-]+@[a-z0-9]+\.[a-z0-9-]+)$/i;
-    let result = re.exec(email);
-    if (result) {
-        return result[0] === email;
+function tryFindIndexByPhone(phone) {
+    if (! isCorrectPhone(phone)) {
+        return -1;
+    }
+    for (let i = 0; i < phoneBook.length; i++) {
+        if (phone === phoneBook[i].phone) {
+            return i;
+        }
     }
 
-    return false;
+    return -1;
 }
 
-function isValidNumber(str) {
-    if (str.length !== 10) {
-        return false;
+function noteToStr(note) {
+    if (note.email === undefined) {
+        return `${note.name}, ${phoneToStr(note.phone)}`;
     }
-    let re = /^\d{10}$/;
-    if (re.exec(str)) {
+
+    return `${note.name}, ${phoneToStr(note.phone)}, ${note.email}`;
+}
+
+function phoneToStr(phone) {
+    let newPhone = `+7 (${phone.substr(0, 3)}) ${
+        phone.substr(3, 3)}-${phone.substr(6, 2)}-${phone.substr(8, 2)}`;
+
+    return newPhone;
+}
+
+function isCorrectName(name) {
+    return typeof(name) === 'string' && name !== '';
+}
+
+function isCorrectEmail(email) {
+    return typeof(email) === 'string' && Boolean(email.match(/[0-9a-z-]+@[0-9a-z-]+\.[0-9a-z]+/i));
+}
+
+function isCorrectPhone(phone) {
+    return typeof(phone) === 'string' && Boolean(phone.match(/[0-9]{10}/)) && phone.length === 10;
+}
+
+function isQueryEmpty(query) {
+    return typeof(query) !== 'string' || query === '';
+}
+
+function isNoteMacthedByQuery(note, query) {
+    if (query === '*') {
         return true;
     }
+    if (isQueryEmpty(query)) {
+        return false;
+    }
+    let phoneMatched = note.phone.includes(query);
+    let nameMatched = note.name.includes(query);
+    let emailMatched = false;
+    if (note.email !== undefined) {
+        emailMatched = note.email.includes(query);
+    }
 
-    return false;
+    return phoneMatched || nameMatched || emailMatched;
 }
