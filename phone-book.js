@@ -196,9 +196,8 @@ exports.find = function (query) {
     answer.sort(sortParams);
     strAnswer = transformation(answer);
     if (strAnswer.length !== 0) {
-        strAnswer.splice(strAnswer.length - 1, 1);
 
-        return strAnswer.join('').split('\n');
+        return strAnswer;
     }
 
     return [];
@@ -215,13 +214,15 @@ function sortParams(nameA, nameB) {
 function transformation(answer) {
     let strAnswer = [];
     for (let i = 0; i < answer.length; i++) {
+        let d;
+        if (answer[i].email !== undefined) {
+            d = ', ' + answer[i].email;
+        } else {
+            d = '';
+        }
         strAnswer.push(answer[i].name + ', +7 (' + answer[i].phone.substring(0, 3) + ') ' +
         answer[i].phone.substring(3, 6) + '-' +
-        answer[i].phone.substring(6, 8) + '-' + answer[i].phone.substring(8, 10));
-        if (answer[i].email !== undefined) {
-            strAnswer.push(', ' + answer[i].email);
-        }
-        strAnswer.push('\n');
+        answer[i].phone.substring(6, 8) + '-' + answer[i].phone.substring(8, 10) + d);
     }
 
     return strAnswer;
