@@ -20,6 +20,8 @@ phoneBook.update('5553330033', 'Валерий');
 // В следующих примерах вернутся все записи
 console.info(phoneBook.find('*'));
 console.info(phoneBook.find('555'));
+console.info(phoneBook.find('5'));
+console.info(phoneBook.find(';'));
 // Вывод будет следующий
 // [
 //   'Алексей, +7 (555) 111-00-11, alex@example.com',

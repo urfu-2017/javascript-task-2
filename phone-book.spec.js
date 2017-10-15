@@ -42,6 +42,14 @@ describe('phone-book', function () {
         ]);
     });
 
+    it('test', function () {
+        assert.deepStrictEqual(phoneBook.find('и'), [
+            'Борис, +7 (555) 222-00-22, boris@example.com',
+            'Валерий, +7 (555) 333-00-33',
+            'Григорий, +7 (555) 444-00-44, grisha@example.com'
+        ]);
+    });
+
     it('должен удалять элементы из телефонной книги', function () {
         assert.strictEqual(phoneBook.findAndRemove('@'), 3);
     });

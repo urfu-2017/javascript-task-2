@@ -43,7 +43,7 @@ exports.add = function (phone, name, email) {
     if (!name || !isCorrect(phone)) {
         return false;
     }
-    if (findEntry(phone)) {
+    if (findEntry(phone) || findEntry(name)) {
         return false;
     }
     if (!email) {
@@ -136,10 +136,10 @@ exports.findAndRemove = function (query) {
 
         return count;
     }
-    let processed = phoneBook.filter(entry => entry.find(detail => detail.match(query)));
+    let processed = phoneBook.filter(entry => !entry.find(detail => detail.match(query)));
     phoneBook = processed;
 
-    return processed.length;
+    return count - processed.length;
 };
 
 /**
