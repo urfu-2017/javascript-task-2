@@ -1,6 +1,6 @@
 'use strict';
 
-var phoneBook = require('./phone-book');
+let phoneBook = require('./phone-book');
 
 // Эти записи добавятся, вернется true
 phoneBook.add('5554440044', 'Григорий', 'grisha@example.com');
@@ -20,6 +20,8 @@ phoneBook.update('5553330033', 'Валерий');
 // В следующих примерах вернутся все записи
 console.info(phoneBook.find('*'));
 console.info(phoneBook.find('555'));
+console.info(phoneBook.find('5'));
+console.info(phoneBook.find(';'));
 // Вывод будет следующий
 // [
 //   'Алексей, +7 (555) 111-00-11, alex@example.com',
@@ -33,7 +35,7 @@ phoneBook.findAndRemove('@'); // returns 3
 
 if (phoneBook.isStar) {
     // Импортируем из csv
-    var csv = [
+    let csv = [
         'Борис;5552220022;boris@example.com',
         'Григорий;5554440044;grisha@example.com',
         'Алексей;5551110011;alex@example.com',

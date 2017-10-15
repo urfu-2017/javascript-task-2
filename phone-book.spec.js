@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 'use strict';
 
-var assert = require('assert');
+let assert = require('assert');
 
-var phoneBook = require('./phone-book');
+let phoneBook = require('./phone-book');
 
 describe('phone-book', function () {
     it('должен добавлять записи', function () {
@@ -42,13 +42,21 @@ describe('phone-book', function () {
         ]);
     });
 
+    it('test', function () {
+        assert.deepStrictEqual(phoneBook.find('и'), [
+            'Борис, +7 (555) 222-00-22, boris@example.com',
+            'Валерий, +7 (555) 333-00-33',
+            'Григорий, +7 (555) 444-00-44, grisha@example.com'
+        ]);
+    });
+
     it('должен удалять элементы из телефонной книги', function () {
-        assert.strictEqual(phoneBook.findAndRemove('@'), 3);
+        assert.strictEqual(phoneBook.findAndRemove('5'), 4);
     });
 
     if (phoneBook.isStar) {
         it('должен экспортировать из cvs', function () {
-            var csv = [
+            let csv = [
                 'Борис;5552220022;boris@example.com',
                 'Григорий;5554440044;grisha@example.com',
                 'Алексей;5551110011;alex@example.com',
