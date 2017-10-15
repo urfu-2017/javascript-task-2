@@ -59,10 +59,18 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 
+function bool(phone, name) {
+    if (!repeatPhone(phone) || !phoneB.test(phone) || phone.length !== 10 || name === undefined) {
+        return false;
+    }
+
+    return true;
+}
+
 exports.update = function (phone, name, email) {
     let i = 0;
     let result = true;
-    if (!name) {
+    if (bool(phone, name)) {
         return false;
     }
     while (phoneBook[i] !== undefined && result) {
@@ -73,8 +81,11 @@ exports.update = function (phone, name, email) {
         }
         i++;
     }
+    if (result) {
+        phoneBook.push(npe(phone, name, email));
+    }
 
-    return !result;
+    return true;
 };
 
 /**
