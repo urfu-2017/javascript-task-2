@@ -1,5 +1,3 @@
-/* eslint max-statements: ["error", 16] */
-/* eslint complexity: ["error", 7] */
 'use strict';
 
 /**
@@ -76,7 +74,7 @@ exports.update = function (phone, name, email) {
         toUpdate.splice(2, 1);
         toUpdate.splice(0, 1);
         toUpdate.unshift(name);
-        if (email !== undefined) {
+        if (email) {
             toUpdate.push(email);
         }
 
