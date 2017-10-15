@@ -45,10 +45,13 @@ exports.add = function (phone, name, email) {
     if (findEntry(phone, 1)) {
         return false;
     }
-    if (!email) {
+    if (typeof email !== 'string') {
         phoneBook.push([name, phone]);
 
         return true;
+    }
+    if (findEntry(email, 2)) {
+        return false;
     }
     phoneBook.push([name, phone, email]);
 
@@ -108,12 +111,13 @@ exports.find = function (query) {
         }).sort();
     }
 
-    return phoneBook.filter(entry => entry.find(detail => detail.match(query))).map(entry => {
-        let mod = entry.slice();
-        mod[1] = show(entry[1]);
+    return phoneBook.filter(entry => entry.find(detail => detail.indexOf(query) !== -1))
+        .map(entry => {
+            let mod = entry.slice();
+            mod[1] = show(entry[1]);
 
-        return mod.join(', ');
-    })
+            return mod.join(', ');
+        })
         .sort();
 };
 
@@ -132,7 +136,7 @@ exports.findAndRemove = function (query) {
 
         return count;
     }
-    let processed = phoneBook.filter(entry => !entry.find(detail => detail.match(query)));
+    let processed = phoneBook.filter(entry => !entry.find(detail => detail.indexOf(query) !== -1));
     phoneBook = processed;
 
     return count - processed.length;
