@@ -76,7 +76,7 @@ exports.update = function (phone, name, email) {
         toUpdate.splice(2, 1);
         toUpdate.splice(0, 1);
         toUpdate.unshift(name);
-        if (email) {
+        if (email !== undefined) {
             toUpdate.push(email);
         }
 
