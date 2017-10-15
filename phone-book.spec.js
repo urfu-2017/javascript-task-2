@@ -51,7 +51,7 @@ describe('phone-book', function () {
     });
 
     it('должен удалять элементы из телефонной книги', function () {
-        assert.strictEqual(phoneBook.findAndRemove('@'), 3);
+        assert.strictEqual(phoneBook.findAndRemove('5'), 4);
     });
 
     if (phoneBook.isStar) {

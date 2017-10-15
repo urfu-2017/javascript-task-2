@@ -17,10 +17,11 @@ let phoneTemp = /^[0-9]{10}$/;
 /**
  * Поиск любого вхождения в телефонную книгу
  * @param {String} item
+ * @param {Number} type
  * @returns {Array}
  */
-let findEntry = function (item) {
-    return phoneBook.find(entry => entry.find(detail => detail === item));
+let findEntry = function (item, type) {
+    return phoneBook.find(entry => entry[type] === item);
 };
 
 /**
@@ -43,7 +44,7 @@ exports.add = function (phone, name, email) {
     if (!name || !isCorrect(phone)) {
         return false;
     }
-    if (findEntry(phone) || findEntry(name)) {
+    if (findEntry(phone, 1)) {
         return false;
     }
     if (!email) {
@@ -51,7 +52,7 @@ exports.add = function (phone, name, email) {
 
         return true;
     }
-    if (findEntry(email)) {
+    if (findEntry(email, 2)) {
         return false;
     }
     phoneBook.push([name, phone, email]);
@@ -70,7 +71,7 @@ exports.update = function (phone, name, email) {
     if (!name || !isCorrect(phone)) {
         return false;
     }
-    let toUpdate = findEntry(phone);
+    let toUpdate = findEntry(phone, 1);
     if (toUpdate) {
         toUpdate.splice(2, 1);
         toUpdate.splice(0, 1);
