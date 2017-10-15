@@ -50,9 +50,6 @@ exports.add = function (phone, name, email) {
 
         return true;
     }
-    if (findEntry(email, 2)) {
-        return false;
-    }
     phoneBook.push([name, phone, email]);
 
     return true;
