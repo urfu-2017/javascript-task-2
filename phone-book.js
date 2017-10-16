@@ -17,10 +17,10 @@ let phoneBook = {};
  * @param {String} name
  * @param {String} email
  */
-let regul = new RegExp(/^\d{10}$/);
+let regul = new RegExp(/^(5{3})(\d{3})(\d{2})(\d{2})$/);
 exports.add = function (phone, name, email) {
     let added = false;
-    if (phone && name && regul.test(phone) && !(phoneBook in phoneBook)) {
+    if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
         added = true;
         phoneBook[phone] = [name, email];
     }
@@ -36,19 +36,15 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
-    if (!name) {
-
-        return false;
-    }
     email = email || '';
-    if (phoneBook[phone]) {
+    if (name && phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
         return true;
     }
 
-
+    return false;
 };
 
 /**
@@ -56,7 +52,7 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 
-exports.findAndRemove = function (query) {
+function removeInObj(query) {
     let remove = 0;
     for (let key in phoneBook) {
         if (key.indexOf(query) !== -1) {
@@ -70,12 +66,24 @@ exports.findAndRemove = function (query) {
     }
 
     return remove;
+}
+
+exports.findAndRemove = function (query) {
+    if (!query) {
+        return 0;
+    }
+    if (query === '*') {
+
+        return removeInObj();
+    }
+
+    return removeInObj(query);
 };
 
 function correctVivod(key) {
-    let NewUser;
-    let CorrectPhone = '+7 (' + key.substr(0, 3) + ') ' + key.substr(3, 3) + '-' +
-key.substr(6, 2) + '-' + key.substring(8);
+    let NewUser = '';
+    let CorrectPhone = '+7 (' + key.slice(0, 3) + ') ' + key.slice(3, 6) + '-' +
+key.slice(6, 8) + '-' + key.slice(8, 10);
     if (phoneBook[key][1]) {
         NewUser = phoneBook[key][0] + ', ' + CorrectPhone + ', ' + phoneBook[key][1];
     } else {
