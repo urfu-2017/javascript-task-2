@@ -79,7 +79,7 @@ key.substr(6, 2) + '-' + key.substring(8);
     if (phoneBook[key][1]) {
         Vivod = phoneBook[key][0] + ', ' + CorrectPhone + ', ' + phoneBook[key][1];
     } else {
-        Vivod = CorrectPhone + ': ' + phoneBook[key][0];
+        Vivod = phoneBook[key][0] + ', ' + CorrectPhone;
     }
 
     return Vivod;
