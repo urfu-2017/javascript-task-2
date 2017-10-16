@@ -97,7 +97,7 @@ function search(query) {
         }
     }
 
-    return vivod;
+    return vivod.sort();
 }
 
 /**
