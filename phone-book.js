@@ -44,7 +44,7 @@ function npe(phone, name, email) {
 
 exports.add = function (phone, name, email) {
     let answer = false;
-    if (repeatPhone(phone) && phoneB.test(phone) && phone.length === 10 && name !== undefined) {
+    if (repeatPhone(phone) && phoneB.test(phone) && name !== undefined) {
         answer = true;
         phoneBook.push(npe(phone, name, email));
     }
@@ -59,18 +59,10 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 
-function bool(phone, name) {
-    if (!repeatPhone(phone) || !phoneB.test(phone) || phone.length !== 10 || name === undefined) {
-        return false;
-    }
-
-    return true;
-}
-
 exports.update = function (phone, name, email) {
     let i = 0;
     let result = true;
-    if (bool(phone, name)) {
+    if (name === undefined) {
         return false;
     }
     while (phoneBook[i] !== undefined && result) {
@@ -81,11 +73,8 @@ exports.update = function (phone, name, email) {
         }
         i++;
     }
-    if (result) {
-        phoneBook.push(npe(phone, name, email));
-    }
 
-    return true;
+    return !result;
 };
 
 /**
@@ -191,7 +180,7 @@ exports.importFromCsv = function (csv) {
     let a = csv.split('\n');
     while (a[i] !== undefined) {
         let mas = a[i].split(';');
-        if (mas[1].length === 10 && phoneB.test(mas[1]) && mas[0] !== undefined) {
+        if (phoneB.test(mas[1]) && mas[0] !== undefined) {
             addAndUpdate(mas[0], mas[1], mas[2]);
             k ++;
         }
