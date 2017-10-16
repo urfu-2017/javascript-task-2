@@ -9,7 +9,7 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook = {};
+let phoneBook = {};
 
 /**
  * Добавление записи в телефонную книгу
@@ -17,9 +17,9 @@ var phoneBook = {};
  * @param {String} name
  * @param {String} email
  */
-var regul = new RegExp(/^(5{3})(\d{3})(\d{2})(\d{2})$/);
+let regul = new RegExp(/^(5{3})(\d{3})(\d{2})(\d{2})$/);
 exports.add = function (phone, name, email) {
-    var added = false;
+    let added = false;
     if (phone && name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
         added = true;
         phoneBook[phone] = [name, email];
@@ -36,19 +36,19 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
-    var updater = false;
     if (!name) {
 
-        return updater;
+        return false;
     }
     email = email || '';
     if (phoneBook[phone]) {
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
-        updater = true;
+
+        return true;
     }
 
-    return updater;
+
 };
 
 /**
@@ -57,8 +57,8 @@ exports.update = function (phone, name, email) {
  */
 
 exports.findAndRemove = function (query) {
-    var remove = 0;
-    for (var key in phoneBook) {
+    let remove = 0;
+    for (let key in phoneBook) {
         if (key.indexOf(query) !== -1) {
             delete phoneBook[key];
             remove++;
@@ -73,31 +73,31 @@ exports.findAndRemove = function (query) {
 };
 
 function correctVivod(key) {
-    var Vivod;
-    var CorrectPhone = '+7 (' + key.substr(0, 3) + ') ' + key.substr(3, 3) + '-' +
+    let NewUser;
+    let CorrectPhone = '+7 (' + key.substr(0, 3) + ') ' + key.substr(3, 3) + '-' +
 key.substr(6, 2) + '-' + key.substring(8);
     if (phoneBook[key][1]) {
-        Vivod = phoneBook[key][0] + ', ' + CorrectPhone + ', ' + phoneBook[key][1];
+        NewUser = phoneBook[key][0] + ', ' + CorrectPhone + ', ' + phoneBook[key][1];
     } else {
-        Vivod = phoneBook[key][0] + ', ' + CorrectPhone;
+        NewUser = phoneBook[key][0] + ', ' + CorrectPhone;
     }
 
-    return Vivod;
+    return NewUser;
 }
 
 function search(query) {
-    var vivod = [];
+    let Search = [];
     query = query || '';
-    for (var key in phoneBook) {
+    for (let key in phoneBook) {
         if (key.indexOf(query) !== -1) {
-            vivod.push(correctVivod(key));
+            Search.push(correctVivod(key));
         } else if (phoneBook[key][0].indexOf(query) !== -1 ||
          phoneBook[key][1].indexOf(query) !== -1) {
-            vivod.push(correctVivod(key));
+            Search.push(correctVivod(key));
         }
     }
 
-    return vivod.sort();
+    return Search.sort();
 }
 
 /**
@@ -124,13 +124,13 @@ exports.find = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
-    var Import = 0;
-    var mass = csv.split('\n');
-    for (var i = 0; mass.length > i; i++) {
-        var str = mass[i].split(';');
-        var name = str[0];
-        var phone = str[1];
-        var email = str[2] || '';
+    let Import = 0;
+    let mass = csv.split('\n');
+    for (let i = 0; mass.length > i; i++) {
+        let str = mass[i].split(';');
+        let name = str[0];
+        let phone = str[1];
+        let email = str[2] || '';
         if (phoneBook[phone]) {
             phoneBook[phone][0] = name;
             phoneBook[phone][1] = email;
