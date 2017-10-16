@@ -10,7 +10,7 @@ exports.isStar = true;
  * Телефонная книга
  */
 let phoneBook = [];
-let phoneB = /[0-9]{10}/;
+let phoneB = /^[0-9]{10}$/;
 
 /**
  * Добавление записи в телефонную книгу
@@ -21,19 +21,18 @@ let phoneB = /[0-9]{10}/;
 
 function repeatPhone(phone) {
     let i = 0;
-    let answer = true;
-    while (phoneBook[i] !== undefined && answer) {
+    while (phoneBook[i]) {
         if (phoneBook[i].split(',')[1] === phone) {
-            answer = false;
+            return false;
         }
         i ++;
     }
 
-    return answer;
+    return true;
 }
 function npe(phone, name, email) {
     let a = '';
-    if (email !== undefined) {
+    if (email) {
         a = name + ',' + phone + ',' + email;
     } else {
         a = name + ',' + phone;
@@ -44,7 +43,7 @@ function npe(phone, name, email) {
 
 exports.add = function (phone, name, email) {
     let answer = false;
-    if (repeatPhone(phone) && phoneB.test(phone) && name !== undefined) {
+    if (repeatPhone(phone) && phoneB.test(phone) && name) {
         answer = true;
         phoneBook.push(npe(phone, name, email));
     }
@@ -61,20 +60,20 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     let i = 0;
-    let result = true;
-    if (name === undefined) {
+    if (!name || !phoneB.test(phone)) {
         return false;
     }
-    while (phoneBook[i] !== undefined && result) {
+    while (phoneBook[i]) {
         if (phoneBook[i].split(',')[1] === phone) {
             phoneBook.splice(i, 1);
             phoneBook.push(npe(phone, name, email));
-            result = false;
+
+            return true;
         }
         i++;
     }
 
-    return !result;
+    return false;
 };
 
 /**
@@ -84,7 +83,7 @@ exports.update = function (phone, name, email) {
 
 exports.findAndRemove = function (query) {
     let leng = phoneBook.length;
-    if (query === '') {
+    if (!query) {
         return 0;
     }
     if (query === '*') {
@@ -92,7 +91,7 @@ exports.findAndRemove = function (query) {
 
         return leng;
     }
-    let a = phoneBook.filter(ent => ent.search(query) === -1);
+    let a = phoneBook.filter(ent => ent.indexOf(query) === -1);
     phoneBook = a;
 
     return leng - a.length;
@@ -107,7 +106,7 @@ function creatCon(contact, query) {
     let answer = '';
     if (contact.indexOf(query) !== -1) {
         let tempStr = contact.split(',');
-        if (tempStr[2] !== undefined) {
+        if (tempStr[2]) {
             answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
                 tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
                 tempStr[1].slice(8) + ', ' + tempStr[2];
@@ -125,7 +124,7 @@ function conl(query) {
     let i = 0;
     let a = [];
     let result = '';
-    while (phoneBook[i] !== undefined) {
+    while (phoneBook[i]) {
         result = creatCon(phoneBook[i], query);
         if (result !== '') {
             a.push(result);
@@ -138,7 +137,7 @@ function conl(query) {
 
 exports.find = function (query) {
     let result = true;
-    if (query === '') {
+    if (!query) {
         result = false;
     }
     if (query === '*') {
@@ -163,7 +162,7 @@ exports.find = function (query) {
 function addAndUpdate(name, phone, email) {
     let j = 0;
     let answer = true;
-    while (phoneBook[j] !== undefined && answer) {
+    while (phoneBook[j] && answer) {
         if (phoneBook[j].split(',')[1] === phone) {
             answer = false;
             phoneBook.splice(j, 1);
@@ -178,9 +177,9 @@ exports.importFromCsv = function (csv) {
     let i = 0;
     let k = 0;
     let a = csv.split('\n');
-    while (a[i] !== undefined) {
+    while (a[i]) {
         let mas = a[i].split(';');
-        if (phoneB.test(mas[1]) && mas[0] !== undefined) {
+        if (phoneB.test(mas[1]) && mas[0]) {
             addAndUpdate(mas[0], mas[1], mas[2]);
             k ++;
         }
