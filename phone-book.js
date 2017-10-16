@@ -102,38 +102,22 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 
-function creatCon(contact, query) {
+function creatCon(contact) {
     let answer = '';
-    if (contact.indexOf(query) !== -1) {
-        let tempStr = contact.split(',');
-        if (tempStr[2]) {
-            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+    let tempStr = contact.split(',');
+    if (tempStr[2]) {
+        answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
                 tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
                 tempStr[1].slice(8) + ', ' + tempStr[2];
-        } else {
-            answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
+    } else {
+        answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
                 tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
                 tempStr[1].slice(8);
-        }
     }
 
     return answer;
 }
 
-function conl(query) {
-    let i = 0;
-    let a = [];
-    let result = '';
-    while (phoneBook[i]) {
-        result = creatCon(phoneBook[i], query);
-        if (result !== '') {
-            a.push(result);
-        }
-        i++;
-    }
-
-    return a.sort();
-}
 
 exports.find = function (query) {
     let result = true;
@@ -141,13 +125,12 @@ exports.find = function (query) {
         result = false;
     }
     if (query === '*') {
-        result = false;
-
-        return conl('');
+        return phoneBook.map(ent => creatCon(ent)).sort();
     }
     if (result) {
 
-        return conl(query);
+        return phoneBook.filter(ent => ent.indexOf(query) !== -1).map(ent => creatCon(ent))
+            .sort();
     }
 };
 
