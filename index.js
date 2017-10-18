@@ -1,5 +1,4 @@
 'use strict';
-
 var phoneBook = require('./phone-book');
 
 // Эти записи добавятся, вернется true
