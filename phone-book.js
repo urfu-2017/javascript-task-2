@@ -126,6 +126,24 @@ exports.find = function (query) {
     return search(query);
 };
 
+function addorUpdate(name, phone, email) {
+    if (name && phoneBook.hasOwnProperty(phone)) {
+        email = email || '';
+        phoneBook[phone][0] = name;
+        phoneBook[phone][1] = email;
+
+        return 1;
+    }
+    if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
+        email = email || '';
+        phoneBook[phone] = [name, email];
+
+        return 1;
+    }
+
+    return 0;
+}
+
 /**
  * Импорт записей из csv-формата
  * @star
@@ -139,15 +157,9 @@ exports.importFromCsv = function (csv) {
         let str = mass[i].split(';');
         let name = str[0];
         let phone = str[1];
-        let email = str[2] || '';
-        if (name && phoneBook.hasOwnProperty(phone)) {
-            phoneBook[phone][0] = name;
-            phoneBook[phone][1] = email;
-            Import ++;
-        }
-        if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
-            phoneBook[phone] = [name, email];
-            Import ++;
+        let email = str[2];
+        if (addorUpdate(name, phone, email)) {
+            Import++;
         }
     }
 
