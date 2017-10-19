@@ -85,10 +85,10 @@ function correctVivod(key) {
     let NewUser = '';
     let CorrectPhone = '+7 (' + key.slice(0, 3) + ') ' + key.slice(3, 6) + '-' +
 key.slice(6, 8) + '-' + key.slice(8, 10);
+    NewUser += phoneBook[key][0] + ', ';
+    NewUser += CorrectPhone + ', ';
     if (phoneBook[key][1]) {
-        NewUser = phoneBook[key][0] + ', ' + CorrectPhone + ', ' + phoneBook[key][1];
-    } else {
-        NewUser = phoneBook[key][0] + ', ' + CorrectPhone;
+        NewUser += phoneBook[key][1];
     }
 
     return NewUser;
