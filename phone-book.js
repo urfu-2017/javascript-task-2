@@ -19,14 +19,14 @@ let phoneBook = {};
  */
 let regul = /^\d{10}$/;
 exports.add = function (phone, name, email) {
-    let added = false;
     if (name && regul.test(phone) && !(phone in phoneBook)) {
-        added = true;
         email = email || '';
         phoneBook[phone] = [name, email];
+
+        return true;
     }
 
-    return added;
+    return false;
 };
 
 /**
@@ -153,7 +153,7 @@ function addorUpdate(name, phone, email) {
 exports.importFromCsv = function (csv) {
     let Import = 0;
     let mass = csv.split('\n');
-    for (let i = 0; mass.length > i; i++) {
+    for (let i = 0; i < mass.length; i++) {
         let str = mass[i].split(';');
         let name = str[0];
         let phone = str[1];
