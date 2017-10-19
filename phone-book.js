@@ -20,7 +20,7 @@ let phoneBook = {};
 let regul = new RegExp(/^(5{3})(\d{3})(\d{2})(\d{2})$/);
 exports.add = function (phone, name, email) {
     let added = false;
-    if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
+    if (name && regul.test(phone) && !(phone in phoneBook)) {
         added = true;
         email = email || '';
         phoneBook[phone] = [name, email];
@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     email = email || '';
-    if (name && phoneBook.hasOwnProperty(phone)) {
+    if (name && (phone in phoneBook)) {
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
@@ -127,14 +127,14 @@ exports.find = function (query) {
 };
 
 function addorUpdate(name, phone, email) {
-    if (name && phoneBook.hasOwnProperty(phone)) {
+    if (name && (phone in phoneBook)) {
         email = email || '';
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
         return 1;
     }
-    if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
+    if (name && regul.test(phone) && !(phone in phoneBook)) {
         email = email || '';
         phoneBook[phone] = [name, email];
 
