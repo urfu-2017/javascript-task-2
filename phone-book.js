@@ -140,12 +140,12 @@ exports.importFromCsv = function (csv) {
         let name = str[0];
         let phone = str[1];
         let email = str[2] || '';
-        if (phoneBook[phone]) {
+        if (name && phoneBook.hasOwnProperty(phone)) {
             phoneBook[phone][0] = name;
             phoneBook[phone][1] = email;
-            Import++;
+            Import ++;
         }
-        if (phone && name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
+        if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
             phoneBook[phone] = [name, email];
             Import ++;
         }
