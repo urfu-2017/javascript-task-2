@@ -126,24 +126,6 @@ exports.find = function (query) {
     return search(query);
 };
 
-function addorUpdate(name, phone, email) {
-    if (name && (phone in phoneBook)) {
-        email = email || '';
-        phoneBook[phone][0] = name;
-        phoneBook[phone][1] = email;
-
-        return 1;
-    }
-    if (name && regul.test(phone) && !(phone in phoneBook)) {
-        email = email || '';
-        phoneBook[phone] = [name, email];
-
-        return 1;
-    }
-
-    return 0;
-}
-
 /**
  * Импорт записей из csv-формата
  * @star
@@ -153,13 +135,14 @@ function addorUpdate(name, phone, email) {
 exports.importFromCsv = function (csv) {
     let Import = 0;
     let mass = csv.split('\n');
-    for (let i = 0; i < mass.length; i++) {
-        let str = mass[i].split(';');
-        let name = str[0];
-        let phone = str[1];
-        let email = str[2];
-        if (addorUpdate(name, phone, email)) {
-            Import++;
+    for (let line of mass) {
+        let str = line.split(';');
+        let result = this.add(str[1], str[0], str[2]);
+        if (!result) {
+            result = this.update(str[1], str[0], str[2]);
+        }
+        if (result) {
+            Import += 1;
         }
     }
 
