@@ -17,7 +17,7 @@ let phoneBook = {};
  * @param {String} name
  * @param {String} email
  */
-let regul = new RegExp(/^(5{3})(\d{3})(\d{2})(\d{2})$/);
+let regul = /^\d{10}$/;
 exports.add = function (phone, name, email) {
     let added = false;
     if (name && regul.test(phone) && !(phone in phoneBook)) {
