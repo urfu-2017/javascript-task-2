@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     email = email || '';
-    if (name && !phoneBook.hasOwnProperty(phone)) {
+    if (name && phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
