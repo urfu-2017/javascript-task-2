@@ -19,7 +19,7 @@ let phoneBook = {};
  */
 let regul = /^\d{10}$/;
 exports.add = function (phone, name, email) {
-    if (name && regul.test(phone) && !(phone in phoneBook)) {
+    if (name && regul.test(phone) && !phoneBook.hasOwnProperty(phone)) {
         email = email || '';
         phoneBook[phone] = [name, email];
 
@@ -38,7 +38,7 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     email = email || '';
-    if (name && (phone in phoneBook)) {
+    if (name && phoneBook.hasOwnProperty(phone)) {
         phoneBook[phone][0] = name;
         phoneBook[phone][1] = email;
 
@@ -55,6 +55,7 @@ exports.update = function (phone, name, email) {
 
 function removeInObj(query) {
     let remove = 0;
+    query = query || '';
     for (let key in phoneBook) {
         if (key.indexOf(query) !== -1) {
             delete phoneBook[key];
