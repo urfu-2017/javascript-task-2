@@ -30,6 +30,19 @@ function repeatPhone(phone) {
 
     return true;
 }
+
+function repeatEmail(email) {
+    let i = 0;
+    while (phoneBook[i]) {
+        if (phoneBook[i].split(',')[2] === email) {
+            return false;
+        }
+        i ++;
+    }
+
+    return true;
+}
+
 function npe(phone, name, email) {
     let a = '';
     if (email) {
@@ -43,7 +56,7 @@ function npe(phone, name, email) {
 
 exports.add = function (phone, name, email) {
     let answer = false;
-    if (repeatPhone(phone) && phoneB.test(phone) && name) {
+    if (repeatPhone(phone) && phoneB.test(phone) && name && repeatEmail(email)) {
         answer = true;
         phoneBook.push(npe(phone, name, email));
     }
@@ -107,12 +120,12 @@ function creatCon(contact) {
     let tempStr = contact.split(',');
     if (tempStr[2]) {
         answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
-                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
-                tempStr[1].slice(8) + ', ' + tempStr[2];
+            tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+            tempStr[1].slice(8) + ', ' + tempStr[2];
     } else {
         answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
-                tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
-                tempStr[1].slice(8);
+            tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
+            tempStr[1].slice(8);
     }
 
     return answer;
