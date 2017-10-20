@@ -31,18 +31,6 @@ function repeatPhone(phone) {
     return true;
 }
 
-function repeatEmail(email) {
-    let i = 0;
-    while (phoneBook[i]) {
-        if (phoneBook[i].split(',')[2] === email) {
-            return false;
-        }
-        i ++;
-    }
-
-    return true;
-}
-
 function npe(phone, name, email) {
     let a = '';
     if (email) {
@@ -56,7 +44,7 @@ function npe(phone, name, email) {
 
 exports.add = function (phone, name, email) {
     let answer = false;
-    if (repeatPhone(phone) && phoneB.test(phone) && name && repeatEmail(email)) {
+    if (repeatPhone(phone) && phoneB.test(phone) && name) {
         answer = true;
         phoneBook.push(npe(phone, name, email));
     }
