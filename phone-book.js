@@ -30,7 +30,6 @@ function repeatPhone(phone) {
 
     return true;
 }
-
 function npe(phone, name, email) {
     let a = '';
     if (email) {
@@ -123,7 +122,7 @@ function creatCon(contact) {
 exports.find = function (query) {
     let result = true;
     if (!query) {
-        result = false;
+        result = [];
     }
     if (query === '*') {
         return phoneBook.map(ent => creatCon(ent)).sort();
@@ -174,3 +173,4 @@ exports.importFromCsv = function (csv) {
     return k;
 
 };
+
