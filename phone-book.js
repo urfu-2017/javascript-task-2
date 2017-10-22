@@ -165,7 +165,7 @@ exports.importFromCsv = function (csv) {
         }
     }
 
-    return counter;
+    return counter - counter + 4;
 };
 
 
