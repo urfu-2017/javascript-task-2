@@ -9,8 +9,8 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-let phoneBook = [];
-let phoneB = /^[0-9]{10}$/;
+var phoneBook = [];
+let phoneTest = /^[0-9]{10}$/;
 
 /**
  * Добавление записи в телефонную книгу
@@ -20,35 +20,36 @@ let phoneB = /^[0-9]{10}$/;
  */
 
 function repeatPhone(phone) {
-    let i = 0;
-    while (phoneBook[i]) {
-        if (phoneBook[i].split(',')[1] === phone) {
-            return false;
-        }
-        i ++;
-    }
+    let listRepeat = phoneBook.filter(entry => entry.phone === phone);
 
-    return true;
+    return (listRepeat.length !== 0);
 }
-function npe(phone, name, email) {
-    let a = '';
-    if (email) {
-        a = name + ',' + phone + ',' + email;
-    } else {
-        a = name + ',' + phone;
-    }
 
-    return a;
+function assContact(phone, name, email) {
+    let contact = {};
+    if (typeof email !== 'string') {
+        contact.name = name;
+        contact.phone = phone;
+
+        return contact;
+    }
+    contact.name = name;
+    contact.phone = phone;
+    contact.email = email;
+
+    return contact;
 }
 
 exports.add = function (phone, name, email) {
-    let answer = false;
-    if (repeatPhone(phone) && phoneB.test(phone) && name) {
-        answer = true;
-        phoneBook.push(npe(phone, name, email));
+    if (!phoneTest.test(phone) || !name) {
+        return false;
     }
+    if (repeatPhone(phone)) {
+        return false;
+    }
+    phoneBook.push(assContact(phone, name, email));
 
-    return answer;
+    return true;
 };
 
 /**
@@ -59,18 +60,16 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
-    let i = 0;
-    if (!name || !phoneB.test(phone)) {
+    if (!phoneTest.test(phone) || !name) {
         return false;
     }
-    while (phoneBook[i]) {
-        if (phoneBook[i].split(',')[1] === phone) {
-            phoneBook.splice(i, 1);
-            phoneBook.push(npe(phone, name, email));
+    let processed = phoneBook.filter(entry => entry.phone !== phone);
+    if (processed !== phoneBook) {
+        let contact = assContact(phone, name, email);
+        processed.push(contact);
+        phoneBook = processed;
 
-            return true;
-        }
-        i++;
+        return true;
     }
 
     return false;
@@ -81,20 +80,34 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 
+function search(contact, query) {
+    let phone = contact.phone;
+    let name = contact.name;
+    let email = contact.email;
+    if (!email && phone.indexOf(query) < 0 && name.indexOf(query) < 0) {
+        return -1;
+    }
+    if (phone.indexOf(query) < 0 && name.indexOf(query) < 0 && email.indexOf(query) < 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
 exports.findAndRemove = function (query) {
-    let leng = phoneBook.length;
+    let quantityContact = phoneBook.length;
     if (!query) {
         return 0;
     }
     if (query === '*') {
         phoneBook = [];
 
-        return leng;
+        return quantityContact;
     }
-    let a = phoneBook.filter(ent => ent.indexOf(query) === -1);
-    phoneBook = a;
+    let processed = phoneBook.filter(entry => search(entry, query) === -1);
+    phoneBook = processed;
 
-    return leng - a.length;
+    return quantityContact - processed.length;
 };
 
 /**
@@ -102,38 +115,34 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 
-function creatCon(contact) {
-    let answer = '';
-    let tempStr = contact.split(',');
-    if (tempStr[2]) {
-        answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
-            tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
-            tempStr[1].slice(8) + ', ' + tempStr[2];
-    } else {
-        answer = tempStr[0] + ', +7 (' + tempStr[1].slice(0, 3) + ') ' +
-            tempStr[1].slice(3, 6) + '-' + tempStr[1].slice(6, 8) + '-' +
-            tempStr[1].slice(8);
+function show(phone) {
+    return '+7 (' + phone.slice(0, 3) + ') ' + phone.slice(3, 6) + '-' +
+        phone.slice(6, 8) + '-' + phone.slice(8, 10);
+}
+function arrInString(needfulPhone) {
+    let listPhone = [];
+    for (let contact of needfulPhone) {
+        let email = contact.email;
+        if (!email) {
+            listPhone.push(contact.name + ', ' + search(contact.phone));
+        } else {
+            listPhone.push(contact.name + ', ' + search(contact.phone) + ', ' + contact.email);
+        }
     }
 
-    return answer;
+    return listPhone;
 }
 
-
 exports.find = function (query) {
-    let result = true;
     if (!query) {
-        result = [];
+        return [];
     }
     if (query === '*') {
-        return phoneBook.map(ent => creatCon(ent)).sort();
+        return arrInString(phoneBook).sort();
     }
-    if (result) {
 
-        return phoneBook.filter(ent => ent.indexOf(query) !== -1).map(ent => creatCon(ent))
-            .sort();
-    }
+    return arrInString(phoneBook.filter(entry => show(entry, query) !== -1)).sort();
 };
-
 
 /**
  * Импорт записей из csv-формата
@@ -142,35 +151,21 @@ exports.find = function (query) {
  * @returns {Number} – количество добавленных и обновленных записей
  */
 
-function addAndUpdate(name, phone, email) {
-    let j = 0;
-    let answer = true;
-    while (phoneBook[j] && answer) {
-        if (phoneBook[j].split(',')[1] === phone) {
-            answer = false;
-            phoneBook.splice(j, 1);
-        }
-        j ++;
-    }
-
-    phoneBook.push(npe(phone, name, email));
-}
-
 exports.importFromCsv = function (csv) {
-    let i = 0;
-    let k = 0;
-    let a = csv.split('\n');
-    while (a[i]) {
-        let mas = a[i].split(';');
-        if (phoneB.test(mas[1]) && mas[0]) {
-            addAndUpdate(mas[0], mas[1], mas[2]);
-            k ++;
+    // Парсим csv
+    // Добавляем в телефонную книгу
+    // Либо обновляем, если запись с таким телефоном уже существует
+    let entries = csv.split('\n');
+    let counter = 0;
+    for (let entry of entries) {
+        let contact = entry.split(';');
+        if (exports.add(contact[1], contact[0], contact[2]) ||
+            exports.update(contact[1], contact[0], contact[2])) {
+            counter ++;
         }
-        i++;
     }
 
-
-    return k;
-
+    return counter;
 };
+
 
