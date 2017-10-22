@@ -124,9 +124,9 @@ function arrInString(needfulPhone) {
     for (let contact of needfulPhone) {
         let email = contact.email;
         if (!email) {
-            listPhone.push(contact.name + ', ' + search(contact.phone));
+            listPhone.push(contact.name + ', ' + show(contact.phone));
         } else {
-            listPhone.push(contact.name + ', ' + search(contact.phone) + ', ' + contact.email);
+            listPhone.push(contact.name + ', ' + show(contact.phone) + ', ' + contact.email);
         }
     }
 
@@ -141,7 +141,7 @@ exports.find = function (query) {
         return arrInString(phoneBook).sort();
     }
 
-    return arrInString(phoneBook.filter(entry => show(entry, query) !== -1)).sort();
+    return arrInString(phoneBook.filter(entry => search(entry, query) !== -1)).sort();
 };
 
 /**
