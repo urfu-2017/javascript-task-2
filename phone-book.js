@@ -42,6 +42,10 @@ exports.add = function (phone, name, email) {
 
 exports.update = function (phone, name, email) {
     for (let i = 0; i < phoneBook.length; i++) {
+        if (name === null || name === '') {
+            return false;
+        }
+
         if (phoneBook[i].phone === phone && name !== undefined) {
             phoneBook[i].name = name;
             phoneBook[i].email = email;
