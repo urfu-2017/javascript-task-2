@@ -65,9 +65,9 @@ exports.update = function (phone, name, email) {
  * Удаление записей по запросу из телефонной книги
  * @param {String} query
  */
-exports.findAndRemove = function (query) {
+exports.findAndRemove = function (query) { // eslint-disable-line complexity
     let iteration = 0;
-    if (query === '') {
+    if (query === '' || query === '*') {
         return 0;
     }
     for (let i = 0; i < phoneBook.length; i++) {
