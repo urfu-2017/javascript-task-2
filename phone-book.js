@@ -91,8 +91,11 @@ function formContact(phone, name, email) {
     return str;
 }
 
-exports.find = function (query) {
+exports.find = function (query) { // eslint-disable-line max-statements
     let findResult = [];
+    if (query === '') {
+        return findResult;
+    }
     if (query === '*') {
         for (let i = 0; i < phoneBook.length; i++) {
             let phone = phoneBook[i].phone;
