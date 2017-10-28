@@ -108,7 +108,8 @@ exports.find = function (query) { // eslint-disable-line max-statements
         }
     } else {
         for (let i = 0; i < phoneBook.length; i++) {
-            if (phoneBook[i].phone.indexOf(query) !== -1) { // eslint-disable-line max-depth
+            if (test(query, phoneBook[i].name, // eslint-disable-line max-depth
+                phoneBook[i].phone, phoneBook[i].email)) {
                 let phone = phoneBook[i].phone;
                 let name = phoneBook[i].name;
                 let email = phoneBook[i].email;
@@ -119,6 +120,13 @@ exports.find = function (query) { // eslint-disable-line max-statements
 
     return findResult.sort();
 };
+
+function test(query, name, phone, email) {
+    if (name.indexOf(query) !== -1 || phone.indexOf(query) !== -1 ||
+    (email !== undefined) && email.indexOf(query) !== -1) {
+        return 1;
+    }
+}
 
 /**
  * Импорт записей из csv-формата
