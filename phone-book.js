@@ -48,6 +48,12 @@ exports.update = function (phone, name, email) {
 
             return true;
         }
+
+        if (phoneBook[i].phone === phone && name === undefined) {
+            phoneBook[i].email = email;
+
+            return true;
+        }
     }
 };
 
