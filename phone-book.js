@@ -67,8 +67,17 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) { // eslint-disable-line complexity
     let iteration = 0;
-    if (query === '' || query === '*') {
+    if (query === '') {
         return 0;
+    }
+    if (query === '*') {
+        for (let i = 0; i < phoneBook.length; i++) {
+            phoneBook.splice(i, 1);
+            i--;
+            iteration++;
+        }
+
+        return iteration;
     }
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].name.indexOf(query) !== -1 ||
