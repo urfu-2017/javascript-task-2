@@ -57,6 +57,9 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let iteration = 0;
+    if (query === '') {
+        return 0;
+    }
     for (let i = 0; i < phoneBook.length; i++) {
         if (phoneBook[i].name.indexOf(query) !== -1 ||
             phoneBook[i].phone.indexOf(query) !== -1 ||
