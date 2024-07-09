@@ -164,7 +164,7 @@ const deleteContacts = (fullBook, findAndDelete) => {
         }
         let values = Object.values(rearrengedObject);
         if (values.some(str => str.includes(findAndDelete))) {
-            deletedContacts.push(values.splice(0, values.length));
+            deletedContacts.push(values);
         }
     }
 
