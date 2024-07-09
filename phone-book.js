@@ -148,7 +148,6 @@ const findContacts = (fullBook, findBy) => {
 };
 
 const deleteContacts = (fullBook, findAndDelete) => {
-    let deletedContacts = [];
     for (let i = 0; i < fullBook.length; i++) {
         let copyElement = JSON.parse(JSON.stringify(fullBook[i]));
         copyElement.phone =
@@ -164,11 +163,11 @@ const deleteContacts = (fullBook, findAndDelete) => {
         }
         let values = Object.values(rearrengedObject);
         if (values.some(str => str.includes(findAndDelete))) {
-            deletedContacts.push(values);
+            phoneBook.splice(i, 1, '');
         }
     }
 
-    return deletedContacts.length;
+    return phoneBook.filter((item) => !item).length;
 };
 
 exports.findAndRemove = function (query) {
