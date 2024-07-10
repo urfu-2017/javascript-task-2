@@ -166,9 +166,10 @@ const deleteContacts = (fullBook, findAndDelete) => {
             phoneBook.splice(i, 1, '');
         }
     }
+    let deleteCounter = phoneBook.filter((item) => !item).length;
     phoneBook = phoneBook.filter((item) => item);
 
-    return phoneBook.filter((item) => !item).length;
+    return deleteCounter;
 };
 
 exports.findAndRemove = function (query) {
