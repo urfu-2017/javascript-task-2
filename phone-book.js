@@ -101,23 +101,28 @@ exports.update = function (phone, name, email) {
 
 const result = [];
 
-const showAllContacts = (fullBook) => {
-    const copyResult = [...result];
-    for (let i = 0; i < fullBook.length; i++) {
-        let copyElement = JSON.parse(JSON.stringify(fullBook[i]));
-        copyElement.phone =
+const testFunction = (counter, testBook) => {
+    let copyElement = JSON.parse(JSON.stringify(testBook[counter]));
+    copyElement.phone =
         `+7 (${copyElement.phone.slice(0, 3)})` +
         ` ${copyElement.phone.slice(3, 6)}` +
         `-${copyElement.phone.slice(6, 8)}` +
         `-${copyElement.phone.slice(8, 10)}`;
-        const rearrengedObject = {};
-        rearrengedObject.name = copyElement.name;
-        rearrengedObject.phone = copyElement.phone;
-        if (copyElement.email !== undefined) {
-            rearrengedObject.email = copyElement.email;
-        }
-        let values = Object.values(rearrengedObject);
-        copyResult.push(values.join(', '));
+    const rearrengedObject = {};
+    rearrengedObject.name = copyElement.name;
+    rearrengedObject.phone = copyElement.phone;
+    if (copyElement.email !== undefined) {
+        rearrengedObject.email = copyElement.email;
+    }
+    let values = Object.values(rearrengedObject);
+
+    return values;
+};
+
+const showAllContacts = (fullBook) => {
+    const copyResult = [...result];
+    for (let i = 0; i < fullBook.length; i++) {
+        copyResult.push(testFunction(i, fullBook).join(', '));
     }
 
     return copyResult;
@@ -126,21 +131,8 @@ const showAllContacts = (fullBook) => {
 const findContacts = (fullBook, findBy) => {
     const copyResult = [...result];
     for (let i = 0; i < fullBook.length; i++) {
-        let copyElement = JSON.parse(JSON.stringify(fullBook[i]));
-        copyElement.phone =
-        `+7 (${copyElement.phone.slice(0, 3)})` +
-        ` ${copyElement.phone.slice(3, 6)}` +
-        `-${copyElement.phone.slice(6, 8)}` +
-        `-${copyElement.phone.slice(8, 10)}`;
-        const rearrengedObject = {};
-        rearrengedObject.name = copyElement.name;
-        rearrengedObject.phone = copyElement.phone;
-        if (copyElement.email !== undefined) {
-            rearrengedObject.email = copyElement.email;
-        }
-        let values = Object.values(rearrengedObject);
-        if (values.some(str => str.includes(findBy))) {
-            copyResult.push(values.join(', '));
+        if (testFunction(i, fullBook).some(str => str.includes(findBy))) {
+            copyResult.push(testFunction(i, fullBook).join(', '));
         }
     }
 
@@ -149,20 +141,7 @@ const findContacts = (fullBook, findBy) => {
 
 const deleteContacts = (fullBook, findAndDelete) => {
     for (let i = 0; i < fullBook.length; i++) {
-        let copyElement = JSON.parse(JSON.stringify(fullBook[i]));
-        copyElement.phone =
-        `+7 (${copyElement.phone.slice(0, 3)})` +
-        ` ${copyElement.phone.slice(3, 6)}` +
-        `-${copyElement.phone.slice(6, 8)}` +
-        `-${copyElement.phone.slice(8, 10)}`;
-        const rearrengedObject = {};
-        rearrengedObject.name = copyElement.name;
-        rearrengedObject.phone = copyElement.phone;
-        if (copyElement.email !== undefined) {
-            rearrengedObject.email = copyElement.email;
-        }
-        let values = Object.values(rearrengedObject);
-        if (values.some(str => str.includes(findAndDelete))) {
+        if (testFunction(i, fullBook).some(str => str.includes(findAndDelete))) {
             phoneBook.splice(i, 1, '');
         }
     }
