@@ -1,4 +1,6 @@
-'use strict';
+/* eslint-disable comma-dangle */
+/* eslint-disable quotes */
+"use strict";
 
 /**
  * Сделано задание на звездочку
@@ -19,17 +21,15 @@ var phoneBook = [];
  */
 const phoneValidator = /\b\d{10}\b/g;
 const nameValidator = /^[А-Я || ё][а-я || ё]*$/gm;
-// const emailValidator = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-const validator = (validPhone, validName) => {
+const isInputValid = (validPhone, validName) => {
     try {
         if (!validPhone.match(phoneValidator)) {
-            throw new TypeError('Incorrect phone phormat');
+            return false;
         }
         if (!validName.match(nameValidator)) {
-            throw new TypeError('Incorrect name phormat');
+            return false;
         }
-
     } catch (err) {
         return false;
     }
@@ -43,9 +43,8 @@ const isContactExist = (contactPhone, contactName) => {
             let contact = phoneBook[i];
             let values = Object.values(contact);
             // eslint-disable-next-line max-depth
-            if (values.includes(contactPhone) ||
-        values.includes(contactName)) {
-                throw new TypeError('Контакт уже сущетсвует');
+            if (values.includes(contactPhone) || values.includes(contactName)) {
+                return false;
             }
         }
     } catch (err) {
@@ -56,19 +55,17 @@ const isContactExist = (contactPhone, contactName) => {
 };
 
 exports.add = function (phone, name, email) {
-    let newContact = {
-        phone,
-        name,
-        email
-    };
-    if (validator(phone, name) && isContactExist(phone, name)) {
-        phoneBook.push(newContact);
+    if (isInputValid(phone, name) && isContactExist(phone, name)) {
+        phoneBook.push({
+            phone,
+            name,
+            email,
+        });
 
         return true;
     }
 
     return false;
-
 };
 
 /**
@@ -79,7 +76,7 @@ exports.add = function (phone, name, email) {
  */
 
 exports.update = function (phone, name, email) {
-    let updateContact = phoneBook.find(contact => contact.phone === phone);
+    let updateContact = phoneBook.find((contact) => contact.phone === phone);
     if (updateContact) {
         updateContact.name = name;
         if (!email) {
@@ -101,8 +98,8 @@ exports.update = function (phone, name, email) {
 
 const result = [];
 
-const testFunction = (counter, testBook) => {
-    let copyElement = JSON.parse(JSON.stringify(testBook[counter]));
+const rearangePhoneBook = (index, testBook) => {
+    const copyElement = { ...testBook[index] };
     copyElement.phone =
         `+7 (${copyElement.phone.slice(0, 3)})` +
         ` ${copyElement.phone.slice(3, 6)}` +
@@ -122,7 +119,7 @@ const testFunction = (counter, testBook) => {
 const showAllContacts = (fullBook) => {
     const copyResult = [...result];
     for (let i = 0; i < fullBook.length; i++) {
-        copyResult.push(testFunction(i, fullBook).join(', '));
+        copyResult.push(rearangePhoneBook(i, fullBook).join(", "));
     }
 
     return copyResult;
@@ -131,8 +128,10 @@ const showAllContacts = (fullBook) => {
 const findContacts = (fullBook, findBy) => {
     const copyResult = [...result];
     for (let i = 0; i < fullBook.length; i++) {
-        if (testFunction(i, fullBook).some(str => str.includes(findBy))) {
-            copyResult.push(testFunction(i, fullBook).join(', '));
+        if (
+            rearangePhoneBook(i, fullBook).some((str) => str.includes(findBy))
+        ) {
+            copyResult.push(rearangePhoneBook(i, fullBook).join(", "));
         }
     }
 
@@ -141,8 +140,12 @@ const findContacts = (fullBook, findBy) => {
 
 const deleteContacts = (fullBook, findAndDelete) => {
     for (let i = 0; i < fullBook.length; i++) {
-        if (testFunction(i, fullBook).some(str => str.includes(findAndDelete))) {
-            phoneBook.splice(i, 1, '');
+        if (
+            rearangePhoneBook(i, fullBook).some((str) =>
+                str.includes(findAndDelete)
+            )
+        ) {
+            phoneBook.splice(i, 1, "");
         }
     }
     let deleteCounter = phoneBook.filter((item) => !item).length;
@@ -160,25 +163,20 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 
-
 exports.find = function (query) {
-
     if (!query) {
         return result;
     }
     const copyPhoneBook = phoneBook.slice(0);
     copyPhoneBook.sort((a, b) => a.name.localeCompare(b.name));
     switch (query) {
-        case '*':
-
+        case "*":
             return showAllContacts(copyPhoneBook);
 
-        case ' ':
-
+        case " ":
             return result;
 
         default:
-
             return findContacts(copyPhoneBook, query);
     }
 };
@@ -194,5 +192,5 @@ exports.importFromCsv = function (csv) {
     // Добавляем в телефонную книгу
     // Либо обновляем, если запись с таким телефоном уже существует
 
-    return csv.split('\n').length;
+    return csv.split("\n").length;
 };
